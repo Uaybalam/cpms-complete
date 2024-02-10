@@ -33,13 +33,13 @@ class NuevaCajaController extends Controller
     public function historial()
     {
         $registros = Factura::all();
-        return view('historial_venta', ['registros' => $registros]);
+        return view('caja.historial_venta', ['registros' => $registros]);
     }
     public function abrirModal()
     {
         $registros = NuevaCaja::all(); // Obtén todos los registros de la tabla
 
-        return view('welcome', ['registros' => $registros]);
+        return view('caja.welcome', ['registros' => $registros]);
     }
 
     // Puedes agregar un método para guardar los datos en la base de datos
@@ -58,7 +58,8 @@ class NuevaCajaController extends Controller
         Corte::create([
             'Cajero' => $retiro,
             'Total' => 0,
-            'cantidad_inicial' => $cantidad->cantidad_inicial
+            'cantidad_inicial' => $cantidad->cantidad_inicial,
+            'Retiro' => 0
         ]);
         return redirect()->back()->with('success', 'Datos guardados correctamente.');
     }
@@ -69,7 +70,7 @@ class NuevaCajaController extends Controller
         $suma = Corte::sum('Total');
         $cantidad = NuevaCaja::first();
 
-        return view('corte_parcial', [
+        return view('caja.corte_parcial', [
             'registros' => $registros,
             'sumaTotal' => $suma,
             'cantidad' => $cantidad
@@ -86,7 +87,7 @@ class NuevaCajaController extends Controller
         ->select('vehicle_ins.*', 'vehicles.plat_number')
         ->get();
 
-        return view('caja', ['registros' => $registros] , ['Vehicle' => $resultados]);
+        return view('caja.caja', ['registros' => $registros] , ['Vehicle' => $resultados]);
     }
 
     public function guardarVenta(Request $request)
@@ -98,6 +99,7 @@ class NuevaCajaController extends Controller
                 'Cajero' => $datoOrigen->nombre,
                 'Total' => $total,
                 'cantidad_inicial' => $datoOrigen->cantidad_inicial,
+                'Retiro' => 0
             ]);
         }
 

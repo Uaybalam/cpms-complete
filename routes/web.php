@@ -18,7 +18,7 @@ use App\Http\Controllers\PDFController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/Nueva-caja', [NuevaCajaController::class, 'abrirModal']);
+Route::get('/Nueva-caja', [NuevaCajaController::class, 'abrirModal']) -> name('abrir.caja');
 Route::post('/guardar-datos', [NuevaCajaController::class, 'guardarDatos'])->name('guardar-datos');
 Route::get('/Ventas', [NuevaCajaController::class, 'abrirparcial']);
 Route::get('/Caja', [NuevaCajaController::class, 'Venta'])->name('caja.venta');
@@ -29,7 +29,7 @@ Route::post('/venta', [NuevaCajaController::class, 'guardarVenta']);
 Route::get('/retiro-parcial', [NuevaCajaController::class, 'retiroParcial']);
 Route::get('/cierre-Caja', [NuevaCajaController::class, 'cierreCaja']);
 Route::get('/mostrarFactura/{id}', [NuevaCajaController::class, 'mostrarFactura'])->name('mostrar.Factura');
-Route::get('/historial', [NuevaCajaController::class, 'historial']);
+Route::get('/historial', [NuevaCajaController::class, 'historial']) -> name('historial');
 
 
 Route::get('/', function () {
@@ -52,5 +52,5 @@ Route::middleware('auth')->group(function () {
     Route::get('reports/index', [App\Http\Controllers\ReportController::class, 'index'])->name('reports.index');
     Route::get('/imagen', [ImageController::class, 'index']);
 
-   
+
 });

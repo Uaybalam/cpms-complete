@@ -45,16 +45,16 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="exampleInputEmail3">Modelo del Vehiculo</label>
-                <input type="text" name="name" value="{{ isset($vehicle) ? $vehicle->name : '' }}"
+                <input  type="text" name="name" value="{{ isset($vehicle) ? $vehicle->name : '' }}"
                     class="form-control" id="exampleInputEmail3" placeholder="Vehicle Name">
             </div>
         </div>
         <div class="col-md-6">
             <div class="form-group">
                 <label for="exampleInputEmail3">Numero de Placa del Vehiculo</label>
-                <input type="text" name="plat_number" value="{{ isset($plate_number) ? $plate_number : '' }}"
-       class="form-control" id="exampleInputEmail3" placeholder="Vehicle Plat Number" readonly>
-
+                <input id="plat_number" type="text" name="plat_number" value="{{ isset($plate_number) ? $plate_number : '' }}"
+       class="form-control" id="exampleInputEmail3" placeholder="Vehicle Plat Number"  readonly>
+       <a onclick="ActivarInput()" class="btn btn-primary btn-lg active" role="button">Enlace principal</a>
             </div>
         </div>
     </div>
@@ -90,3 +90,13 @@
     <button type="submit" class="btn btn-primary mr-2">Crear</button>
     <button class="btn btn-light">Cancelar</button>
 </form>
+<script>
+
+    function ActivarInput()
+    {
+        document.getElementById('plat_number').readOnly = false;
+
+    }
+
+
+</script>

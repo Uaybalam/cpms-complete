@@ -16,7 +16,7 @@
     </div>
 <div class="container mt-4">
 <div class="alert alert-info bg-white p-4 rounded shadow">
-    <h4 class="text-Secondary border-bottom pb-2 mb-3">Registros</h4>
+    <h4 class="text-Secondary border-bottom pb-2 mb-3">Historial</h4>
     <table id="registros-table" class="table table-striped">
         <thead>
             <tr>
