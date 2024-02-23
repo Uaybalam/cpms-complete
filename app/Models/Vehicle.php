@@ -12,7 +12,7 @@ class Vehicle extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'plat_number', 'registration_number',
-    'status', 'duration', 'packing_charge', 'customer_id', 'category_id', 'created_by'];
+    'status', 'duration', 'color', 'packing_charge', 'customer_id', 'category_id', 'created_by'];
 
 
     public function customer(): BelongsTo

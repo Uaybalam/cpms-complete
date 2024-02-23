@@ -10,7 +10,7 @@ class Category extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'created_by'];
+    protected $fillable = ['name', 'costo', 'created_by'];
 
     /**
      * Get the user that owns the Category

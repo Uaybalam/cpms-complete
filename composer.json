@@ -12,7 +12,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
-        "platerecognizer/platerecognizer": "1.0",
+        "setasign/fpdf": "^1.8",
         "thiagoalessio/tesseract_ocr": "^2.13"
     },
     "require-dev": {

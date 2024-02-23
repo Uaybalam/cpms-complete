@@ -23,7 +23,7 @@ class ImageController extends Controller
             $apiKey = 'a2eac9effc461f353760bde8fe838e0f257e25aa';
 
             // Reemplaza '192.168.1.100' con la dirección IP de tu cámara
-            $cameraIp = '10.28.124.79:8080';
+            $cameraIp = '192.168.100.3:8080';
 
             // Hacer la solicitud a la cámara
             $client = new Client();

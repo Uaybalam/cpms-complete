@@ -5,7 +5,7 @@
             <th>Reg #</th>
             <th>Categoria</th>
             <th>Cliente</th>
-            <th>Modelo</th>
+
             <th>Num. Placa</th>
             <th>Status</th>
             <th>Creado el</th>
@@ -19,7 +19,7 @@
             <td>{{ $key+1 }}</td>
             <td>{{ $vehicle->registration_number }}</td>
             <td>{{ $vehicle->category->name }}</td>
-            <td>{{ $vehicle->customer->name }}</td>
+            {{--  <td>{{ $vehicle->customer->name }}</td>  --}}
             <td>{{ $vehicle->name }}</td>
             <td>{{ $vehicle->plat_number }}</td>
             <td>{{ $vehicle->status == 1 ? "Active" : "InActive" }}</td>

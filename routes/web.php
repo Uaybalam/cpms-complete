@@ -6,7 +6,7 @@ use App\Http\Controllers\ImageController;
 use App\Http\Controllers\CierrePDFController;
 use App\Http\Controllers\NuevaCajaController;
 use App\Http\Controllers\PDFController;
-
+use App\Http\Controllers\VehicleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,13 +24,14 @@ Route::get('/Ventas', [NuevaCajaController::class, 'abrirparcial']);
 Route::get('/Caja', [NuevaCajaController::class, 'Venta'])->name('caja.venta');
 Route::get('/obtener-datos/{id}', [NuevaCajaController::class, 'obtenerdatos']);
 Route::post('/generar-pdf', [PDFController::class, 'generarpdf']);
-Route::post('/generar-Cpdf', [CierrePDFController::class, 'generarpdf']);
+Route::post('/generar-pdf-salida', [PDFController::class, 'generarpdfSalida']);
+Route::post('/generar-Cpdf', [PDFController::class, 'generarpdfCierre']);
 Route::post('/venta', [NuevaCajaController::class, 'guardarVenta']);
 Route::get('/retiro-parcial', [NuevaCajaController::class, 'retiroParcial']);
 Route::get('/cierre-Caja', [NuevaCajaController::class, 'cierreCaja']);
 Route::get('/mostrarFactura/{id}', [NuevaCajaController::class, 'mostrarFactura'])->name('mostrar.Factura');
 Route::get('/historial', [NuevaCajaController::class, 'historial']) -> name('historial');
-
+Route::get('/get-costo/{category}', [VehicleController::class, 'getCosto'])->name('get-costo');
 
 Route::get('/', function () {
     return view('auth.login');

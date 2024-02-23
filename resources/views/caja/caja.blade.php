@@ -131,7 +131,7 @@
             },
             success: function(response) {
                 if (response.redirect) {
-                    location.reload()
+                    //location.reload()
                 } else {
                     console.log("No se agrego nada")
                 }
@@ -165,7 +165,7 @@
 
         // Realizar la solicitud AJAX POST
         $.ajax({
-            url: '/generar-pdf',
+            url: '/generar-pdf-salida',
             method: 'POST',
             data: datos,
             headers: {
