@@ -82,12 +82,9 @@ class NuevaCajaController extends Controller
     public function Venta()
     {
         $registros = NuevaCaja::all();
-        $resultados = DB::table('vehicle_ins')
-        ->join('vehicles', 'vehicle_ins.vehicle_id', '=', 'vehicles.id')
-        ->select('vehicle_ins.*', 'vehicles.plat_number')
-        ->get();
 
-        return view('caja.caja', ['registros' => $registros] , ['Vehicle' => $resultados]);
+
+        return view('caja.caja', ['registros' => $registros]);
     }
 
     public function guardarVenta(Request $request)
@@ -151,23 +148,26 @@ class NuevaCajaController extends Controller
         return response()->json(['success' => true, 'redirect' => url('/Ventas')]);
     }
 
-    public function obtenerdatos($id)
+    public function obtenerdatos($platNumber)
     {
+        $vehiculo = Vehicle::where('plat_number', $platNumber)->first();
 
-        $vehiculo = Vehicle::find($id);
-        $vehiculoIn = VehicleIn::where('vehicle_id', $id)->first();
-
-
-        // Si el vehículo no se encuentra
-        if (!$vehiculo || !$vehiculoIn) {
+        if (!$vehiculo) {
             return response()->json(['error' => 'Vehículo no encontrado'], 404);
         }
+
+        $vehiculoIn = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
+
+        if (!$vehiculoIn) {
+            return response()->json(['error' => 'Entrada de vehículo no encontrada'], 404);
+        }
+
         $array = [
             'vehiculo' => $vehiculo->toArray(),
             'vehiculoIn' => $vehiculoIn->toArray(),
         ];
-        // Devuelve los datos en formato JSON
-        return response()->json($array);
 
+        return response()->json($array);
     }
+
 }

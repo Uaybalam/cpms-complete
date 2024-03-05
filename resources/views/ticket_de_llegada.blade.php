@@ -43,6 +43,24 @@
             text-align: right;
             font-weight: bold;
         }
+        /* Agrega este CSS a tu estilo */
+        .vehicle-info {
+            display: flex;
+        }
+
+        .vehicle-image {
+            background-image: url('http://localhost/cpms-complete/codigo_qr.png'); /* Ruta de la imagen del código QR en línea */
+            background-size: contain; /* Ajusta el tamaño de la imagen para que se ajuste al contenedor */
+            background-repeat: no-repeat; /* Evita que la imagen se repita */
+            width: 200px; /* Ancho de la imagen */
+            height: 200px; /* Altura de la imagen */
+            margin-right: 10px; /* Espacio entre la imagen y los detalles del vehículo */
+        }
+
+        .vehicle-details {
+            flex: 1; /* Los detalles del vehículo ocupan todo el espacio restante */
+        }
+
     </style>
 </head>
 <body>
@@ -53,10 +71,16 @@
         <div class="section">
             <div class="section-title"><b>Datos del Vehiculo</b></div>
             <div class="section-content">
-                <p>Folio:{{$folio}}</p>
-                <p>Placas:{{$platNumber}}</p>
-                <p>Marca: {{$modelo}}</p>
-                <p>Color: {{$Color}}</p>
+                <div class="vehicle-info">
+
+                    <div class="vehicle-details">
+                        <p>Folio: {{$folio}}</p>
+                        <p>Placas: {{$platNumber}}</p>
+                        <p>Marca: {{$modelo}}</p>
+                        <p>Color: {{$Color}}</p>
+                    </div>
+                    <div class="vehicle-image"></div>
+                </div>
             </div>
         </div>
         <div class="section">

@@ -31,12 +31,8 @@
 <div class="alert alert-info bg-white p-4 rounded shadow">
     <h4 class="text-Secondary border-bottom pb-2 mb-3">Registros</h4>
     <label for="selectFiltrado" class="form-label">Selecciona un vehiculo:</label>
-        <select id="selectFiltrado" class="form-select">
-            <option value="0">Selecciona una opcion</option>
-            @foreach($Vehicle as $opcion)
-                <option value="{{ $opcion->vehicle_id }}">{{ $opcion->plat_number }}</option>
-            @endforeach
-        </select>
+    <input type="text" id="inputPlaca" class="form-control" placeholder="Ingresa la placa del vehículo">
+
 
         <table id="registros-table" class="table table-striped">
             <thead>
@@ -58,7 +54,7 @@
 <div class="alert alert-info bg-white p-4 rounded shadow">
     <h4 class="text-Secondary border-bottom pb-2 mb-3">Dtaos venta</h4>
     <label class="form-label">Cliente</label>
-    <input type="text" class="form-control" name="cliente" placeholder="Nombre del cliente" aria-label="Nombre del cliente">
+    <input type="text" class="form-control" name="cliente" id="cliente" placeholder="Nombre del cliente" aria-label="Nombre del cliente" readonly>
     <h4 class="text-Secondary border-bottom pb-2 mb-3"></h4>
     <label class="form-label">Folio</label>
     <input type="text" class="form-control" name="Folio" id="folio" placeholder="Folio" aria-label="Folio" readonly>
@@ -228,89 +224,84 @@
 
     }
 
-    //llama los datos para el select y llena la tabla con su informacion
     $(document).ready(function(){
-        $('#selectFiltrado').change(function(){
-            // Obtener el valor seleccionado del select
-            var selectedOption = $(this).find(':selected');
+        // Función para manejar la solicitud AJAX y llenar la tabla
+        function obtenerDatosPlaca(placa) {
+            // Validar que se haya ingresado una placa
+            if (placa.trim() !== '') {
+                // Actualizar la tabla con los detalles
+                $('#registros-table tbody').html('<tr><td colspan="4">Cargando...</td></tr>');
 
-            // Obtener los detalles asociados a la opción seleccionada
-            var id = selectedOption.data('id');
+                $.ajax({
+                    url: '/obtener-datos/' + placa,
+                    method: 'GET',
+                    success: function(data) {
+                        console.log(data);
 
-            // Actualizar la tabla con los detalles
-            $('#registros-table tbody').html('<tr><td colspan="4">Cargando...</td></tr>');
+                        // Llenar la tabla con los detalles del vehículo
+                        var fechaInicio = new Date(data.vehiculoIn.created_at);
+                        var fechaFin = new Date();
+                        var detallesHTML = '';
+                        var totalSubtotal = 0;
+                        var subtotal = parseFloat(data.vehiculo.packing_charge);
+                        var dias = 1;
+                        var descuento = 0;
 
-            $.ajax({
-                url: '/obtener-datos/' + selectedOption.val(),
-                method: 'GET',
-                success: function(data) {
+                        for (var hora = 0; fechaInicio <= fechaFin; hora++) {
+                            // Generar las filas de la tabla
+                            detallesHTML += '<tr><td>' + dias + ' DIAS</td><td>' + fechaInicio.toLocaleString()
+                                + '</td><td>' + data.vehiculo.model + '</td><td>' + descuento.toFixed(2)
+                                + '</td><td>' + (subtotal).toFixed(2) + '</td></tr>';
 
-                    console.log(data);
+                            subtotal += 30;
 
-                    var fechaInicio = new Date(data.vehiculoIn.created_at);
-                    var fechaFin = new Date();
-                    var detallesHTML = '';
-                    var totalSubtotal = 0;
-                    var subtotal = parseFloat(data.vehiculo.packing_charge);
-                    var dias = 1;
-                    var descuento = 0;
+                            // Incrementar la fecha en una hora
+                            fechaInicio.setHours(fechaInicio.getHours() + 1);
 
-                    for (var hora = 0; fechaInicio <= fechaFin; hora++) {
-
-                        if (dias === 7) {
-                            subtotal = 1200;
-                            descuento += 30;
-                            if (descuento < 270) {
-                                descuento = 270;
+                            // Mantener el precio constante después de la séptima hora
+                            if (hora % 24 === 6) {
+                                subtotal = subtotal;
+                                hora = 23;
+                                // Avanzar al siguiente día
+                                fechaInicio.setDate(fechaInicio.getDate() + 1);
+                                fechaInicio.setHours(15);
+                                if (dias === 7) {
+                                    subtotal =  1410;
+                                    descuento = 0;
+                                }
                             }
-                        }
-                        if (dias > 7) {
-                            descuento += 30;
-                            if (descuento < 270) {
-                                descuento = 270;
+
+                            // Reiniciar el contador de horas al inicio de cada día
+                            if (hora === 23) {
+                                dias++;
                             }
+
+                            totalSubtotal = subtotal - 30;
                         }
 
-                    detallesHTML += '<tr><td>' + dias + ' DIAS</td><td>' + fechaInicio.toLocaleString()
-                        + '</td><td>' + data.vehiculo.name + '</td><td>' + descuento.toFixed(2)
-                        + '</td><td>' + (subtotal).toFixed(2) + '</td></tr>';
+                        // Actualizar la tabla con las filas creadas
+                        $('#registros-table tbody').html(detallesHTML);
+                        $('input[name="total"]').val(totalSubtotal.toFixed(2));
 
-                    subtotal += 30;
-
-                    // Incrementar la fecha en una hora
-                    fechaInicio.setHours(fechaInicio.getHours() + 1);
-
-                    // Mantener el precio constante después de la séptima hora
-                    if (hora % 24 === 6) {
-                        subtotal = subtotal;
-                        hora = 23;
-                        // Avanzar al siguiente día
-                        fechaInicio.setDate(fechaInicio.getDate() + 1);
-                        fechaInicio.setHours(15);
-                        if (dias === 7) {
-                            subtotal =  1410;
-                         descuento = 0;
-                        }
+                        // Llenar el campo de nombre de cliente con el nombre del propietario del vehículo
+                        $('input[name="cliente"]').val(data.vehiculo.name);
+                    },
+                    error: function(error) {
+                        console.error('Error al obtener detalles:', error);
                     }
+                });
+            }
+        }
 
-                 // Reiniciar el contador de horas al inicio de cada día
-                    if (hora === 23) {
-                        dias++;
-                    }
-
-                    totalSubtotal = subtotal - 30;
-                }
-
-                // Actualizar la tabla con las filas creadas
-                $('#registros-table tbody').html(detallesHTML);
-                $('input[name="total"]').val(totalSubtotal.toFixed(2));
-                },
-                error: function(error) {
-                    console.error('Error al obtener detalles:', error);
-                }
-            });
+        // Manejar el evento 'keyup' del input de placa para buscar los datos cuando se presiona Enter
+        $('#inputPlaca').on('keyup', function(event){
+            if (event.key === 'Enter') {
+                var placa = $(this).val().trim();
+                obtenerDatosPlaca(placa);
+            }
         });
     });
+
 </script>
 </body>
 </html>

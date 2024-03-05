@@ -70,7 +70,7 @@
                 <input type="number" name="duration" value="{{ isset($vehicle) ? $vehicle->duration : '' }}"
                     class="form-control" id="duracion" placeholder="Parking Duration"> --}}
                 <label for="exampleInputEmail3">Modelo del Vehiculo</label>
-                <input  type="text" name="modelo" class="form-control" id="modelo" placeholder="Vehicle Name">
+                <input  type="text" name="model" class="form-control" id="model" placeholder="Vehicle model">
             </div>
         </div>
         <div class="col-md-3">
@@ -123,7 +123,7 @@
         // Obtener los valores de los campos del formulario
         var Color = document.getElementById('Color').value;
         var folio = document.getElementById('folio').value;
-        var modelo = document.getElementById('modelo').value;
+        var modelo = document.getElementById('model').value;
         var platNumber = document.getElementById('plat_number').value;
         var name =  document.getElementById('name').value;
 

@@ -9,9 +9,42 @@ use FPDF;
 
 class PDFController extends Controller
 {
+    public function generarQR(Request $request)
+    {
+        $texto = $request->input('plat_number');
+
+        // Ejecuta el script Python para generar el código QR
+        $process = proc_open('python3 ' . base_path('scripts/generar_qr.py') . ' ' . escapeshellarg($texto), [
+            0 => ['pipe', 'r'],
+            1 => ['pipe', 'w'],
+            2 => ['pipe', 'w'],
+        ], $pipes);
+
+        if (is_resource($process)) {
+            fclose($pipes[0]);
+            $output = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
+            $retorno = proc_close($process);
+
+            if ($retorno === 0) {
+                echo "El código QR se generó correctamente.";
+                // Continuar con la generación del PDF después de que se haya generado el código QR
+                $this->generarPDF($request);
+            } else {
+                echo "Hubo un error al generar el código QR.";
+                // Manejar el error adecuadamente
+            }
+        } else {
+            echo "Error al iniciar el proceso para generar el código QR.";
+            // Manejar el error adecuadamente
+        }
+    }
+
+
     // public function generarpdf(Request $request)
     public function generarpdf(Request $request)
     {
+
 
       // Ruta del archivo HTML
     $html_file_path = base_path('resources/views/ticket_de_llegada.blade.php');
@@ -31,8 +64,6 @@ class PDFController extends Controller
     // Resto del código para generar el PDF
     $output_path = base_path('public/entrada.pdf');
 
-
-
     $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
         0 => ['pipe', 'r'], // stdin
         1 => ['pipe', 'w'], // stdout
@@ -48,21 +79,7 @@ class PDFController extends Controller
         $exit_code = proc_close($process);
 
         if ($exit_code === 0) {
-            // El proceso finalizó correctamente, leer el contenido del PDF y guardarlo en la base de datos
 
-        // Convierte el contenido a binario
-        // $pdfBinary = pack('H*', bin2hex($pdfContent));
-
-        // // Crea una nueva instancia del modelo Factura
-        // $pdfModel = new Factura();
-
-        // // Establece los valores de los campos
-        // $pdfModel->cliente = 'numero'; // Puedes ajustar esto según tu lógica
-        // $pdfModel->folio = '14522z';
-        // $pdfModel->pdf_content = $pdfBinary; // Guarda el contenido binario del PDF
-
-        // // Guarda el modelo en la base de datos
-        // $pdfModel->save();
         ob_start();
         $pdfContent = file_get_contents($output_path);
         $pdfContent = utf8_encode($pdfContent);
