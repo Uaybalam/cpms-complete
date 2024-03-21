@@ -7,6 +7,8 @@ use App\Http\Controllers\CierrePDFController;
 use App\Http\Controllers\NuevaCajaController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\VehicleController;
+use App\Http\Controllers\PensionesController;
+use App\Http\Controllers\AutoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +34,17 @@ Route::get('/cierre-Caja', [NuevaCajaController::class, 'cierreCaja']);
 Route::get('/mostrarFactura/{id}', [NuevaCajaController::class, 'mostrarFactura'])->name('mostrar.Factura');
 Route::get('/historial', [NuevaCajaController::class, 'historial']) -> name('historial');
 Route::get('/get-costo/{category}', [VehicleController::class, 'getCosto'])->name('get-costo');
+
+// Rutas para los pensionados
+Route::get('/pensionados', [PensionesController::class, 'index'])->name('pensionados.index');
+Route::post('/pensionados', [PensionesController::class, 'store'])->name('pensionados.store');
+Route::get('/pensionados/{pensionado}/verificar-pago', [PensionesController::class, 'verificarPago'])->name('pensionados.verificarPago');
+
+// Ruta para agregar autos a un pensionado
+Route::post('/pensionados/{pensionado}/autos', [PensionesController::class, 'agregarAuto'])->name('pensionados.autos.store');
+
+// Rutas para los autos
+Route::post('/autos', [AutoController::class, 'store'])->name('autos.store');
 
 Route::get('/', function () {
     return view('auth.login');
