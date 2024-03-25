@@ -32,17 +32,30 @@ class VehicleController extends Controller
     public function store(StoreVehicleRequest $request)
     {
       try {
+// Verificar si ya existe un vehículo con la misma placa en la tabla Vehicle
+$existingVehicle = Vehicle::where('plat_number', $request->plat_number)->first();
 
-        Vehicle::updateOrCreate(['id' => $request->vehicle_id], $request->except('vehicle_id', 'status') + ['status' => 0]);
-        // Obtener el id del vehículo
-        $latestVehicleId = Vehicle::latest('id')->first()->id;
+// Si existe un vehículo con la misma placa, actualiza sus datos en Vehicle
+if ($existingVehicle) {
+    $existingVehicle->update($request->except('vehicle_id', 'status'));
+} else {
+    // Si no existe, crea un nuevo vehículo
+    $customer = Customer::updateOrCreate(['id' => $request->customer_id], $request->except('customer_id'));
+    $existingVehicle = Vehicle::create($request->except('vehicle_id', 'status') + ['status' => 0, 'customer_id' => $customer->id]);
+}
 
-        // Crear un nuevo registro en VehicleIn o actualizar uno existente
-        VehicleIn::updateOrCreate(['id' => $request->vehicleIn_id], array_merge($request->all(), ['vehicle_id' => $latestVehicleId]));
+$latestVehicleId = $existingVehicle->id;
 
+// Verificar si ya existe un registro en VehicleIn asociado a ese vehículo
+$existingVehicleIn = VehicleIn::where('vehicle_id', $latestVehicleId)->first();
 
-        Customer::updateOrCreate(['id' => $request->customer_id], $request->except('customer_id'));
-        return redirect()->route('vehicles.index')->with('success',  $request->vehicle_id ? 'Vehicle Updated Successfully!!' : 'Vehicle Created Successfully!!');
+// Si no existe un registro en VehicleIn asociado a ese vehículo, crea uno nuevo
+if (!$existingVehicleIn) {
+    VehicleIn::create(['vehicle_id' => $latestVehicleId] + $request->all());
+}
+
+return redirect()->route('vehicles.index')->with('success', $request->vehicle_id ? 'Vehicle Updated Successfully!!' : 'Vehicle Created Successfully!!');
+
       } catch (\Throwable $th) {
         return redirect()->route('vehicles.create')->with('error', 'Vehicle Cannot be Create please check the inputs!!');
       }

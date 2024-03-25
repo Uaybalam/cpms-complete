@@ -21,16 +21,6 @@
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                {{-- <label for="exampleInputName1">Nombre del Cliente</label>
-                <select name="customer_id" class="form-control">
-                    <option value="">Select</option>
-                    @foreach ($customers as $customer)
-                        <option value="{{ $customer->id }}" @if (isset($vehicle))
-                            {{ $vehicle->customer_id == $customer->id ? 'selected' : '' }}
-                    @endif>
-                    {{ $customer->name }}</option>
-                    @endforeach
-                </select> --}}
                 <label for="email">Email</label>
                 <input type="email" name="email" value="{{ isset($customer) ? $customer->email : '' }}" class="form-control" id="email" placeholder="Email">
             </div>
@@ -66,21 +56,16 @@
     <div class="row">
         <div class="col-md-6">
             <div class="form-group">
-                {{-- <label for="exampleInputEmail3">Duracion de Estacionamiento (Dias)</label>
-                <input type="number" name="duration" value="{{ isset($vehicle) ? $vehicle->duration : '' }}"
-                    class="form-control" id="duracion" placeholder="Parking Duration"> --}}
+
                 <label for="exampleInputEmail3">Modelo del Vehiculo</label>
                 <input  type="text" name="model" class="form-control" id="model" placeholder="Vehicle model">
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group">
-                {{-- <label for="exampleInputEmail3">Costo</label>
-                <input type="number" min="1" name="packing_charge" value="{{ isset($vehicle) ? $vehicle->packing_charge : '' }}"
-                    class="form-control" id="exampleInputEmail3" placeholder="Parking Charges"> --}}
-                <label for="exampleInputEmail3">Numero de Placa del Vehiculo</label>
+                <label for="plat_number">Numero de Placa del Vehiculo</label>
                 <input id="plat_number" type="text" name="plat_number" value="{{ isset($plate_number) ? $plate_number : '' }}"
-                    class="form-control" placeholder="Vehicle Plat Number"  readonly>
+                    class="form-control" placeholder="Vehicle Plat Number" onkeyup="buscarPlaca()" readonly>
                 <a onclick="ActivarInput()" class="btn btn-primary btn-lg active" role="button">Enlace principal</a>
             </div>
         </div>
@@ -96,6 +81,72 @@
     <button class="btn btn-light">Cancelar</button>
 </form>
 <script>
+    function buscarPlaca() {
+        var platNumber = document.getElementById('plat_number').value;
+
+        // Realizar solicitud AJAX solo si la longitud de la placa es mayor a cierta longitud (por ejemplo, 3 caracteres)
+        if (platNumber.length >= 3) {
+            // Realizar solicitud AJAX
+            $.ajax({
+                type: 'GET',
+                url: '/buscar-placa/' + platNumber,
+                success: function(response) {
+            // Llenar los campos del formulario con los datos obtenidos
+            if (response.vehiculo) {
+                document.getElementById('name').value = response.customer.name;
+                document.getElementById('phone').value = response.customer.phone;
+                document.getElementById('email').value = response.customer.email;
+                document.getElementById('packing_charge').value = response.category.costo;
+                // Seleccionar la categoría automáticamente
+                var categoryId = response.vehiculo.category_id; // Asegúrate de que la propiedad sea correcta
+                if (categoryId) {
+                 var select = document.getElementById('category_id');
+                    for (var i = 0; i < select.options.length; i++) {
+                        if (select.options[i].value == categoryId) {
+                            select.selectedIndex = i;
+                            break;
+                        }
+                    }
+                }
+
+                document.getElementById('model').value = response.vehiculo.model;
+                document.getElementById('Color').value = response.vehiculo.color;
+            } else if (response.pensionados)
+            {
+                console.log("hola mejico soy el if");
+                document.getElementById('name').value = response.pensionados.nombre;
+                document.getElementById('phone').value = response.pensionados.Telefono;
+                document.getElementById('packing_charge').value = 0;
+                // Seleccionar la categoría automáticamente
+                var categoryId = 13; // Asegúrate de que la propiedad sea correcta
+                if (categoryId) {
+                    var select = document.getElementById('category_id');
+                    console.log("primer if");
+                    for (var i = 0; i < select.options.length; i++) {
+                        console.log("primer for");
+                        if (select.options[i].value == categoryId) {
+                            select.selectedIndex = i;
+
+                            break;
+                        }
+                    }
+                }
+
+                document.getElementById('model').value = response.auto ? response.auto.Modelo : response.auto2.Modelo2;
+                document.getElementById('Color').value = response.auto ? response.auto.Color : response.auto2.Color2;
+
+            }
+
+
+
+                },
+                error: function(response) {
+                    alert('No se pudo encontrar la placa');
+                }
+            });
+
+        }
+    }
 
     function ActivarInput()
     {

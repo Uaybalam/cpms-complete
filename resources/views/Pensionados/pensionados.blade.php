@@ -12,6 +12,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
+
     <div class="container">
         <h1>Lista de Pensionados</h1>
     </div>
@@ -25,24 +26,18 @@
                         <th scope="col">Precio Fijo</th>
                         <th scope="col">Último Pago</th>
                         <th scope="col">Próximo Pago</th>
-                        <th scope="col">Estado</th>
-                        <th scope="col">Placas de Auto</th>
+                        <th scope="col">Placas del Primer Auto</th>
+                        <th scope="col">Placas del Segundo Auto</th>
+                        <th scope="col">Accion</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach ($pensionados as $pensionado)
-                    <tr>
+                    <tr style="background-color: {{ $pensionado->proximoPagoEstado() === 'rojo' ? 'red' : ($pensionado->proximoPagoEstado() === 'naranja' ? 'orange' : 'green') }}">
                         <td>{{ $pensionado->nombre }}</td>
                         <td>{{ $pensionado->precio_fijo }}</td>
                         <td>{{ $pensionado->ultimo_pago }}</td>
                         <td>{{ $pensionado->proximoPago() }}</td>
-                        <td>
-                            @if ($pensionado->estaVigente())
-                                Vigente
-                            @else
-                                No vigente
-                            @endif
-                        </td>
                         <td>
                             <ul>
                                 @foreach ($pensionado->autos as $auto)
@@ -50,8 +45,27 @@
                                 @endforeach
                             </ul>
                         </td>
+                        <td>
+                            <ul>
+                                @foreach ($pensionado->autos as $auto)
+                                    <li>{{ $auto->placa2 }}</li>
+                                @endforeach
+                            </ul>
+                        </td>
+                        <td>
+                            <!-- Icono de editar -->
+                            <a href="{{ route('pensionados.edit', $pensionado->id) }}" class="btn btn-primary btn-sm"><i class="ik ik-edit-2"></i></a>
+                            <!-- Icono de eliminar -->
+                            <form action="{{ route('pensionados.destroy', $pensionado->id) }}" method="POST" style="display: inline;">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este registro?')"><i class="ik ik-trash-2"></i></button>
+                            </form>
+                        </td>
                     </tr>
+
                     @endforeach
+
                 </tbody>
             </table>
         </div>

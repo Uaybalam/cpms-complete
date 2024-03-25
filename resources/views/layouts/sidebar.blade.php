@@ -27,11 +27,7 @@
                     </div>
                 </div>
                 <div class="nav-item has-sub {{ request()->routeIs('customers*')  ? 'open' : ''}}">
-                    <a href="javascript:void(0)"><i class="ik ik-users"></i><span>Administrar Clientes </span> </a>
-                    <div class="submenu-content">
-                        <a href="{{ route('customers.create') }}" class="menu-item  {{ request()->routeIs('customers.create') ? 'active' : '' }}">Crear</a>
-                        <a href="{{ route('customers.index') }}" class="menu-item  {{ request()->routeIs('customers.index') ? 'active' : '' }}">Lista</a>
-                    </div>
+                    <a href="{{ route('customers.index') }}"><i class="ik ik-users"></i><span>Administrar Clientes </span> </a>
                 </div>
                 <div class="nav-lavel">Vehiculos</div>
                 <div class="nav-item has-sub {{ request()->routeIs('categories*')  ? 'open' : ''}}">

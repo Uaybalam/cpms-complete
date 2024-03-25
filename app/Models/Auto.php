@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Auto extends Model
 {
     use HasFactory;
-    protected $fillable = ['placa', 'pensionado_id'];
+    protected $fillable = ['placa', 'placa2', 'Modelo', 'Modelo2', 'Color', 'Color2' , 'pensionado_id'];
 
     public function pensionado()
     {
