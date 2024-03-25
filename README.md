@@ -66,53 +66,55 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
 
-Instrucciones de Instalación y Solución de Problemas
+## Instrucciones de Instalación y Solución de Problemas
 Este repositorio contiene un proyecto que requiere la instalación de varias dependencias. Sigue las instrucciones a continuación para configurar el entorno de desarrollo correctamente y solucionar posibles errores comunes.
 
-Instalación de Dependencias
+## Instalación de Dependencias
 Python
 Asegúrate de tener Python instalado en tu sistema. Puedes descargarlo desde el sitio web oficial de Python: Python.org.
 
 
 pip es el sistema de gestión de paquetes de Python. Normalmente viene instalado con Python. Si no lo tienes, asegúrate de instalarlo siguiendo las instrucciones oficiales de Python.
 
+## WeasyPrint
 WeasyPrint es una biblioteca de Python que permite convertir HTML/CSS a PDF. Puedes instalarlo utilizando pip:
 
 pip install weasyprint
 
+## Qrcode
 Qrcode es una biblioteca de Python que permite generar códigos QR. Puedes instalarlo utilizando pip:
 pip install qrcode
 
-GObject Introspection (gobject-2.0-0)
+## GObject Introspection (gobject-2.0-0)
 
 GObject Introspection es una biblioteca que se requiere para WeasyPrint en algunos sistemas operativos. A continuación, se indican los pasos para instalarlo en diferentes sistemas:
 
-Debian/Ubuntu:
+## Debian/Ubuntu:
 
 sudo apt update
 sudo apt install libgirepository1.0-dev
 
 
-Fedora:
+## Fedora:
 
 sudo dnf install gobject-introspection-devel
 
 
-CentOS/RHEL:
+## CentOS/RHEL:
 
 sudo yum install gobject-introspection-devel
 
 
-Arch Linux:
+## Arch Linux:
 
 sudo pacman -S gobject-introspection
 
 
-macOS (con Homebrew):
+## macOS (con Homebrew):
 
 brew install gobject-introspection
 
-Instalación de GObject Introspection en Windows
+## Instalación de GObject Introspection en Windows
 Descarga el instalador del entorno de ejecución de GTK para Windows desde el siguiente enlace: GTK for Windows Runtime Environment Installer.
 
 Ejecuta el instalador descargado y sigue las instrucciones en pantalla para completar la instalación. Asegúrate de seleccionar las opciones necesarias para instalar GObject Introspection.
@@ -133,7 +135,7 @@ Para instalar GObject Introspection en Windows, sigue estos pasos:
 4. Después de instalar GObject Introspection, asegúrate de reiniciar tu sistema para aplicar los cambios.
 
 
-Solución de Problemas Comunes
+## Solución de Problemas Comunes
 
 Error: "No module named 'weasyprint'"
 Este error indica que WeasyPrint no está instalado correctamente. Asegúrate de haber ejecutado el comando pip install weasyprint y verifica que no hayan ocurrido errores durante la instalación.
