@@ -17,6 +17,7 @@
     <div class="container">
         <h1>Agregar Nuevo Pensionado</h1>
     </div>
+    @if(auth()->check() && auth()->user()->role == 'Administrador')
     <div class="container mt-4">
         <div class="card">
             <div class="card-body">
@@ -129,5 +130,13 @@
     </script>
 </body>
 </html>
+@else
+<div class="container mt-4">
+    <div class="alert alert-danger" role="alert">
+        No tienes permiso de estar aqui
+</div>
+<button type="button" class="btn btn-danger" onclick="location.href='{{route('home')}}';">Abrir Caja</button>
+</div>
+@endif
 
 @endsection

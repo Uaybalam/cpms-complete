@@ -9,8 +9,9 @@
             <th>Num. Placa</th>
             <th>Status</th>
             <th>Creado el</th>
+            @if(auth()->check() && auth()->user()->role == 'Administrador')
             <th class="nosort">Operacion</th>
-            <th>Action</th>
+            @endif
         </tr>
     </thead>
     <tbody>
@@ -24,6 +25,8 @@
             <td>{{ $vehicle->plat_number }}</td>
             <td>{{ $vehicle->status == 1 ? "Active" : "InActive" }}</td>
             <td>{{ $vehicle->created_at->format('Y/m/d') }}</td>
+
+            @if(auth()->check() && auth()->user()->role == 'Administrador')
             <td>
                 <div class="btn-group table-actions">
                     <a href="#" data-toggle="modal" data-target="#show{{ $key }}"><i class="ik ik-eye"></i></a>
@@ -31,6 +34,7 @@
                     <a href="#"  data-toggle="modal" data-target="#delete{{ $key }}"><i class="ik ik-trash-2"></i></a>
                 </div>
             </td>
+            @endif
             <td></td>
         </tr>
         @include('vehicles.show')

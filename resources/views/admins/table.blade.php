@@ -2,9 +2,10 @@
     <thead>
         <tr>
             <th>Id</th>
-            <th class="nosort">Avatar</th>
+
             <th>Nombre</th>
             <th>Email</th>
+            <th>Role</th>
             <th>Creado el</th>
             <th class="nosort">&nbsp;</th>
         </tr>
@@ -13,9 +14,9 @@
         @foreach ($users as $key => $user)
         <tr>
             <td>{{ $key+1 }}</td>
-            <td><img src="{{ getUserAvatar($user->avatar) }}" class="table-user-thumb" alt=""></td>
             <td>{{ $user->name }}</td>
             <td>{{ $user->email }}</td>
+            <td>{{ $user->role }}</td>
             <td>{{ $user->created_at->format('Y/m/d') }}</td>
             <td>
                 <div class="table-actions">

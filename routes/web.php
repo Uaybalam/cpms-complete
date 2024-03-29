@@ -10,6 +10,7 @@ use App\Http\Controllers\VehicleController;
 use App\Http\Controllers\PensionesController;
 use App\Http\Controllers\AutoController;
 use App\Http\Controllers\PlateController;
+use App\Http\Controllers\Auth\RegisterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,6 +52,7 @@ Route::get('/pensionados/{pensionado}/verificar-pago', [PensionesController::cla
 Route::get('/pensionados/{pensionado}/edit', [PensionesController::class, 'edit'])->name('pensionados.edit');
 Route::put('/pensionados/{pensionado}', [PensionesController::class, 'update'])->name('pensionados.update');
 Route::delete('/pensionados/{pensionado}', [PensionesController::class, 'destroy'])->name('pensionados.destroy');
+Route::post('/usuario', [RegisterController::class, 'store'])->name('crear.store');
 
 // Rutas para los autos
 Route::post('/autos', [AutoController::class, 'store'])->name('autos.store');

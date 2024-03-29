@@ -12,6 +12,7 @@
     <div class="container">
         <h1>Editar Pensionado</h1>
     </div>
+    @if(auth()->check() && auth()->user()->role == 'Administrador')
     <div class="container mt-4">
         <form action="{{ route('pensionados.update', $pensionado->id) }}" method="POST">
             @csrf
@@ -52,4 +53,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+@else
+<div class="container mt-4">
+    <div class="alert alert-danger" role="alert">
+        No tienes permiso de estar aqui
+</div>
+<button type="button" class="btn btn-danger" onclick="location.href='{{route('home')}}';">Abrir Caja</button>
+</div>
+@endif
 @endsection

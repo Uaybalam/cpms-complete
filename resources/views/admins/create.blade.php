@@ -6,7 +6,7 @@
         <div class="card">
             <div class="card-header"><h3>Crear Administrador</h3></div>
             <div class="card-body">
-              @include('admins.fields')
+              @include('auth.register')
             </div>
         </div>
     </div>

@@ -10,13 +10,14 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            width: 100%;
         }
         .ticket {
-            width: 400px;
-            margin: 20px auto;
+            width: 90%;
+            margin: 0 0 40em 0; /* Ajusta el margen izquierdo */
             background-color: #fff;
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 1em;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
         }
         .ticket-header {
@@ -59,6 +60,8 @@
 
         .vehicle-details {
             flex: 1; /* Los detalles del vehículo ocupan todo el espacio restante */
+            width: 50%; /* Ancho del contenedor de detalles del vehículo */
+            float: left; /* Hace que los detalles del vehículo floten a la izquierda */
         }
 
     </style>
@@ -108,8 +111,6 @@
                 <br>
                 <br>
                 Costo por boleto extraviado: $50</p>
-
-
             </div>
         </div>
     </div>

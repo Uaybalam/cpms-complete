@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('content')
+@if(auth()->check() && auth()->user()->role == 'Administrador')
 <div class="page-header">
     <div class="row align-items-end">
         <div class="col-lg-10">
@@ -10,9 +11,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2">
-            <a class="btn btn-theme" href="{{ route('vehiclesIn.create') }}"> Crear Entrada Vehiculo</a>
-        </div>
+
     </div>
 </div>
 
@@ -25,9 +24,7 @@
                     <li class="nav-item">
                       <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Vehiculos Actuales</a>
                     </li>
-                    <li class="nav-item">
-                      <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Historial</a>
-                    </li>
+
 
                   </ul>
                   <div class="tab-content" id="myTabContent">
@@ -36,15 +33,20 @@
                        @include('vehicles_in.table')
                        @endif
                     </div>
-                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                        @if ($vehiclesIn_History)
-                       @include('vehicles_in.table_history')
-                       @endif
-                    </div>
+
                   </div>
             </div>
         </div>
     </div>
 </div>
+
+@else
+<div class="container mt-4">
+    <div class="alert alert-danger" role="alert">
+        No tienes permiso de estar aqui
+</div>
+<button type="button" class="btn btn-danger" onclick="location.href='{{route('home')}}';">Abrir Caja</button>
+</div>
+@endif
 
 @endsection

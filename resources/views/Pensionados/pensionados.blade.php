@@ -16,6 +16,7 @@
     <div class="container">
         <h1>Lista de Pensionados</h1>
     </div>
+    @if(auth()->check() && auth()->user()->role == 'Administrador')
     <div class="container mt-4">
         <div class="alert alert-info bg-white p-4 rounded shadow">
             <h4 class="text-Secondary border-bottom pb-2 mb-3">Pensionados</h4>
@@ -83,4 +84,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+@else
+<div class="container mt-4">
+    <div class="alert alert-danger" role="alert">
+        No tienes permiso de estar aqui
+</div>
+<button type="button" class="btn btn-danger" onclick="location.href='{{route('home')}}';">Abrir Caja</button>
+</div>
+@endif
 @endsection

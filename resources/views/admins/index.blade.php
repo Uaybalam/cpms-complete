@@ -8,7 +8,7 @@
                 <i class="ik ik-inbox bg-blue"></i>
                 <div class="d-inline">
                     <h5>Lista de Datos</h5>
-                    <span>lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
+                   
                 </div>
             </div>
         </div>

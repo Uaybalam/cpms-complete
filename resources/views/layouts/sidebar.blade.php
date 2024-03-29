@@ -19,10 +19,11 @@
                     <a href="{{ route('home') }}"><i class="ik ik-bar-chart-2"></i><span>Dashboard</span></a>
                 </div>
 
+            @if(auth()->check() && auth()->user()->role == 'Administrador')
                 <div class="nav-item has-sub {{ request()->routeIs('user*')  ? 'open' : ''}}">
                     <a href="javascript:void(0)"><i class="ik ik-user"></i><span>Administrar Admins</span> </a>
                     <div class="submenu-content">
-
+                        <a href="{{ route('user.create') }}" class="menu-item  {{ request()->routeIs('user.create') ? 'active' : '' }}">Crear</a>
                         <a href="{{ route('user.index') }}" class="menu-item  {{ request()->routeIs('user.index') ? 'active' : '' }}">Lista</a>
                     </div>
                 </div>
@@ -78,7 +79,23 @@
                         <a href="{{ route('caja.historial_venta') }}" class="menu-item">Historial</a>
                     </div> --}}
                 </div>
-
+            @endif
+            @if(auth()->check() && auth()->user()->role == 'Cajero')
+                <div class="nav-item has-sub {{ request()->routeIs('vehicles*')  ? 'open' : ''}}">
+                    <a href="#"><i class="ik ik-truck"></i><span>Registrar Vehiculo</span> </a>
+                    <div class="submenu-content">
+                        <a href="{{ route('vehicles.create') }}" class="menu-item  {{ request()->routeIs('vehicles.create') ? 'active' : '' }}">Crear</a>
+                    </div>
+                </div>
+                <div class="nav-lavel">Caja</div>
+                <div class="nav-item has-sub">
+                    <a href="{{ route('caja.venta') }}"><i class="ik ik-wal"></i><span>Cobrar</span></a>
+                    {{-- <div class="submenu-content">
+                        <a href="{{ route('caja.corte_parcial') }}" class="menu-item">Corte</a>
+                        <a href="{{ route('caja.historial_venta') }}" class="menu-item">Historial</a>
+                    </div> --}}
+                </div>
+            @endif
             </nav>
         </div>
     </div>

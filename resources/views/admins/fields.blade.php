@@ -1,45 +1,48 @@
-<form class="forms-sample" method="POST" accept="{{ route('user.store') }}">
+<form method="POST" action="{{ route('register') }}">
     @csrf
     <div class="form-group">
-        <label for="exampleInputName1">Nombre</label>
-        <input type="text" name="name" value="{{ isset($user) ? $user->name : '' }}" class="form-control" id="exampleInputName1" placeholder="Name">
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleInputEmail3">Email</label>
-                <input type="email" name="email" value="{{ isset($user) ? $user->email : '' }}" class="form-control" id="exampleInputEmail3" placeholder="Email">
-            </div>
-        </div>
-        <!-- <div class="col-md-6">
-            <div class="form-group">
-                <label for="exampleSelectGender">Gender</label>
-                <select class="form-control" id="exampleSelectGender">
-                    <option>Male</option>
-                    <option>Female</option>
-                </select>
-            </div>
-        </div> -->
-    </div>
-    <div class="form-group">
-        <label for="exampleInputPassword4">Contraseña</label>
-        <input type="password" name="password" value="{{ isset($user) ? $user->password : '' }}" class="form-control" id="exampleInputPassword4" placeholder="Password">
-    </div>
+        <input id="name" type="text" class="form-control @error('name') is-invalid @enderror" name="name" value="{{ old('name') }}" required autocomplete="name" autofocus>
 
-    <div class="form-group">
-        <label>Subir Archivo</label>
-        <input type="file" name="img[]" class="file-upload-default">
-        <div class="input-group col-xs-12">
-            <input type="text" class="form-control file-upload-info" disabled placeholder="Upload Image">
-            <span class="input-group-append">
-            <button class="file-upload-browse btn btn-primary" type="button">Upload</button>
-            </span>
-        </div>
+    @error('nombre')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+        <i class="ik ik-user"></i>
     </div>
-    <!-- <div class="form-group">
-        <label for="exampleTextarea1">Textarea</label>
-        <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
-    </div> -->
-    <button type="submit" class="btn btn-primary mr-2">Crear</button>
-    <button class="btn btn-light">Cancelar</button>
+    <div class="form-group">
+        <input id="email" type="email" class="form-control @error('email') is-invalid @enderror" name="email" value="{{ old('email') }}" required autocomplete="email">
+
+    @error('email')
+        <span class="invalid-feedback" role="alert">
+            <strong>{{ $message }}</strong>
+        </span>
+    @enderror
+        <i class="ik ik-mail"></i>
+    </div>
+    <div class="form-group">
+        <input id="password" type="password" class="form-control @error('password') is-invalid @enderror" name="password" required autocomplete="new-password">
+
+        @error('password')
+            <span class="invalid-feedback" role="alert">
+                <strong>{{ $message }}</strong>
+            </span>
+        @enderror
+        <i class="ik ik-lock"></i>
+    </div>
+    <div class="form-group">
+        <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
+        <i class="ik ik-eye-off"></i>
+    </div>
+    {{-- <div class="row">
+        <div class="col-12 text-left">
+            <label class="custom-control custom-checkbox">
+                <input type="checkbox" class="custom-control-input" id="item_checkbox" name="item_checkbox" value="option1">
+                <span class="custom-control-label">&nbsp;Acepto <a href="#">los terminos y condiciones.</a></span>
+            </label>
+        </div>
+    </div> --}}
+    <div class="sign-btn text-center">
+        <button type="submit" class="btn btn-theme">{{ __('Crear Cuenta') }}</button>
+    </div>
 </form>

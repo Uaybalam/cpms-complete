@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Hash; // Importa la clase Hash
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -22,7 +23,27 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        //
+                // Validar los datos del formulario
+                $request->validate([
+                    'name' => 'required|string|max:255',
+                    'email' => 'required|email|unique:users',
+                    'password' => 'required|string|min:6',
+                    'role' => 'required|string|max:255',
+                ]);
+
+                // Extraer los datos del formulario
+                $userData = $request->only(['name', 'email', 'password', 'role']);
+
+                // Encriptar la contraseña
+                $userData['password'] = Hash::make($userData['password']);
+
+                // Crear el usuario
+                $user = User::create($userData);
+
+                // Redireccionar con mensaje de éxito
+                return redirect()->route('admins.create')->with('success', 'Usuario creado exitosamente!');
+
+
     }
 
     /**
