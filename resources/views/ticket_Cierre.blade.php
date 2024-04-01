@@ -6,16 +6,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cierre de Ventas</title>
     <style>
+        @page {
+            margin: 0;
+        }
         body {
             font-family: Arial, sans-serif;
-            font-size: 8pt;
+            margin: 0;
+            width: 100%;
         }
         .container {
-            width: 300px;
-            margin: 0 auto;
+            width: 60mm;
+            /* margin: 5mm 0; */
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 0 3em;
             border-radius: 5px;
+            font-size: 8pt;
         }
         .header {
             text-align: center;
@@ -24,7 +29,7 @@
         .header h2 {
             margin: 0;
             padding: 0;
-            font-size: 12pt;
+            font-size: 10pt;
         }
         .divider {
             margin-top: 5px;
@@ -41,10 +46,14 @@
         .details table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
         .details th, .details td {
             border: 1px solid #ccc;
-            padding: 5px;
+            padding: 2px; /* Reduce el padding si es necesario */
+            overflow: hidden; /* Agrega esto para evitar el desbordamiento del texto */
+            text-overflow: ellipsis; /* Agrega esto para poner puntos suspensivos si el texto es muy largo */
+            white-space: nowrap;
         }
         .details th {
             background-color: #f2f2f2;

@@ -6,16 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket de Venta</title>
     <style>
+        @page {
+            margin: 0;
+        }
         body {
             font-family: Arial, sans-serif;
-            font-size: 8pt;
+            margin: 0;
         }
         .container {
-            width: 300px;
-            margin: 0 auto;
+            width: 60mm;
+            margin: 5mm 0;
             border: 1px solid #ccc;
-            padding: 10px;
+            padding: 0 3em;
             border-radius: 5px;
+            font-size: 8pt;
         }
         .header {
             text-align: center;

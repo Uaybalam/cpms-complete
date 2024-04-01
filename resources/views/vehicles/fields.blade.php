@@ -1,4 +1,4 @@
-<form action="{{ route('vehicles.store') }}"  class="forms-sample" method="POST">
+<!-- <form action="{{ route('vehicles.store') }}"  class="forms-sample" method="POST"> -->
     @csrf
     <div class="row">
         <div class="col-md-4">
@@ -79,13 +79,13 @@
     </div>
     <button type="submit" onclick="generarPDF()" class="btn btn-primary mr-2">Crear</button>
     <button class="btn btn-light">Cancelar</button>
-</form>
+<!-- </form> -->
 <script>
     function buscarPlaca() {
         var platNumber = document.getElementById('plat_number').value;
 
         // Realizar solicitud AJAX solo si la longitud de la placa es mayor a cierta longitud (por ejemplo, 3 caracteres)
-        if (platNumber.length >= 3) {
+        if (platNumber.length >= 7) {
             // Realizar solicitud AJAX
             $.ajax({
                 type: 'GET',

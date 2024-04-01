@@ -6,19 +6,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ticket de Compra</title>
     <style>
+        @page {
+            margin: 0;
+        }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
-            width: 100%;
         }
         .ticket {
-            width: 90%;
-            margin: 0 0 40em 0; /* Ajusta el margen izquierdo */
+            width: 60mm; /*Ajusta tamaño del papel puedes probar con 80mm, pero depende de la impresora */
             background-color: #fff;
             border: 1px solid #ccc;
-            padding: 1em;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            font-size: 8pt;
+            margin: 5mm 0;
+            padding: 0 3em;
+            
+
         }
         .ticket-header {
             text-align: center;
@@ -27,11 +31,8 @@
         .ticket-header h1 {
             font-size: 20px;
             margin: 0;
-            padding: 0;
         }
-        .ticket-body {
-            padding: 10px;
-        }
+        
         .ticket-item {
             margin-bottom: 5px;
         }
@@ -63,6 +64,15 @@
             width: 50%; /* Ancho del contenedor de detalles del vehículo */
             float: left; /* Hace que los detalles del vehículo floten a la izquierda */
         }
+        /* @media print {
+            body {
+                margin: 0;
+            }
+            .ticket {
+                margin: 5mm 0;  Ajusta según sea necesario 
+            }
+        } 
+        */
 
     </style>
 </head>
