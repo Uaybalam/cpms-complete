@@ -80,25 +80,25 @@ class PDFController extends Controller
 
         if ($exit_code === 0) {
 
-        // Envía el archivo PDF a la impresora
-        $printer_name = 'EPSON TM-T20III Receipt'; // Nombre de tu impresora
-        $command = sprintf('print /D:%s %s', escapeshellarg($printer_name), escapeshellarg($output_path));
-        exec($command);
+        // // Envía el archivo PDF a la impresora
+        // $printer_name = 'EPSON TM-T20III Receipt'; // Nombre de tu impresora
+        // $command = sprintf('print /D:%s %s', escapeshellarg($printer_name), escapeshellarg($output_path));
+        // exec($command);
 
         ob_start();
         $pdfContent = file_get_contents($output_path);
         $pdfContent = utf8_encode($pdfContent);
 
-          
-          
-           // Verificar si la impresión fue exitosa
-          if ($output === null) {
-             // La impresión fue exitosa
-            return response()->json(['message' => 'El archivo se ha enviado correctamente a la impresora']);
-         } else {
-             // Hubo un error al enviar el archivo a la impresora
-             return response()->json(['message' => "Error al enviar el archivo a la impresora: $output"], 500);
-        }
+
+
+        //    // Verificar si la impresión fue exitosa
+        //   if ($output === null) {
+        //      // La impresión fue exitosa
+        //     return response()->json(['message' => 'El archivo se ha enviado correctamente a la impresora']);
+        //  } else {
+        //      // Hubo un error al enviar el archivo a la impresora
+        //      return response()->json(['message' => "Error al enviar el archivo a la impresora: $output"], 500);
+        // }
 
         Factura::create([
             'cliente' => $name,
@@ -115,7 +115,7 @@ class PDFController extends Controller
         // No se pudo iniciar el proceso, manejar el error
         return response()->json(['message' => 'Error al iniciar el proceso'], 500);
     }
-    
+
 } else {
     // El archivo HTML no existe, manejar el error
     return response()->json(['message' => 'El archivo HTML no existe'], 404);
@@ -172,18 +172,18 @@ class PDFController extends Controller
             'folio' => $folio,
             'pdf_content' => $pdfContent,
         ]);
-               // Envía el archivo PDF a la impresora
-     $printerName = 'nombre-de-la-impresora';
-     $command = "lpr -d $printerName $output_path";
-     $output = shell_exec($command);
-      // Verificar si la impresión fue exitosa
-      if ($output === null) {
-        // La impresión fue exitosa
-        return response()->json(['message' => 'El archivo se ha enviado correctamente a la impresora']);
-    } else {
-        // Hubo un error al enviar el archivo a la impresora
-        return response()->json(['message' => "Error al enviar el archivo a la impresora: $output"], 500);
-    }
+    //            // Envía el archivo PDF a la impresora
+    //  $printerName = 'nombre-de-la-impresora';
+    //  $command = "lpr -d $printerName $output_path";
+    //  $output = shell_exec($command);
+    //   // Verificar si la impresión fue exitosa
+    //   if ($output === null) {
+    //     // La impresión fue exitosa
+    //     return response()->json(['message' => 'El archivo se ha enviado correctamente a la impresora']);
+    // } else {
+    //     // Hubo un error al enviar el archivo a la impresora
+    //     return response()->json(['message' => "Error al enviar el archivo a la impresora: $output"], 500);
+    // }
             return response()->download($output_path, 'nombre_del_archivo.pdf');
         } else {
             // Hubo un error en el proceso, manejarlo adecuadamente

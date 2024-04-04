@@ -40,7 +40,6 @@
                     <th scope="col">ID</th>
                     <th scope="col">Fecha</th>
                     <th scope="col">Vehiculo</th>
-                    <th scope="col">Descuento</th>
                     <th scope="col">Subtotal</th>
                 </tr>
             </thead>
@@ -83,7 +82,16 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/js/select2.min.js"></script>
 <script>
+    $(document).ready(function() {
+        // Inicializar la tabla con DataTables
+          // Inicializar la tabla con DataTables
+    $('#registros-table').DataTable({
+        "pageLength": 12 // Mostrar solo 12 registros por página
+    });
 
+        // Agregar el filtro de búsqueda
+        $('#registros-table_filter input').addClass('form-control');
+    });
 
     document.addEventListener('DOMContentLoaded', function() {
         var checkbox = document.getElementById('checkboxPagoTarjeta');
@@ -236,8 +244,6 @@
                     url: '/obtener-datos/' + placa,
                     method: 'GET',
                     success: function(data) {
-                        console.log(data);
-
                         // Llenar la tabla con los detalles del vehículo
                         var fechaInicio = new Date(data.vehiculoIn.created_at);
                         var fechaFin = new Date();
@@ -249,12 +255,29 @@
 
                         for (var hora = 0; fechaInicio <= fechaFin; hora++) {
                             // Generar las filas de la tabla
+                            if (dias % 7 === 0) {
+                                if(subtotal === 0)
+                                {
+                                subtotal = 0;
+                                }
+                                else
+                                {
+                                    // Calcular el subtotal basado en el múltiplo de 7 que representa el día actual
+                                    subtotal = Math.floor(dias / 7) * 1200; // Incrementar el valor base de 1200 por cada múltiplo de 7
+                                }
+
+                            }
+
                             detallesHTML += '<tr><td>' + dias + ' DIAS</td><td>' + fechaInicio.toLocaleString()
-                                + '</td><td>' + data.vehiculo.model + '</td><td>' + descuento.toFixed(2)
-                                + '</td><td>' + (subtotal).toFixed(2) + '</td></tr>';
-
-                            subtotal += 30;
-
+                                + '</td><td>' + data.vehiculo.model + '</td><td>' + (subtotal).toFixed(2) + '</td></tr>';
+                            if(subtotal === 0)
+                            {
+                                subtotal = 0;
+                            }
+                            else
+                            {
+                                subtotal += 30;
+                            }
                             // Incrementar la fecha en una hora
                             fechaInicio.setHours(fechaInicio.getHours() + 1);
 
@@ -265,9 +288,18 @@
                                 // Avanzar al siguiente día
                                 fechaInicio.setDate(fechaInicio.getDate() + 1);
                                 fechaInicio.setHours(15);
-                                if (dias === 7) {
-                                    subtotal =  1410;
-                                    descuento = 0;
+
+                                //se continual en el dia 8
+                                if (dias % 7 === 0) {
+                                    if(subtotal === 0)
+                                    {
+                                        subtotal = 0;
+                                    }
+                                    else
+                                    {
+                                        subtotal += 180;
+                                        descuento = 0;
+                                     }
                                 }
                             }
 
@@ -275,8 +307,16 @@
                             if (hora === 23) {
                                 dias++;
                             }
+                            if(subtotal === 0)
+                            {
+                                totalSubtotal = 0;
+                            }
 
-                            totalSubtotal = subtotal - 30;
+                            else
+                            {
+                                totalSubtotal = subtotal - 30;
+                            }
+
                         }
 
                         // Actualizar la tabla con las filas creadas
@@ -285,6 +325,10 @@
 
                         // Llenar el campo de nombre de cliente con el nombre del propietario del vehículo
                         $('input[name="cliente"]').val(data.vehiculo.name);
+                        // Inicializar la tabla con DataTables después de que se hayan llenado los datos
+
+
+
                     },
                     error: function(error) {
                         console.error('Error al obtener detalles:', error);
@@ -293,13 +337,13 @@
             }
         }
 
-        // Manejar el evento 'keyup' del input de placa para buscar los datos cuando se presiona Enter
-        $('#inputPlaca').on('keyup', function(event){
-            if (event.key === 'Enter') {
-                var placa = $(this).val().trim();
-                obtenerDatosPlaca(placa);
+        $('#inputPlaca').on('input', function() {
+            var platNumber = $(this).val().trim();
+            if (platNumber.length >= 7) {
+                obtenerDatosPlaca(platNumber);
             }
         });
+
     });
 
 </script>

@@ -1,4 +1,4 @@
-<!-- <form action="{{ route('vehicles.store') }}"  class="forms-sample" method="POST"> -->
+<form action="{{ route('vehicles.store') }}"  class="forms-sample" method="POST">
     @csrf
     <div class="row">
         <div class="col-md-4">
@@ -79,7 +79,7 @@
     </div>
     <button type="submit" onclick="generarPDF()" class="btn btn-primary mr-2">Crear</button>
     <button class="btn btn-light">Cancelar</button>
-<!-- </form> -->
+</form>
 <script>
     function buscarPlaca() {
         var platNumber = document.getElementById('plat_number').value;
@@ -96,7 +96,20 @@
                 document.getElementById('name').value = response.customer.name;
                 document.getElementById('phone').value = response.customer.phone;
                 document.getElementById('email').value = response.customer.email;
+                if(response.vehiculo.Visitas === 4)
+                {
+                    document.getElementById('packing_charge').value = response.category.costo;
+                    alert('Esta es la visita numero 5 del cliente, Hacer entrega de su obsequio');
+                }
+                if(response.vehiculo.Visitas === 9)
+                {
+                    document.getElementById('packing_charge').value = 0;
+                    alert('Esta es la visita numero 10 del cliente, su estadia sera Gratis');
+                }
+                else
+                {
                 document.getElementById('packing_charge').value = response.category.costo;
+                }
                 // Seleccionar la categoría automáticamente
                 var categoryId = response.vehiculo.category_id; // Asegúrate de que la propiedad sea correcta
                 if (categoryId) {
@@ -113,7 +126,7 @@
                 document.getElementById('Color').value = response.vehiculo.color;
             } else if (response.pensionados)
             {
-                console.log("hola mejico soy el if");
+
                 document.getElementById('name').value = response.pensionados.nombre;
                 document.getElementById('phone').value = response.pensionados.Telefono;
                 document.getElementById('packing_charge').value = 0;
@@ -121,9 +134,8 @@
                 var categoryId = 13; // Asegúrate de que la propiedad sea correcta
                 if (categoryId) {
                     var select = document.getElementById('category_id');
-                    console.log("primer if");
+
                     for (var i = 0; i < select.options.length; i++) {
-                        console.log("primer for");
                         if (select.options[i].value == categoryId) {
                             select.selectedIndex = i;
 
