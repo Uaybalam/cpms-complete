@@ -21,10 +21,11 @@
         </div>
         <div class="col-md-4">
             <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" name="email" value="{{ isset($customer) ? $customer->email : '' }}" class="form-control" id="email" placeholder="Email">
+                <label for="fechaSalida">Fecha y hora de salida</label>
+                <input type="datetime-local" name="fechaSalida" value="{{ isset($customer) ? $customer->fechaSalida : '' }}" class="form-control" id="fechaSalida" placeholder="Fecha y hora de salida">
             </div>
         </div>
+
         <div class="col-md-4">
             <div class="form-group">
                 <label for="phone">Telefono</label>

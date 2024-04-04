@@ -86,7 +86,45 @@
         <div class="card-body">
             @include('vehicles.table')
         </div>
+
     </div>
+    <a href="{{ route('lavadas.pdf') }}" class="btn btn-primary">Imprimir</a>
 </div>
 
 @endsection
+<!-- <script>
+     function generarPDF() {
+        // Obtener los valores de los campos del formulario
+        var Color = document.getElementById('Color').value;
+        var folio = document.getElementById('folio').value;
+        var modelo = document.getElementById('model').value;
+        var platNumber = document.getElementById('plat_number').value;
+        var name =  document.getElementById('name').value;
+        var Salida = document.getElementByid('')
+
+
+        // Enviar los datos al controlador utilizando AJAX
+        $.ajax({
+            url: '/generar-pdf',
+            method: 'POST',
+            data: {
+                Color: Color,
+                folio: folio,
+                modelo: modelo,
+                plat_number: platNumber,
+                name: name,
+                _token: '{{ csrf_token() }}'
+            },
+            success: function(response) {
+                // Manejar la respuesta del controlador (si es necesario)
+                console.log(response);
+
+            },
+            error: function(xhr, status, error) {
+                // Manejar cualquier error que ocurra durante la solicitud AJAX
+                console.error(error);
+
+            }
+        });
+    }
+</script> -->

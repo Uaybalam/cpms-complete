@@ -7,8 +7,7 @@ use App\Models\Factura;
 use Illuminate\Http\Request;
 use FPDF;
 
-class PDFController extends Controller
-{
+class PDFController extends Controller{
     public function generarQR(Request $request)
     {
         $texto = $request->input('plat_number');
@@ -57,6 +56,7 @@ class PDFController extends Controller
     $modelo = $request->input('modelo');
     $platNumber = $request->input('plat_number');
     $fechaActual = date('Y-m-d');
+    $fechaSalida = $request->input('fechaSalida');
     $folio = date('Ymdhms').'Z';
 
     $html_content = view('ticket_de_llegada', ['platNumber' => $platNumber, 'modelo' => $modelo, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
@@ -289,5 +289,42 @@ class PDFController extends Controller
 }
 
     }
+    
+    public function generarPdfLavadas(Request $request)
+    {
+    // Obtener los datos necesarios, por ejemplo, a través de $request o de un modelo
+    $datos = $request->all();
+
+    // Aquí, utiliza la vista 'vehiculos_lavados.blade.php'
+    $html_content = view('lavadas', $datos)->render();
+
+    // Lógica para generar el PDF como en los otros métodos
+    $output_path = base_path('public/lavadas.pdf');
+
+    // Aquí podrías llamar a un script de Python o utilizar una biblioteca de PHP para generar el PDF
+    // Suponiendo que usas un script de Python similar a los otros métodos
+    $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
+        0 => ['pipe', 'r'], // stdin
+        1 => ['pipe', 'w'], // stdout
+        2 => ['pipe', 'w'], // stderr
+    ], $pipes);
+
+    if (is_resource($process)) {
+        fwrite($pipes[0], $html_content);
+        fclose($pipes[0]);
+
+        $exit_code = proc_close($process);
+
+        if ($exit_code === 0) {
+            // Si el PDF se generó correctamente, puedes descargarlo, enviarlo a imprimir, etc.
+            return response()->download($output_path, 'lavadas.pdf');
+        } else {
+            return response()->json(['message' => 'Error al generar el PDF'], 500);
+        }
+    } else {
+        return response()->json(['message' => 'Error al iniciar el proceso'], 500);
+    }
+}
+
 }
 
