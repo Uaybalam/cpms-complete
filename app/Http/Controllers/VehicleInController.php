@@ -14,8 +14,8 @@ class VehicleInController extends Controller
     {
         return view('vehicles_in.index',
         [
-            'vehiclesIn' => VehicleIn::with(['vehicle:id,name,registration_number', 'user:id,name'])->where('status', 0)->get(),
-            'vehiclesIn_History' => VehicleIn::with(['vehicle:id,name,registration_number', 'user:id,name'])->where('status', 1)->get()
+            'vehiclesIn' => VehicleIn::with(['vehicle:id,name,registration_number,plat_number', 'user:id,name'])->where('status', 0)->get(),
+            'vehiclesIn_History' => VehicleIn::with(['vehicle:id,name,registration_number,plat_number', 'user:id,name'])->where('status', 1)->get()
         ]);
     }
 

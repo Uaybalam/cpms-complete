@@ -94,6 +94,17 @@ class PDFController extends Controller{
             $printCommand = "lp -d {$printerName} {$output_path}";
             exec($printCommand, $output, $returnVar);
 
+             // Verificación del resultado de la impresión
+             if ($returnVar == 0) {
+                // El comando se ejecutó correctamente
+                echo "El archivo se ha enviado a la impresora correctamente.";
+            } else {
+                // El comando falló
+                echo "Error al enviar el archivo a la impresora. Código de error: $returnVar";
+                // Imprimir la salida del comando para depuración
+                echo "Salida del comando de impresión: " . implode("\n", $output);
+            }
+
             return response()->download($output_path, 'nombre_del_archivo.pdf');
         } else {
             // Hubo un error en el proceso, manejarlo adecuadamente

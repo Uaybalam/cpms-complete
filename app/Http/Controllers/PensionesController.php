@@ -85,7 +85,7 @@ class PensionesController extends Controller
                 ]);
             }
 
-            return redirect()->route('Pensionados.pensionados')->with('success', 'Pensionado eliminado exitosamente.');
+        return redirect()->route('pensionados.pensionados')->with('success', 'Auto actualizado correctamente');
         }
       }
 
@@ -121,9 +121,5 @@ class PensionesController extends Controller
           $pensionado->delete();
           return redirect()->route('Pensionados.pensionados')->with('success', 'Pensionado eliminado exitosamente.');
       }
-    public function verificarPago(Pensionado $pensionado)
-    {
-        // Lógica para verificar si el pensionado ha pagado dentro del período de colchón
-    }
 
 }

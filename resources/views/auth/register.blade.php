@@ -1,3 +1,4 @@
+@if(auth()->check() && auth()->user()->role == 'Administrador')
 <form method="POST" action="{{ route('user.store') }}">
     @csrf
 
@@ -77,3 +78,9 @@
         </div>
     </div>
 </form>
+@else
+<div class="container mt-4">
+    <div class="alert alert-danger" role="alert">
+        No Tienes permiso de estar aqui, Ingresa primero
+</div>
+@endif

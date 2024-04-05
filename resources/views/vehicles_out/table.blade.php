@@ -3,9 +3,8 @@
         <tr>
             <th>Id</th>
             <th>Reg #</th>
-            <th>Modelo</th>
-            <th>Area</th>
-            <th>Num. Lugar</th>
+            <th>Cliente</th>
+            <th>Placa</th>
             <th>Creado El</th>
             <th>Creado Por</th>
             <th class="nosort">Operation</th>
@@ -13,15 +12,14 @@
         </tr>
     </thead>
     <tbody>
-        @foreach ($vehiclesOut as $key => $vehicleOut)
+        @foreach($vehiclesOut as $key => $vehicleOut)
         <tr>
-            <td>{{ $key+1 }}</td>
-            <td>{{ $vehicleOut->vehicleIn->vehicle->registration_number }}</td>
-            <td>{{ $vehicleOut->vehicleIn->vehicle->name }}</td>
-            <td>{{ $vehicleOut->vehicleIn->parking_area }}</td>
-            <td>{{ $vehicleOut->vehicleIn->parking_number }}</td>
+            <td>{{ $key + 1 }}</td>
+            <td>{{ $vehicleOut->registration_number }}</td>
+            <td>{{ $vehicleOut->name }}</td>
+            <td>{{ $vehicleOut->plat_number }}</td>
             <td>{{ $vehicleOut->created_at->format('Y/m/d H:i A') }}</td>
-            <td>{{ $vehicleOut->user->name }}</td>
+            <td>{{ $vehicleOut->name }}</td>
             <td>
                 <div class="table-actions">
                     <a href="#" onclick=" confirm('Are you sure you want to delete this?');

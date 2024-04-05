@@ -6,6 +6,7 @@ use App\Models\Vehicle;
 use App\Models\VehicleOut;
 use App\Http\Requests\StoreVehicleOutRequest;
 use App\Http\Requests\UpdateVehicleOutRequest;
+use App\Models\User;
 use App\Models\VehicleIn;
 
 class VehicleOutController extends Controller
@@ -13,10 +14,10 @@ class VehicleOutController extends Controller
 
     public function index()
     {
-        return view(
-            'vehicles_out.index',
-            ['vehiclesOut' => VehicleOut::with(['vehicleIn.vehicle:id,name,registration_number', 'user:id,name'])->get()]
-        );
+
+        $vehiclesOut = VehicleOut::all();
+        // Pasar los datos combinados a la vista
+        return view('vehicles_out.index', ['vehiclesOut' => $vehiclesOut]);
     }
 
     public function create()

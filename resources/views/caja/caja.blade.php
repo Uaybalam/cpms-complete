@@ -136,7 +136,7 @@
             },
             success: function(response) {
                 if (response.redirect) {
-                    //location.reload()
+                    location.reload()
                 } else {
                     console.log("No se agrego nada")
                 }

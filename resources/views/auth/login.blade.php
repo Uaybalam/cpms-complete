@@ -84,9 +84,6 @@
                             </div>
                             @csrf
                         </form>
-                        <div class="register">
-                            <p>{{ __("No tengo cuenta?") }} <a href="{{ route('register') }}">{{ __('Crear Cuenta') }}</a></p>
-                        </div>
                     </div>
                 </div>
             </div>

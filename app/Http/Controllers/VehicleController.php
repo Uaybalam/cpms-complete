@@ -41,11 +41,11 @@ class VehicleController extends Controller
             $existingVehicle->Visitas++;
 
             // Actualiza los datos del vehículo y excluye 'vehicle_id' y 'status'
-            $existingVehicle->update($request->except('vehicle_id', 'status'));
+            $existingVehicle->update($request->except('registration_number', 'vehicle_id', 'status'));
         } else {
             // Si no existe, crea un nuevo vehículo con 'Visitas' establecido en 1
             $customer = Customer::updateOrCreate(['id' => $request->customer_id], $request->except('customer_id'));
-            $existingVehicle = Vehicle::create($request->except('vehicle_id', 'status') + ['status' => 0, 'customer_id' => $customer->id, 'Visitas' => 1]);
+            $existingVehicle = Vehicle::create($request->except('registration_number', 'vehicle_id', 'status') + ['status' => 0, 'customer_id' => $customer->id, 'Visitas' => 1]);
 
         }
 

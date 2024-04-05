@@ -12,9 +12,9 @@ class VehicleOut extends Model
 
     protected $fillable = ['vehicleIn_id','created_by'];
 
-    public function vehicleIn(): BelongsTo
+    public function vehicle(): BelongsTo
     {
-        return $this->belongsTo(VehicleIn::class, 'vehicleIn_id', 'id');
+        return $this->belongsTo(Vehicle::class, 'vehicleIn_id', 'id');
     }
 
     public function user(): BelongsTo

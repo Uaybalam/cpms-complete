@@ -10,9 +10,6 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-2">
-            <a class="btn btn-theme" href="{{ route('vehiclesOut.create') }}"> Crear Salida Vehiculo</a>
-        </div>
     </div>
 </div>
 

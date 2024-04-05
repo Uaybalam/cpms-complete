@@ -5,7 +5,6 @@
             <th>Reg #</th>
             <th>Categoria</th>
             <th>Cliente</th>
-
             <th>Num. Placa</th>
             <th>Status</th>
             <th>Creado el</th>

@@ -4,8 +4,7 @@
             <th>Id</th>
             <th>Reg #</th>
             <th>Modelo</th>
-            <th>Area</th>
-            <th>Num. Lugar</th>
+            <th>Placa</th>
             <th>Creado Rl</th>
             <th>Creado Por</th>
             <th class="nosort">Operation</th>
@@ -18,8 +17,7 @@
             <td>{{ $key+1 }}</td>
             <td>{{ $vehicleIn->vehicle->registration_number }}</td>
             <td>{{ $vehicleIn->vehicle->name }}</td>
-            <td>{{ $vehicleIn->parking_area }}</td>
-            <td>{{ $vehicleIn->parking_number }}</td>
+            <td>{{ $vehicleIn->vehicle->Plat_number }}</td>
             <td>{{ $vehicleIn->created_at->format('Y/m/d H:i A') }}</td>
             <td>{{ $vehicleIn->user->name }}</td>
             <td>
