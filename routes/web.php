@@ -29,7 +29,7 @@ Route::post('/generar-Cpdf', [PDFController::class, 'generarpdfCierre']);
 
 Route::get('/Nueva-caja', [NuevaCajaController::class, 'abrirModal']) -> name('abrir.caja');
 Route::post('/guardar-datos', [NuevaCajaController::class, 'guardarDatos'])->name('guardar-datos');
-Route::get('/Ventas', [NuevaCajaController::class, 'abrirparcial']);
+Route::get('/Ventas', [NuevaCajaController::class, 'abrirparcial'])-> name('cierreCaja');
 Route::get('/Caja', [NuevaCajaController::class, 'Venta'])->name('caja.venta');
 Route::get('/obtener-datos/{platNumber}', [NuevaCajaController::class, 'obtenerdatos']);
 Route::post('/venta', [NuevaCajaController::class, 'guardarVenta']);
@@ -47,7 +47,7 @@ Route::get('/buscar-placa/{platNumber}', [PlateController::class, 'buscarPlaca']
 // Rutas para los pensionados
 Route::get('/Nuevo_pensionados', [PensionesController::class, 'index'])->name('pensionados.index');
 Route::post('/Nuevo_pensionados', [PensionesController::class, 'store'])->name('pensionados.store');
-Route::get('/Pensionados', [PensionesController::class, 'pensionados'])->name('Pensionados.pensionados');;
+Route::get('/Pensionados', [PensionesController::class, 'pensionados'])->name('pensionados.pensionados');;
 Route::get('/pensionados/{pensionado}/verificar-pago', [PensionesController::class, 'verificarPago'])->name('pensionados.verificarPago');
 Route::get('/pensionados/{pensionado}/edit', [PensionesController::class, 'edit'])->name('pensionados.edit');
 Route::put('/pensionados/{pensionado}', [PensionesController::class, 'update'])->name('pensionados.update');

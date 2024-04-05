@@ -31,7 +31,7 @@
 <div class="alert alert-info bg-white p-4 rounded shadow">
     <h4 class="text-Secondary border-bottom pb-2 mb-3">Registros</h4>
     <label for="selectFiltrado" class="form-label">Selecciona un vehiculo:</label>
-    <input type="text" id="inputPlaca" class="form-control" placeholder="Ingresa la placa del vehículo">
+    <input type="text" id="inputPlaca" name="inputPlaca" class="form-control" placeholder="Ingresa la placa del vehículo">
 
 
         <table id="registros-table" class="table table-striped">
@@ -51,7 +51,7 @@
 
 </div>
 <div class="alert alert-info bg-white p-4 rounded shadow">
-    <h4 class="text-Secondary border-bottom pb-2 mb-3">Dtaos venta</h4>
+    <h4 class="text-Secondary border-bottom pb-2 mb-3">Datoos venta</h4>
     <label class="form-label">Cliente</label>
     <input type="text" class="form-control" name="cliente" id="cliente" placeholder="Nombre del cliente" aria-label="Nombre del cliente" readonly>
     <h4 class="text-Secondary border-bottom pb-2 mb-3"></h4>
@@ -122,10 +122,11 @@
     function generarVenta()
     {
         var total = $('input[name="total"]').val();
+        var placa = $('input[name="inputPlaca"]').val();
         var datos = {
             total: total,
+            placa: placa,
         };
-        console.log(datos);
         $.ajax({
             url: '/venta',
             method:'POST',
@@ -252,54 +253,71 @@
                         var subtotal = parseFloat(data.vehiculo.packing_charge);
                         var dias = 1;
                         var descuento = 0;
+                        var vehiculo = data.vehiculo.category_id;
+                        var ajusteEspecialAplicado = false;
+                        var ajusteEspecialAplicadoP = false;
+                        var entrada = fechaInicio.getHours();
+
+
+                        if (data.pensionados && data.pensionados.ultimo_pago) {
+                            var fechaUltimoPago = new Date(data.pensionados.ultimo_pago);
+                            fechaLimiteConColchon = new Date(fechaUltimoPago.setMonth(fechaUltimoPago.getMonth() + 1));
+                            fechaLimiteConColchon.setDate(fechaLimiteConColchon.getDate() + 6);
+                        }
 
                         for (var hora = 0; fechaInicio <= fechaFin; hora++) {
-                            // Generar las filas de la tabla
-                            if (dias % 7 === 0) {
+                            // Obtener el estado del próximo pago
+                            let fechaComparacion = new Date(fechaInicio.getFullYear(), fechaInicio.getMonth(), fechaInicio.getDate());
+
+                            if ( data.pensionados && fechaComparacion > fechaLimiteConColchon && !ajusteEspecialAplicadoP) {
+                                subtotal = 210;
+                                ajusteEspecialAplicadoP = true;
+                            }
+                            if(dias === 2 && vehiculo === 11 && !ajusteEspecialAplicado) {
+                                subtotal = 420;
+                                ajusteEspecialAplicado = true; // Marcar que el ajuste especial se ha aplicado
+                            }
+
+
+                            // Calcular el subtotal basado en múltiplos de 7 días
+                            if (dias % 7 === 0 ) {
                                 if(subtotal === 0)
                                 {
                                 subtotal = 0;
                                 }
-                                else
-                                {
-                                    // Calcular el subtotal basado en el múltiplo de 7 que representa el día actual
+                                else{
                                     subtotal = Math.floor(dias / 7) * 1200; // Incrementar el valor base de 1200 por cada múltiplo de 7
                                 }
-
                             }
 
+                            // Generar las filas de la tabla
                             detallesHTML += '<tr><td>' + dias + ' DIAS</td><td>' + fechaInicio.toLocaleString()
-                                + '</td><td>' + data.vehiculo.model + '</td><td>' + (subtotal).toFixed(2) + '</td></tr>';
-                            if(subtotal === 0)
-                            {
-                                subtotal = 0;
-                            }
-                            else
-                            {
+                                + '</td><td>' + data.vehiculo.model + '</td><td>' + subtotal.toFixed(2) + '</td></tr>';
+
+                            // Ajuste de subtotal después de cada hora
+                            if (subtotal > 0) {
                                 subtotal += 30;
                             }
+
                             // Incrementar la fecha en una hora
                             fechaInicio.setHours(fechaInicio.getHours() + 1);
 
-                            // Mantener el precio constante después de la séptima hora
+                            // Mantener el precio constante después de la séptima hora y avanzar al día siguiente
                             if (hora % 24 === 6) {
-                                subtotal = subtotal;
-                                hora = 23;
-                                // Avanzar al siguiente día
+                                hora = 23; // Reiniciar el contador de horas al inicio de cada día
                                 fechaInicio.setDate(fechaInicio.getDate() + 1);
-                                fechaInicio.setHours(15);
+                                fechaInicio.setHours(entrada);
 
-                                //se continual en el dia 8
-                                if (dias % 7 === 0) {
+                                // Aplicar ajustes adicionales al inicio del día 8
+                                if (dias % 7 === 0 ) {
                                     if(subtotal === 0)
                                     {
                                         subtotal = 0;
                                     }
-                                    else
-                                    {
+                                    else{
                                         subtotal += 180;
                                         descuento = 0;
-                                     }
+                                    }
                                 }
                             }
 
@@ -307,16 +325,13 @@
                             if (hora === 23) {
                                 dias++;
                             }
-                            if(subtotal === 0)
-                            {
+
+                            // Ajustar el total del subtotal
+                            if (subtotal > 0) {
+                                totalSubtotal = subtotal - 30; // Este ajuste parece corregir un incremento anterior, asegúrate de que es lo deseado
+                            } else {
                                 totalSubtotal = 0;
                             }
-
-                            else
-                            {
-                                totalSubtotal = subtotal - 30;
-                            }
-
                         }
 
                         // Actualizar la tabla con las filas creadas

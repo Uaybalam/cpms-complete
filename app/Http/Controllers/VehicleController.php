@@ -43,12 +43,10 @@ class VehicleController extends Controller
             // Actualiza los datos del vehículo y excluye 'vehicle_id' y 'status'
             $existingVehicle->update($request->except('vehicle_id', 'status'));
         } else {
-            // Suponiendo que 'Visitas' comienza en 0, puedes ajustar esta lógica si es necesario
-            $existingVehicle->Visitas = $existingVehicle->Visitas + 1;
-
-            // Si no existe, crea un nuevo vehículo
+            // Si no existe, crea un nuevo vehículo con 'Visitas' establecido en 1
             $customer = Customer::updateOrCreate(['id' => $request->customer_id], $request->except('customer_id'));
-            $existingVehicle = Vehicle::create($request->except('vehicle_id', 'status') + ['status' => 0, 'customer_id' => $customer->id]);
+            $existingVehicle = Vehicle::create($request->except('vehicle_id', 'status') + ['status' => 0, 'customer_id' => $customer->id, 'Visitas' => 1]);
+
         }
 
         $latestVehicleId = $existingVehicle->id;
@@ -58,7 +56,7 @@ class VehicleController extends Controller
 
         // Si no existe un registro en VehicleIn asociado a ese vehículo, crea uno nuevo
         if (!$existingVehicleIn) {
-    VehicleIn::create(['vehicle_id' => $latestVehicleId] + $request->all());
+        VehicleIn::create(['vehicle_id' => $latestVehicleId] + $request->all());
         }
 
         return redirect()->route('vehicles.index')->with('success', $request->vehicle_id ? 'Vehicle Updated Successfully!!' : 'Vehicle Created Successfully!!');

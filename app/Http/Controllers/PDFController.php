@@ -77,34 +77,22 @@ class PDFController extends Controller{
 
         // Espera a que el proceso termine
         $exit_code = proc_close($process);
-
+// Impresion automatica
         if ($exit_code === 0) {
+            ob_start();
+            $pdfContent = file_get_contents($output_path);
+            $pdfContent = utf8_encode($pdfContent);
 
-        // // Envía el archivo PDF a la impresora
-        // $printer_name = 'EPSON TM-T20III Receipt'; // Nombre de tu impresora
-        // $command = sprintf('print /D:%s %s', escapeshellarg($printer_name), escapeshellarg($output_path));
-        // exec($command);
+            Factura::create([
+                'cliente' => $name,
+                'folio' => $folio,
+                'pdf_content' => $pdfContent,
+            ]);
 
-        ob_start();
-        $pdfContent = file_get_contents($output_path);
-        $pdfContent = utf8_encode($pdfContent);
-
-
-
-        //    // Verificar si la impresión fue exitosa
-        //   if ($output === null) {
-        //      // La impresión fue exitosa
-        //     return response()->json(['message' => 'El archivo se ha enviado correctamente a la impresora']);
-        //  } else {
-        //      // Hubo un error al enviar el archivo a la impresora
-        //      return response()->json(['message' => "Error al enviar el archivo a la impresora: $output"], 500);
-        // }
-
-        Factura::create([
-            'cliente' => $name,
-            'folio' => $folio,
-            'pdf_content' => $pdfContent,
-        ]);
+            //Impresion automatica
+            $printerName = 'EPSON TM-T20III Receipt'; // reemplazar con el nombre de tu impresora
+            $printCommand = "lp -d {$printerName} {$output_path}";
+            exec($printCommand, $output, $returnVar);
 
             return response()->download($output_path, 'nombre_del_archivo.pdf');
         } else {
@@ -121,7 +109,8 @@ class PDFController extends Controller{
     return response()->json(['message' => 'El archivo HTML no existe'], 404);
 }
 
-    }
+
+}
 
 
     public function generarpdfSalida(Request $request)
@@ -289,7 +278,7 @@ class PDFController extends Controller{
 }
 
     }
-    
+
     public function generarPdfLavadas(Request $request)
     {
     // Obtener los datos necesarios, por ejemplo, a través de $request o de un modelo

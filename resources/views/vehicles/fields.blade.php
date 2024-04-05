@@ -19,12 +19,12 @@
 
             </div>
         </div>
-        <div class="col-md-4">
+        {{--  <div class="col-md-4">
             <div class="form-group">
                 <label for="fechaSalida">Fecha y hora de salida</label>
                 <input type="datetime-local" name="fechaSalida" value="{{ isset($customer) ? $customer->fechaSalida : '' }}" class="form-control" id="fechaSalida" placeholder="Fecha y hora de salida">
             </div>
-        </div>
+        </div>  --}}
 
         <div class="col-md-4">
             <div class="form-group">
@@ -67,7 +67,7 @@
                 <label for="plat_number">Numero de Placa del Vehiculo</label>
                 <input id="plat_number" type="text" name="plat_number" value="{{ isset($plate_number) ? $plate_number : '' }}"
                     class="form-control" placeholder="Vehicle Plat Number" onkeyup="buscarPlaca()" readonly>
-                <a onclick="ActivarInput()" class="btn btn-primary btn-lg active" role="button">Enlace principal</a>
+                <a onclick="ActivarInput()" class="btn btn-primary btn-lg active" role="button">Ingresar Manual</a>
             </div>
         </div>
         <div class="col-md-3">
@@ -96,7 +96,7 @@
             if (response.vehiculo) {
                 document.getElementById('name').value = response.customer.name;
                 document.getElementById('phone').value = response.customer.phone;
-                document.getElementById('email').value = response.customer.email;
+                
                 if(response.vehiculo.Visitas === 4)
                 {
                     document.getElementById('packing_charge').value = response.category.costo;

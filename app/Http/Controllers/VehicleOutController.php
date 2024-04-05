@@ -28,7 +28,10 @@ class VehicleOutController extends Controller
 
     public function store(StoreVehicleOutRequest $request)
     {
-        VehicleOut::updateOrCreate(['id' => $request->vehiclesOut_id], $request->all());
+        $inputPlaca = $request->input('inputPlaca');
+        $vehiculo = Vehicle::where('plat_number', $inputPlaca)->first();
+        $vehiculoIn = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
+        VehicleOut::updateOrCreate(['id' => $vehiculoIn], $request->all());
         VehicleIn::where('id', $request->vehicleIn_id)->update(['status' => 1]);
         return redirect()->route('vehiclesOut.index')->with('success', 'Vehicle Out Successfully!!');
     }

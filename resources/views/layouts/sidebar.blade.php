@@ -53,32 +53,27 @@
                         <a href="{{ route('vehiclesOut.index') }}" class="menu-item  {{ request()->routeIs('vehiclesOut*') ? 'active' : '' }}">Salientes</a>
                     </div>
                 </div>
-
-                <div class="nav-lavel">Reportes</div>
-                <div class="nav-item has-sub">
-                    <a href="{{ route('reports.index') }}"><i class="ik ik-edit"></i><span>Reportes</span></a>
-                    {{-- <div class="submenu-content">
-                        <a href="pages/form-components.html" class="menu-item">Components</a>
-                        <a href="pages/form-addon.html" class="menu-item">Add-On</a>
-                        <a href="pages/form-advance.html" class="menu-item">Advance</a>
-                    </div> --}}
-                </div>
-
                 <div class="nav-lavel">Caja</div>
-                <div class="nav-item has-sub">
+                <div class="nav-item ">
+                    <a href="{{ route('abrir.caja') }}"><i class="x-fas-history"></i><span>Abrir nueva caja</span></a>
+                </div>
+                <div class="nav-item ">
                     <a href="{{ route('caja.venta') }}"><i class="ik ik-wal"></i><span>Cobrar</span></a>
-                    {{-- <div class="submenu-content">
-                        <a href="{{ route('caja.corte_parcial') }}" class="menu-item">Corte</a>
-                        <a href="{{ route('caja.historial_venta') }}" class="menu-item">Historial</a>
-                    </div> --}}
+                </div>
+                <div class="nav-item ">
+                    <a href="{{ route('cierreCaja') }}"><i class="x-fas-history"></i><span>Cierre caja</span></a>
                 </div>
                 <div class="nav-item has-sub">
-                    <a href="{{ route('historial') }}"><i class="x-fas-history"></i><span>Historial</span></a>
-                    {{-- <div class="submenu-content">
-                        <a href="{{ route('caja.corte_parcial') }}" class="menu-item">Corte</a>
-                        <a href="{{ route('caja.historial_venta') }}" class="menu-item">Historial</a>
-                    </div> --}}
+                    <a href="#"><i class="x-fas-history"></i><span>Pensiones</span></a>
+                        <div class="submenu-content">
+                        <a href="{{ route('pensionados.index') }}" class="menu-item">Crear</a>
+                        <a href="{{ route('pensionados.pensionados') }}" class="menu-item">Lista</a>
+                    </div>
                 </div>
+                <div class="nav-item ">
+                    <a href="{{ route('historial') }}"><i class="x-fas-history"></i><span>Historial</span></a>
+                </div>
+
             @endif
             @if(auth()->check() && auth()->user()->role == 'Cajero')
                 <div class="nav-item has-sub {{ request()->routeIs('vehicles*')  ? 'open' : ''}}">
@@ -88,12 +83,21 @@
                     </div>
                 </div>
                 <div class="nav-lavel">Caja</div>
-                <div class="nav-item has-sub">
+                <div class="nav-item ">
                     <a href="{{ route('caja.venta') }}"><i class="ik ik-wal"></i><span>Cobrar</span></a>
-                    {{-- <div class="submenu-content">
-                        <a href="{{ route('caja.corte_parcial') }}" class="menu-item">Corte</a>
-                        <a href="{{ route('caja.historial_venta') }}" class="menu-item">Historial</a>
-                    </div> --}}
+                </div>
+                <div class="nav-item ">
+                    <a href="{{ route('cierreCaja') }}"><i class="x-fas-history"></i><span>Cierre caja</span></a>
+                </div>
+                <div class="nav-item has-sub">
+                    <a href="#"><i class="x-fas-history"></i><span>Pensiones</span></a>
+                        <div class="submenu-content">
+                        <a href="{{ route('pensionados.index') }}" class="menu-item">Crear</a>
+                        <a href="{{ route('pensionados.pensionados') }}" class="menu-item">Lista</a>
+                    </div>
+                </div>
+                <div class="nav-item ">
+                    <a href="{{ route('historial') }}"><i class="x-fas-history"></i><span>Historial</span></a>
                 </div>
             @endif
             </nav>

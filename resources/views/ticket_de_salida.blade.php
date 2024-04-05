@@ -73,9 +73,8 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Días</th>
+                        <th>Dias</th>
                         <th>Fecha</th>
-                        <th>Descuento</th>
                         <th>Subtotal</th>
                     </tr>
                 </thead>
@@ -85,7 +84,7 @@
                         <td>{{ $detalle['dias'] }}</td>
                         <td>{{ $detalle['fecha'] }}</td>
                         <td>{{ $detalle['descuento'] }}</td>
-                        <td>{{ $detalle['subtotal'] }}</td>
+
                     </tr>
                     @endforeach
                 </tbody>

@@ -12,6 +12,9 @@ use App\Models\SegundaTabla;
 use App\Models\Vehicle;
 use App\Models\VehicleIn;
 use Illuminate\Http\Request;
+use App\Models\Auto;
+use App\Models\Pensionado;
+use App\Models\VehicleOut;
 
 class NuevaCajaController extends Controller
 {
@@ -89,6 +92,20 @@ class NuevaCajaController extends Controller
 
     public function guardarVenta(Request $request)
     {
+
+        $inputPlaca = $request->input('placa');
+        $vehiculo = Vehicle::where('plat_number', $inputPlaca)->first();
+        $vehiculoIn = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
+         // Crear una nueva instancia en VehicleOut con los datos seleccionados de VehicleIn
+        $vehiculoOut = new VehicleOut();
+        $vehiculoOut->vehicleIn_id = $vehiculoIn->id; // Suponiendo que ambas tablas tienen 'vehicle_id'
+        $vehiculoOut->created_by = $vehiculoIn->created_by; // Ejemplo de cambio de nombre de columna
+        $vehiculoOut->save();
+        $vehiculoIn->update([
+            'status' => 1,
+        ]);
+
+
         $datos = NuevaCaja::all();
         $total = $request->input('total');
         foreach ($datos as $datoOrigen) {
@@ -150,6 +167,30 @@ class NuevaCajaController extends Controller
 
     public function obtenerdatos($platNumber)
     {
+        $sacarpensionado = Auto::where('placa', $platNumber)->orWhere('placa2', $platNumber)->first();
+        if($sacarpensionado)
+        {
+            $vehiculo = Vehicle::where('plat_number', $platNumber)->first();
+
+            if (!$vehiculo) {
+                return response()->json(['error' => 'Vehículo no encontrado'], 404);
+            }
+
+            $vehiculoIn = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
+
+            if (!$vehiculoIn) {
+                return response()->json(['error' => 'Entrada de vehículo no encontrada'], 404);
+            }
+            $pensionados =  Pensionado::where('id', $sacarpensionado-> pensionado_id)->first();
+            $array = [
+                'vehiculo' => $vehiculo->toArray(),
+                'vehiculoIn' => $vehiculoIn->toArray(),
+                'pensionados' => $pensionados->toArray(),
+            ];
+            return response()->json($array);
+        }
+        else
+        {
         $vehiculo = Vehicle::where('plat_number', $platNumber)->first();
 
         if (!$vehiculo) {
@@ -162,12 +203,18 @@ class NuevaCajaController extends Controller
             return response()->json(['error' => 'Entrada de vehículo no encontrada'], 404);
         }
 
+
+
         $array = [
             'vehiculo' => $vehiculo->toArray(),
             'vehiculoIn' => $vehiculoIn->toArray(),
         ];
 
+
+
+
         return response()->json($array);
+    }
     }
 
 }
