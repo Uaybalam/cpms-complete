@@ -57,6 +57,7 @@ class VehicleController extends Controller
         // Si no existe un registro en VehicleIn asociado a ese vehículo, crea uno nuevo
         if (!$existingVehicleIn) {
         VehicleIn::create(['vehicle_id' => $latestVehicleId] + $request->all());
+
         }
 
         return redirect()->route('vehicles.index')->with('success', $request->vehicle_id ? 'Vehicle Updated Successfully!!' : 'Vehicle Created Successfully!!');

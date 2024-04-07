@@ -8,21 +8,23 @@
     <style>
         @page {
             margin: 0;
+            size: auto;
         }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
         }
         .ticket {
-            width: 60mm; /*Ajusta tamaño del papel puedes probar con 80mm, pero depende de la impresora */
+            width: 65mm;
             background-color: #fff;
             border: 1px solid #ccc;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             font-size: 8pt;
-            margin: 5mm 0;
+            margin: auto; /* Centra el ticket en la página */
             padding: 0 3em;
-            
-
         }
         .ticket-header {
             text-align: center;
@@ -32,7 +34,7 @@
             font-size: 20px;
             margin: 0;
         }
-        
+
         .ticket-item {
             margin-bottom: 5px;
         }
@@ -60,19 +62,9 @@
         }
 
         .vehicle-details {
-            flex: 1; /* Los detalles del vehículo ocupan todo el espacio restante */
-            width: 50%; /* Ancho del contenedor de detalles del vehículo */
-            float: left; /* Hace que los detalles del vehículo floten a la izquierda */
+            flex: 1;
+            float: left;
         }
-        /* @media print {
-            body {
-                margin: 0;
-            }
-            .ticket {
-                margin: 5mm 0;  Ajusta según sea necesario 
-            }
-        } 
-        */
 
     </style>
 </head>

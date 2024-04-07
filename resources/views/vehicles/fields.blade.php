@@ -19,12 +19,12 @@
 
             </div>
         </div>
-        {{--  <div class="col-md-4">
+        <div class="col-md-4">
             <div class="form-group">
                 <label for="fechaSalida">Fecha y hora de salida</label>
-                <input type="datetime-local" name="fechaSalida" value="{{ isset($customer) ? $customer->fechaSalida : '' }}" class="form-control" id="fechaSalida" placeholder="Fecha y hora de salida">
+                <input type="datetime-local" name="salida" value="{{ isset($customer) ? $customer->fechaSalida : '' }}" class="form-control" id="salida" placeholder="Fecha y hora de salida">
             </div>
-        </div>  --}}
+        </div>
 
         <div class="col-md-4">
             <div class="form-group">
@@ -96,7 +96,7 @@
             if (response.vehiculo) {
                 document.getElementById('name').value = response.customer.name;
                 document.getElementById('phone').value = response.customer.phone;
-                
+
                 if(response.vehiculo.Visitas === 4)
                 {
                     document.getElementById('packing_charge').value = response.category.costo;

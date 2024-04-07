@@ -3,9 +3,11 @@
         <tr>
             <th>Id</th>
             <th>Reg #</th>
-            <th>Modelo</th>
+            <th>Clinete</th>
             <th>Placa</th>
-            <th>Creado Rl</th>
+            <th>Modelo</th>
+            <th>Entrada</th>
+            <th>Salida</th>
             <th>Creado Por</th>
             <th class="nosort">Operation</th>
             <th>Action</th>
@@ -17,13 +19,15 @@
             <td>{{ $key+1 }}</td>
             <td>{{ $vehicleIn->vehicle->registration_number }}</td>
             <td>{{ $vehicleIn->vehicle->name }}</td>
-            <td>{{ $vehicleIn->vehicle->Plat_number }}</td>
-            <td>{{ $vehicleIn->created_at->format('Y/m/d H:i A') }}</td>
+            <td>{{ $vehicleIn->vehicle->plat_number }}</td>
+            <td>{{ $vehicleIn->vehicle->model }}</td>
+            <td>{{ $vehicleIn->created_at->format('Y-m-d H:i A') }}</td>
+            <td>{{ $vehicleIn->salida }}</td>
             <td>{{ $vehicleIn->user->name }}</td>
             <td>
                 <div class="table-actions">
-                    <a href="#"><i class="ik ik-eye"></i></a>
-                    <a href="{{ route('vehiclesIn.edit', $vehicleIn->id) }}"><i class="ik ik-edit-2"></i></a>
+                    {{--  <a href="#"><i class="ik ik-eye"></i></a>  --}}
+                    {{--  <a href="{{ route('vehiclesIn.edit', $vehicleIn->id) }}"><i class="ik ik-edit-2"></i></a>  --}}
                     <a href="#" onclick=" confirm('Are you sure you want to delete this?');
                     document.getElementById('delete-data').submit();"><i class="ik ik-trash-2"></i></a>
 
@@ -38,3 +42,5 @@
         @endforeach
     </tbody>
 </table>
+
+

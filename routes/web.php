@@ -22,7 +22,7 @@ use App\Http\Controllers\Auth\RegisterController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('/lavadas/pdf', [PDFController::class, 'generarPdfLavadas'])->name('lavadas.pdf');
+Route::post('/lavadas', [PDFController::class, 'generarPdfLavadas']);
 Route::post('/generar-pdf', [PDFController::class, 'generarQR']);
 Route::post('/generar-pdf-salida', [PDFController::class, 'generarpdfSalida']);
 Route::post('/generar-Cpdf', [PDFController::class, 'generarpdfCierre']);

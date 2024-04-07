@@ -1,5 +1,5 @@
 @extends('layouts.app')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
 <div class="container-fluid">
     <div class="row clearfix">
@@ -84,47 +84,65 @@
     <div class="card">
 
         <div class="card-body">
-            @include('vehicles.table')
+            @include('vehicles_in.table')
         </div>
 
     </div>
-    <a href="{{ route('lavadas.pdf') }}" class="btn btn-primary">Imprimir</a>
+
 </div>
+<button type="button" class="btn btn-success" onclick="generarPDF()">Imprimir</button>
 
 @endsection
-<!-- <script>
-     function generarPDF() {
-        // Obtener los valores de los campos del formulario
-        var Color = document.getElementById('Color').value;
-        var folio = document.getElementById('folio').value;
-        var modelo = document.getElementById('model').value;
-        var platNumber = document.getElementById('plat_number').value;
-        var name =  document.getElementById('name').value;
-        var Salida = document.getElementByid('')
 
+<script>
+    function generarPDF() {
+       // Crear un objeto con los datos a enviar
+       var datos = {
+           detalles: obtenerDetallesTabla()
 
-        // Enviar los datos al controlador utilizando AJAX
-        $.ajax({
-            url: '/generar-pdf',
-            method: 'POST',
-            data: {
-                Color: Color,
-                folio: folio,
-                modelo: modelo,
-                plat_number: platNumber,
-                name: name,
-                _token: '{{ csrf_token() }}'
-            },
-            success: function(response) {
-                // Manejar la respuesta del controlador (si es necesario)
-                console.log(response);
+       };
+       console.log(datos);
+       // Enviar los datos al controlador utilizando AJAX
+       $.ajax({
+           url: '/lavadas',
+           method: 'POST',
+           data: datos,
+           headers: {
+               'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+           },
 
-            },
-            error: function(xhr, status, error) {
-                // Manejar cualquier error que ocurra durante la solicitud AJAX
-                console.error(error);
+           success: function(response) {
+               // Manejar la respuesta del controlador (si es necesario)
+               console.log(response);
 
-            }
-        });
-    }
-</script> -->
+           },
+           error: function(xhr, status, error) {
+               // Manejar cualquier error que ocurra durante la solicitud AJAX
+               console.error(error);
+
+           }
+       });
+   }
+   function obtenerDetallesTabla() {
+       // Obtener los datos de la tabla
+       var detalles = [];
+       $('#data_table tbody tr').each(function () {
+           var fila = $(this);
+           var cliente = fila.find('td:eq(0)').text();
+           var placa = fila.find('td:eq(1)').text();
+           var modelo = fila.find('td:eq(2)').text();
+           var entrada = fila.find('td:eq(3)').text();
+           var salida = fila.find('td:eq(4)').text();
+
+           detalles.push({
+               cliente: cliente,
+               placa: placa,
+               modelo: modelo,
+               entrada: entrada,
+               salida: salida
+           });
+       });
+
+       return detalles;
+   }
+</script>

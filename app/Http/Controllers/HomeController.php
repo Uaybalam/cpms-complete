@@ -24,7 +24,8 @@ class HomeController extends Controller
        $total_vehicle_in = $vehicles_in->where('status',0)->orWhere('status', 1)->whereDate('created_at', now()->format('Y-m-d'))->count();
        $total_vehicle_out = $vehicles_in->where('status',1)->whereDate('created_at', now()->format('Y-m-d'))->count();
 
-        return view('home', ['vehicles' => $vehicles->get()] ,compact('total_amount', 'total_vehicle_in', 'total_vehicle_out','total_vehicles'));
+        return view('home', ['vehicles' => $vehicles->get(),
+            'vehiclesIn' => VehicleIn::with(['vehicle:id,name,registration_number,plat_number,model', 'user:id,name'])->where('status', 0)->get()] ,compact('total_amount', 'total_vehicle_in', 'total_vehicle_out','total_vehicles'));
     }
 }
 

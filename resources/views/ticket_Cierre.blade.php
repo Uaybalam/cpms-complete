@@ -8,14 +8,17 @@
     <style>
         @page {
             margin: 0;
+            size: auto;
         }
         body {
             font-family: Arial, sans-serif;
             margin: 0;
-            width: 100%;
+            padding: 0;
+            display: flex;
+            justify-content: center;
         }
         .container {
-            width: 60mm;
+            width: 65mm;
             /* margin: 5mm 0; */
             border: 1px solid #ccc;
             padding: 0 3em;

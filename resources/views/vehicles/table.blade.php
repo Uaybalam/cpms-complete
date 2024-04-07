@@ -6,7 +6,7 @@
             <th>Categoria</th>
             <th>Cliente</th>
             <th>Num. Placa</th>
-            <th>Status</th>
+            <th>Fecha de Salida</th>
             <th>Creado el</th>
             @if(auth()->check() && auth()->user()->role == 'Administrador')
             <th class="nosort">Operacion</th>
@@ -19,10 +19,9 @@
             <td>{{ $key+1 }}</td>
             <td>{{ $vehicle->registration_number }}</td>
             <td>{{ $vehicle->category->name }}</td>
-            {{--  <td>{{ $vehicle->customer->name }}</td>  --}}
             <td>{{ $vehicle->name }}</td>
             <td>{{ $vehicle->plat_number }}</td>
-            <td>{{ $vehicle->status == 1 ? "Active" : "InActive" }}</td>
+            <td>{{ $vehicle->vesalida }}</td>
             <td>{{ $vehicle->created_at->format('Y/m/d') }}</td>
 
             @if(auth()->check() && auth()->user()->role == 'Administrador')

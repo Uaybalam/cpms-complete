@@ -44,13 +44,13 @@ class PDFController extends Controller{
     public function generarpdf(Request $request)
     {
 
-
-      // Ruta del archivo HTML
+        set_time_limit(300);
+    // Ruta del archivo HTML
     $html_file_path = base_path('resources/views/ticket_de_llegada.blade.php');
 
-// Verifica si el archivo HTML existe
+    // Verifica si el archivo HTML existe
     if (file_exists($html_file_path)) {
- // Recibe los datos del formulario
+    // Recibe los datos del formulario
     $Color = $request->input('Color');
     $name = $request->input('name');
     $modelo = $request->input('modelo');
@@ -77,7 +77,7 @@ class PDFController extends Controller{
 
         // Espera a que el proceso termine
         $exit_code = proc_close($process);
-// Impresion automatica
+        // Impresion automatica
         if ($exit_code === 0) {
             ob_start();
             $pdfContent = file_get_contents($output_path);
@@ -90,9 +90,8 @@ class PDFController extends Controller{
             ]);
 
             //Impresion automatica
-            $printerName = 'EPSON TM-T20III Receipt'; // reemplazar con el nombre de tu impresora
-            $printCommand = "lp -d {$printerName} {$output_path}";
-            exec($printCommand, $output, $returnVar);
+            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\entrada.ps1';
+            exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
 
              // Verificación del resultado de la impresión
              if ($returnVar == 0) {
@@ -172,18 +171,22 @@ class PDFController extends Controller{
             'folio' => $folio,
             'pdf_content' => $pdfContent,
         ]);
-    //            // Envía el archivo PDF a la impresora
-    //  $printerName = 'nombre-de-la-impresora';
-    //  $command = "lpr -d $printerName $output_path";
-    //  $output = shell_exec($command);
-    //   // Verificar si la impresión fue exitosa
-    //   if ($output === null) {
-    //     // La impresión fue exitosa
-    //     return response()->json(['message' => 'El archivo se ha enviado correctamente a la impresora']);
-    // } else {
-    //     // Hubo un error al enviar el archivo a la impresora
-    //     return response()->json(['message' => "Error al enviar el archivo a la impresora: $output"], 500);
-    // }
+
+            //Impresion automatica
+            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\salida.ps1';
+            exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
+
+             // Verificación del resultado de la impresión
+             if ($returnVar == 0) {
+                // El comando se ejecutó correctamente
+                echo "El archivo se ha enviado a la impresora correctamente.";
+            } else {
+                // El comando falló
+                echo "Error al enviar el archivo a la impresora. Código de error: $returnVar";
+                // Imprimir la salida del comando para depuración
+                echo "Salida del comando de impresión: " . implode("\n", $output);
+            }
+
             return response()->download($output_path, 'nombre_del_archivo.pdf');
         } else {
             // Hubo un error en el proceso, manejarlo adecuadamente
@@ -237,21 +240,7 @@ class PDFController extends Controller{
         $exit_code = proc_close($process);
 
         if ($exit_code === 0) {
-            // El proceso finalizó correctamente, leer el contenido del PDF y guardarlo en la base de datos
 
-        // Convierte el contenido a binario
-        // $pdfBinary = pack('H*', bin2hex($pdfContent));
-
-        // // Crea una nueva instancia del modelo Factura
-        // $pdfModel = new Factura();
-
-        // // Establece los valores de los campos
-        // $pdfModel->cliente = 'numero'; // Puedes ajustar esto según tu lógica
-        // $pdfModel->folio = '14522z';
-        // $pdfModel->pdf_content = $pdfBinary; // Guarda el contenido binario del PDF
-
-        // // Guarda el modelo en la base de datos
-        // $pdfModel->save();
         ob_start();
         $pdfContent = file_get_contents($output_path);
         $pdfContent = utf8_encode($pdfContent);
@@ -262,6 +251,20 @@ class PDFController extends Controller{
             'pdf_content' => $pdfContent,
         ]);
 
+            //Impresion automatica
+            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\cierre.ps1';
+            exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
+
+             // Verificación del resultado de la impresión
+             if ($returnVar == 0) {
+                // El comando se ejecutó correctamente
+                echo "El archivo se ha enviado a la impresora correctamente.";
+            } else {
+                // El comando falló
+                echo "Error al enviar el archivo a la impresora. Código de error: $returnVar";
+                // Imprimir la salida del comando para depuración
+                echo "Salida del comando de impresión: " . implode("\n", $output);
+            }
             return response()->download($output_path, 'nombre_del_archivo.pdf');
         } else {
             // Hubo un error en el proceso, manejarlo adecuadamente
@@ -271,18 +274,7 @@ class PDFController extends Controller{
         // No se pudo iniciar el proceso, manejar el error
         return response()->json(['message' => 'Error al iniciar el proceso'], 500);
     }
-    //  // Envía el archivo PDF a la impresora
-    //  $printerName = 'nombre-de-la-impresora';
-    //  $command = "lpr -d $printerName $output_path";
-    //  $output = shell_exec($command);
-    //   // Verificar si la impresión fue exitosa
-    //   if ($output === null) {
-    //     // La impresión fue exitosa
-    //     return response()->json(['message' => 'El archivo se ha enviado correctamente a la impresora']);
-    // } else {
-    //     // Hubo un error al enviar el archivo a la impresora
-    //     return response()->json(['message' => "Error al enviar el archivo a la impresora: $output"], 500);
-    // }
+
 } else {
     // El archivo HTML no existe, manejar el error
     return response()->json(['message' => 'El archivo HTML no existe'], 404);
@@ -292,17 +284,21 @@ class PDFController extends Controller{
 
     public function generarPdfLavadas(Request $request)
     {
-    // Obtener los datos necesarios, por ejemplo, a través de $request o de un modelo
-    $datos = $request->all();
 
-    // Aquí, utiliza la vista 'vehiculos_lavados.blade.php'
-    $html_content = view('lavadas', $datos)->render();
+        set_time_limit(300);
+    // Ruta del archivo HTML
+    $html_file_path = base_path('resources/views/lavadas.blade.php');
 
-    // Lógica para generar el PDF como en los otros métodos
-    $output_path = base_path('public/lavadas.pdf');
+    // Verifica si el archivo HTML existe
+    if (file_exists($html_file_path)) {
+    // Recibe los datos del formulario
+    $folio = date('Ymdhms').'Z';
+    $detalles = $request->input('detalles');
+    $html_content = view('lavadas', ['folio'=> $folio, 'detalles'=> $detalles])->render();
 
-    // Aquí podrías llamar a un script de Python o utilizar una biblioteca de PHP para generar el PDF
-    // Suponiendo que usas un script de Python similar a los otros métodos
+    // Resto del código para generar el PDF
+    $output_path = base_path('public/lavada.pdf');
+
     $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
         0 => ['pipe', 'r'], // stdin
         1 => ['pipe', 'w'], // stdout
@@ -310,20 +306,29 @@ class PDFController extends Controller{
     ], $pipes);
 
     if (is_resource($process)) {
+        // Escribe la cadena HTML en la entrada estándar del proceso
         fwrite($pipes[0], $html_content);
         fclose($pipes[0]);
 
+        // Espera a que el proceso termine
         $exit_code = proc_close($process);
-
+        // Impresion automatica
         if ($exit_code === 0) {
-            // Si el PDF se generó correctamente, puedes descargarlo, enviarlo a imprimir, etc.
-            return response()->download($output_path, 'lavadas.pdf');
+            return response()->download($output_path, 'nombre_del_archivo.pdf');
         } else {
+            // Hubo un error en el proceso, manejarlo adecuadamente
             return response()->json(['message' => 'Error al generar el PDF'], 500);
         }
     } else {
+        // No se pudo iniciar el proceso, manejar el error
         return response()->json(['message' => 'Error al iniciar el proceso'], 500);
     }
+
+} else {
+    // El archivo HTML no existe, manejar el error
+    return response()->json(['message' => 'El archivo HTML no existe'], 404);
+}
+
 }
 
 }
