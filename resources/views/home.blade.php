@@ -15,11 +15,11 @@
                             <i class="ik ik-truck"></i>
                         </div>
                     </div>
-                    <small class="text-small mt-10 d-block">6% + que el mes anterior</small>
+                    <!-- <small class="text-small mt-10 d-block">6% + que el mes anterior</small> -->
                 </div>
-                <div class="progress progress-sm">
+                <!-- <div class="progress progress-sm">
                     <div class="progress-bar bg-danger" role="progressbar" aria-valuenow="62" aria-valuemin="0" aria-valuemax="100" style="width: 62%;"></div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
@@ -34,11 +34,11 @@
                             <i class="ik ik-truck"></i>
                         </div>
                     </div>
-                    <small class="text-small mt-10 d-block">61% + que el mes anterior</small>
+                    <!-- <small class="text-small mt-10 d-block">61% + que el mes anterior</small> -->
                 </div>
-                <div class="progress progress-sm">
+                <!-- <div class="progress progress-sm">
                     <div class="progress-bar bg-success" role="progressbar" aria-valuenow="78" aria-valuemin="0" aria-valuemax="100" style="width: 78%;"></div>
-                </div>
+                </div> -->
             </div>
         </div>
         <div class="col-lg-3 col-md-6 col-sm-12">
@@ -53,14 +53,14 @@
                             <i class="ik ik-truck"></i>
                         </div>
                     </div>
-                    <small class="text-small mt-10 d-block">Total Vehiculos</small>
+                    <!-- <small class="text-small mt-10 d-block">Total Vehiculos</small> -->
                 </div>
-                <div class="progress progress-sm">
+                <!-- <div class="progress progress-sm">
                     <div class="progress-bar bg-warning" role="progressbar" aria-valuenow="31" aria-valuemin="0" aria-valuemax="100" style="width: 31%;"></div>
-                </div>
+                </div> -->
             </div>
         </div>
-        <div class="col-lg-3 col-md-6 col-sm-12">
+        <!-- <div class="col-lg-3 col-md-6 col-sm-12">
             <div class="widget">
                 <div class="widget-body">
                     <div class="d-flex justify-content-between align-items-center">
@@ -78,7 +78,7 @@
                     <div class="progress-bar bg-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
                 </div>
             </div>
-        </div>
+        </div> -->
     </div>
 
     <div class="card">

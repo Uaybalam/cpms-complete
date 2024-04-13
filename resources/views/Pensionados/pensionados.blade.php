@@ -34,7 +34,7 @@
                 </thead>
                 <tbody>
                     @foreach ($pensionados as $pensionado)
-                    <tr style="background-color: {{ $pensionado->proximoPagoEstado() === 'rojo' ? 'red' : ($pensionado->proximoPagoEstado() === 'naranja' ? 'orange' : 'green') }}">
+                    <tr style="background-color: {{ $pensionado->proximoPagoEstado() === 'rojo' ? '#FF9B9B' : ($pensionado->proximoPagoEstado() === 'naranja' ? '#FFD6A5' : '#CBFFA9') }}">
                         <td>{{ $pensionado->nombre }}</td>
                         <td>{{ $pensionado->precio_fijo }}</td>
                         <td>{{ $pensionado->ultimo_pago }}</td>

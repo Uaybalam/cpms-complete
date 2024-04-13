@@ -1,16 +1,6 @@
 @extends('layouts.app')
 @section('content')
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Caja</title>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0/dist/css/select2.min.css" rel="stylesheet">
-</head>
 <br>
 <br>
 <br>
@@ -47,11 +37,11 @@
             </tbody>
         </table>
         <button type="button" class="btn btn-danger" onclick="cancelar()">Cancelar venta</button>
-        <label class="form-label">Total ($) <input type="text" class="form-control" name="total" placeholder="total" aria-label="total" readonly></label>
+        <label class="form-label">Total ($) <input type="text" class="form-control" id="precio_fijo" name="total" placeholder="total" aria-label="total" readonly></label>
 
 </div>
 <div class="alert alert-info bg-white p-4 rounded shadow">
-    <h4 class="text-Secondary border-bottom pb-2 mb-3">Datoos venta</h4>
+    <h4 class="text-Secondary border-bottom pb-2 mb-3">Datos venta</h4>
     <label class="form-label">Cliente</label>
     <input type="text" class="form-control" name="cliente" id="cliente" placeholder="Nombre del cliente" aria-label="Nombre del cliente" readonly>
     <h4 class="text-Secondary border-bottom pb-2 mb-3"></h4>
@@ -95,17 +85,17 @@
 
     document.addEventListener('DOMContentLoaded', function() {
         var checkbox = document.getElementById('checkboxPagoTarjeta');
-        var cantidad = document.getElementById('Cantidad');
-        var total = $('input[name="total"]').val();
+        var totalInput = document.getElementById('total');
         checkbox.addEventListener('change', function() {
             console.log('Estado del checkbox:', checkbox.checked);
 
             if (checkbox.checked) {
-                cantidad.value = total;
-                console.log(cantidad.valueui);
-            } else {
-                console.log('El checkbox no está marcado');
-            }
+           
+            totalInput.value = (parseFloat(totalInput.value) + 50).toFixed(2);
+        } else {
+            
+            totalInput.value = (parseFloat(totalInput.value) - 50).toFixed(2);
+        }
         });
     });
 
@@ -362,5 +352,5 @@
     });
 
 </script>
-</body>
-</html>
+@endsection
+

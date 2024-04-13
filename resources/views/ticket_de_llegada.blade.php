@@ -105,10 +105,10 @@
         <div class="section">
             <div class="section-title"><b>Responsabilidades</b></div>
             <div class="section-content">
-                <p style="text-align: justify;">El estacionamiento o pension se obliga a prestar el servicio en los terminos en materia haciendonos responsables por robo total no respondemos por robos parciales.
-                Favor de revisar en su tiquet que la fecha estimada de arribo, sea la misma que usted dio, ya que de esto depende que su vehiculo este lavado a su regreso.
+                <p style="text-align: justify;">El estacionamiento o pension se obliga a prestar el servicio en los terminos en materia haciendonos responsables por robo totaL.
+                Favor de revisar en su ticket que la fecha estimada de arribo, sea la misma que usted dio, ya que de esto depende que su vehiculo este lavado a su regreso.
                 RFC de quien expide comprobante: RUAM850614UG4
-                <b>NO NOS HACEMOS RESPONSABLES POR DA&Ntilde;OS PARCIALES O TOTALES A SU VEHICULO.</b>
+                <b>NO NOS HACEMOS RESPONSABLES POR ROBOS PARCIALES NI DA&Ntilde;OS PARCIALES O TOTALES A SU VEHICULO.</b>
                 <br>
                 <br>
                 <br>

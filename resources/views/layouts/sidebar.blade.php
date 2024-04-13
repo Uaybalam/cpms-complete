@@ -1,11 +1,10 @@
 <div class="app-sidebar colored">
     <div class="sidebar-header">
-        <a class="header-brand" href="index.html">
+        <a class="header-brand">
             <div class="logo-img">
-                CPM
-               {{-- <img width="40" height="40" src="{{ asset('img/logo.png') }}" class="header-brand-img" alt="lavalite"> --}}
+               <img width="40" height="40" src="{{ asset('img/logo.png') }}" class="header-brand-img" alt="lavalite">
             </div>
-            <span class="text">&nbsp;  Sys</span>
+            <span class="text">parking</span>
         </a>
         <!-- <button type="button" class="nav-toggle"><i data-toggle="expanded" class="ik ik-toggle-right toggle-icon"></i></button> -->
         <button id="sidebarClose" class="nav-close"><i class="ik ik-x"></i></button>
@@ -21,7 +20,7 @@
 
             @if(auth()->check() && auth()->user()->role == 'Administrador')
                 <div class="nav-item has-sub {{ request()->routeIs('user*')  ? 'open' : ''}}">
-                    <a href="javascript:void(0)"><i class="ik ik-user"></i><span>Administrar Admins</span> </a>
+                    <a href="javascript:void(0)"><i class="ik ik-user"></i><span>Administrar Usuarios</span> </a>
                     <div class="submenu-content">
                         <a href="{{ route('user.create') }}" class="menu-item  {{ request()->routeIs('user.create') ? 'active' : '' }}">Crear</a>
                         <a href="{{ route('user.index') }}" class="menu-item  {{ request()->routeIs('user.index') ? 'active' : '' }}">Lista</a>

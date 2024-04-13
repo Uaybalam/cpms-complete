@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Sign Up | CPMS</title>
+    <title>Sign Up | Dparking</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -37,8 +37,8 @@
                         <div class="logo-centered">
                             <a href="../index.html"><img src="../src/img/brand.svg" alt=""></a>
                         </div>
-                        <h3>Sign In to CPMS Parking System</h3>
-                        <p>Feliz de verte de nuevo!</p>
+                        <h3>Inicia sesion en Dparking</h3>
+                        <p>!Feliz de verte de nuevo!</p>
                         <form method="POST" action="{{ route('login') }}">
                             @csrf
                             <div class="form-group">
@@ -68,7 +68,7 @@
                                 <div class="col text-left">
                                     <label class="custom-control custom-checkbox">
                                             <input class="custom-control-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
-                                        <span class="custom-control-label">&nbsp;Remember Me</span>
+                                        <span class="custom-control-label">&nbsp;Recordar</span>
                                     </label>
                                 </div>
                                 {{--  <div class="col text-right">
