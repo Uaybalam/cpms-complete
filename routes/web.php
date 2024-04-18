@@ -11,6 +11,7 @@ use App\Http\Controllers\PensionesController;
 use App\Http\Controllers\AutoController;
 use App\Http\Controllers\PlateController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\HomeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,9 @@ use App\Http\Controllers\Auth\RegisterController;
 |
 */
 Route::post('/lavadas', [PDFController::class, 'generarPdfLavadas']);
+
+
+
 Route::post('/generar-pdf', [PDFController::class, 'generarQR']);
 Route::post('/generar-pdf-salida', [PDFController::class, 'generarpdfSalida']);
 Route::post('/generar-Cpdf', [PDFController::class, 'generarpdfCierre']);

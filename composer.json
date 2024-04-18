@@ -12,6 +12,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "laravel/ui": "^3.4",
+        "maatwebsite/excel": "^1.1",
         "setasign/fpdf": "^1.8",
         "thiagoalessio/tesseract_ocr": "^2.13"
     },

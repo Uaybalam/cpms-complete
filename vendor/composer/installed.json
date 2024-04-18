@@ -2388,6 +2388,68 @@
             "install-path": "../league/mime-type-detection"
         },
         {
+            "name": "maatwebsite/excel",
+            "version": "v1.1.5",
+            "version_normalized": "1.1.5.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Maatwebsite/Laravel-Excel.git",
+                "reference": "0c67aba8387726458d42461eae91a3415593bbc4"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Maatwebsite/Laravel-Excel/zipball/0c67aba8387726458d42461eae91a3415593bbc4",
+                "reference": "0c67aba8387726458d42461eae91a3415593bbc4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.3.0",
+                "phpoffice/phpexcel": "~1.8.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "orchestra/testbench": "~2.2.0@dev",
+                "phpunit/phpunit": "~4.0"
+            },
+            "time": "2014-07-10T09:06:07+00:00",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "Maatwebsite\\Excel\\": "src/"
+                },
+                "classmap": [
+                    "src/Maatwebsite/Excel",
+                    "tests/TestCase.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maatwebsite.nl",
+                    "email": "patrick@maatwebsite.nl"
+                }
+            ],
+            "description": "An eloquent way of importing and exporting Excel and CSV in Laravel 4 with the power of PHPExcel",
+            "keywords": [
+                "PHPExcel",
+                "batch",
+                "csv",
+                "excel",
+                "export",
+                "import",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/Maatwebsite/Laravel-Excel/issues",
+                "source": "https://github.com/Maatwebsite/Laravel-Excel/tree/master"
+            },
+            "install-path": "../maatwebsite/excel"
+        },
+        {
             "name": "mockery/mockery",
             "version": "1.6.11",
             "version_normalized": "1.6.11.0",
@@ -3246,6 +3308,71 @@
                 "source": "https://github.com/phar-io/version/tree/3.2.1"
             },
             "install-path": "../phar-io/version"
+        },
+        {
+            "name": "phpoffice/phpexcel",
+            "version": "1.8.1",
+            "version_normalized": "1.8.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PHPOffice/PHPExcel.git",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PHPOffice/PHPExcel/zipball/372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "reference": "372c7cbb695a6f6f1e62649381aeaa37e7e70b32",
+                "shasum": ""
+            },
+            "require": {
+                "ext-xml": "*",
+                "ext-xmlwriter": "*",
+                "php": ">=5.2.0"
+            },
+            "time": "2015-05-01T07:00:55+00:00",
+            "type": "library",
+            "installation-source": "source",
+            "autoload": {
+                "psr-0": {
+                    "PHPExcel": "Classes/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "LGPL"
+            ],
+            "authors": [
+                {
+                    "name": "Maarten Balliauw",
+                    "homepage": "http://blog.maartenballiauw.be"
+                },
+                {
+                    "name": "Mark Baker"
+                },
+                {
+                    "name": "Franck Lefevre",
+                    "homepage": "http://blog.rootslabs.net"
+                },
+                {
+                    "name": "Erik Tilt"
+                }
+            ],
+            "description": "PHPExcel - OpenXML - Read, Create and Write Spreadsheet documents in PHP - Spreadsheet engine",
+            "homepage": "http://phpexcel.codeplex.com",
+            "keywords": [
+                "OpenXML",
+                "excel",
+                "php",
+                "spreadsheet",
+                "xls",
+                "xlsx"
+            ],
+            "support": {
+                "issues": "https://github.com/PHPOffice/PHPExcel/issues",
+                "source": "https://github.com/PHPOffice/PHPExcel/tree/master"
+            },
+            "abandoned": "phpoffice/phpspreadsheet",
+            "install-path": "../phpoffice/phpexcel"
         },
         {
             "name": "phpoption/phpoption",
@@ -5889,17 +6016,17 @@
         },
         {
             "name": "symfony/error-handler",
-            "version": "v5.4.36",
-            "version_normalized": "5.4.36.0",
+            "version": "v5.4.38",
+            "version_normalized": "5.4.38.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/error-handler.git",
-                "reference": "90b1d7799bfc1b3ed5f902e8b334eeb7dba537a1"
+                "reference": "3c1fed45a12718e7e2758eef072677d01a0c91a4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/error-handler/zipball/90b1d7799bfc1b3ed5f902e8b334eeb7dba537a1",
-                "reference": "90b1d7799bfc1b3ed5f902e8b334eeb7dba537a1",
+                "url": "https://api.github.com/repos/symfony/error-handler/zipball/3c1fed45a12718e7e2758eef072677d01a0c91a4",
+                "reference": "3c1fed45a12718e7e2758eef072677d01a0c91a4",
                 "shasum": ""
             },
             "require": {
@@ -5912,7 +6039,7 @@
                 "symfony/http-kernel": "^4.4|^5.0|^6.0",
                 "symfony/serializer": "^4.4|^5.0|^6.0"
             },
-            "time": "2024-02-22T11:40:53+00:00",
+            "time": "2024-03-19T10:19:25+00:00",
             "bin": [
                 "Resources/bin/patch-type-declarations"
             ],
@@ -5943,7 +6070,7 @@
             "description": "Provides tools to manage errors and ease debugging PHP code",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/error-handler/tree/v5.4.36"
+                "source": "https://github.com/symfony/error-handler/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -6191,17 +6318,17 @@
         },
         {
             "name": "symfony/http-foundation",
-            "version": "v5.4.35",
-            "version_normalized": "5.4.35.0",
+            "version": "v5.4.38",
+            "version_normalized": "5.4.38.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/http-foundation.git",
-                "reference": "f2ab692a22aef1cd54beb893aa0068bdfb093928"
+                "reference": "d8c13d35f68c69e15595fe37fa2c225d11c10f7e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/f2ab692a22aef1cd54beb893aa0068bdfb093928",
-                "reference": "f2ab692a22aef1cd54beb893aa0068bdfb093928",
+                "url": "https://api.github.com/repos/symfony/http-foundation/zipball/d8c13d35f68c69e15595fe37fa2c225d11c10f7e",
+                "reference": "d8c13d35f68c69e15595fe37fa2c225d11c10f7e",
                 "shasum": ""
             },
             "require": {
@@ -6222,7 +6349,7 @@
             "suggest": {
                 "symfony/mime": "To use the file extension guesser"
             },
-            "time": "2024-01-23T13:51:25+00:00",
+            "time": "2024-03-19T10:19:25+00:00",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -6250,7 +6377,7 @@
             "description": "Defines an object-oriented layer for the HTTP specification",
             "homepage": "https://symfony.com",
             "support": {
-                "source": "https://github.com/symfony/http-foundation/tree/v5.4.35"
+                "source": "https://github.com/symfony/http-foundation/tree/v5.4.38"
             },
             "funding": [
                 {
@@ -6385,17 +6512,17 @@
         },
         {
             "name": "symfony/mime",
-            "version": "v5.4.35",
-            "version_normalized": "5.4.35.0",
+            "version": "v5.4.38",
+            "version_normalized": "5.4.38.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/mime.git",
-                "reference": "ee94d9b538f93abbbc1ee4ccff374593117b04a9"
+                "reference": "82fa6be8a0295a3932df871e88fc8c8d77aa71d4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/mime/zipball/ee94d9b538f93abbbc1ee4ccff374593117b04a9",
-                "reference": "ee94d9b538f93abbbc1ee4ccff374593117b04a9",
+                "url": "https://api.github.com/repos/symfony/mime/zipball/82fa6be8a0295a3932df871e88fc8c8d77aa71d4",
+                "reference": "82fa6be8a0295a3932df871e88fc8c8d77aa71d4",
                 "shasum": ""
             },
             "require": {
@@ -6416,11 +6543,12 @@
                 "egulias/email-validator": "^2.1.10|^3.1|^4",
                 "phpdocumentor/reflection-docblock": "^3.0|^4.0|^5.0",
                 "symfony/dependency-injection": "^4.4|^5.0|^6.0",
+                "symfony/process": "^5.4|^6.4",
                 "symfony/property-access": "^4.4|^5.1|^6.0",
                 "symfony/property-info": "^4.4|^5.1|^6.0",
                 "symfony/serializer": "^5.4.35|~6.3.12|^6.4.3"
             },
-            "time": "2024-01-30T08:00:51+00:00",
+            "time": "2024-03-21T07:25:32+00:00",
             "type": "library",
             "installation-source": "source",
             "autoload": {
@@ -6452,7 +6580,7 @@
                 "mime-type"
             ],
             "support": {
-                "source": "https://github.com/symfony/mime/tree/v5.4.35"
+                "source": "https://github.com/symfony/mime/tree/v5.4.38"
             },
             "funding": [
                 {

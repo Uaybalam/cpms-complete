@@ -1,13 +1,7 @@
 @extends('layouts.app')
 @section('content')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <body class="bg-light">
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
 <div class="container mt-4">
     <div class="alert alert-success bg-white p-4 rounded shadow mb-4">
         <h4 class="text-Secondary border-bottom pb-2 mb-3">Caja</h4>

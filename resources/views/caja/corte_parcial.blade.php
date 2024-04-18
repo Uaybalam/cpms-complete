@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <body class="bg-light">
     <div class="container">
         <h1>Corte Parcial</h1>
@@ -49,6 +49,7 @@
     <br>
     <button type="submit" class="btn btn-primary" onclick="retirarInicial()">Retiro Cantidad Inicial</button>
     <button type="submit" class="btn btn-primary" onclick="cierre()">Cerrar Caja</button>
+    <button type="submit" class="btn btn-primary" onclick="venta()">Imprimir</button>
 </div>
 </div>
 
@@ -62,7 +63,10 @@
     });
 
 
-
+    function venta()
+    {
+        obtenerpdfcierre();
+    }
 
     function retirarInicial()
         {
@@ -115,7 +119,7 @@
         var cantidad = $('input[name="Cantidad"]').val();
         // Crear un objeto con los datos a enviar
         var datos = {
-            total: total,
+            total: total - cantidad,
             cantidad: cantidad,
             detalles: obtenerDetallesTabla()
 

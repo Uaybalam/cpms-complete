@@ -1,11 +1,6 @@
 @extends('layouts.app')
 @section('content')
-
-<br>
-<br>
-<br>
-<br>
-<br>
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <body>
 @if ($registros->isEmpty())
 <div class="container mt-4">
@@ -46,7 +41,7 @@
     <input type="text" class="form-control" name="cliente" id="cliente" placeholder="Nombre del cliente" aria-label="Nombre del cliente" readonly>
     <h4 class="text-Secondary border-bottom pb-2 mb-3"></h4>
     <label class="form-label">Folio</label>
-    <input type="text" class="form-control" name="Folio" id="folio" placeholder="Folio" aria-label="Folio" readonly>
+    <input type="text" class="form-control" name="folio" id="folio" placeholder="Folio" aria-label="Folio" readonly>
 </div>
 <div class="alert alert-info bg-white p-4 rounded shadow">
     <h4 class="text-Secondary border-bottom pb-2 mb-3">Realizar venta</h4>
@@ -90,10 +85,10 @@
             console.log('Estado del checkbox:', checkbox.checked);
 
             if (checkbox.checked) {
-           
+
             totalInput.value = (parseFloat(totalInput.value) + 50).toFixed(2);
         } else {
-            
+
             totalInput.value = (parseFloat(totalInput.value) - 50).toFixed(2);
         }
         });
@@ -203,10 +198,10 @@
     }
 
     //para poner la fecha como folio
-    var folioInput = document.getElementById('folio');
+    {{--  var folioInput = document.getElementById('folio');
     var fecha = new Date();
     var formatoFecha = fecha.toISOString().replace(/[-T:.]/g, '');
-    folioInput.value = formatoFecha;
+    folioInput.value = formatoFecha;  --}}
 
     //logica para el cambio
     var cantidadInput = document.getElementById('Cantidad');
@@ -330,6 +325,7 @@
 
                         // Llenar el campo de nombre de cliente con el nombre del propietario del vehículo
                         $('input[name="cliente"]').val(data.vehiculo.name);
+                        $('input[name="folio"]').val(data.vehiculo.registration_number);
                         // Inicializar la tabla con DataTables después de que se hayan llenado los datos
 
 

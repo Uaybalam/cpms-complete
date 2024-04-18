@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Vehicle;
 use App\Models\VehicleIn;
-use Illuminate\Http\Request;
+
 
 class HomeController extends Controller
 {
@@ -27,5 +27,7 @@ class HomeController extends Controller
         return view('home', ['vehicles' => $vehicles->get(),
             'vehiclesIn' => VehicleIn::with(['vehicle:id,name,registration_number,plat_number,model', 'user:id,name'])->where('status', 0)->get()] ,compact('total_amount', 'total_vehicle_in', 'total_vehicle_out','total_vehicles'));
     }
+
+
 }
 

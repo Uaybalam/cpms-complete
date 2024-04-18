@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @section('content')
-
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <body class="bg-light">
     <div class="container">
         <h1>Corte Parcial</h1>

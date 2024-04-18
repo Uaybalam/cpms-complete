@@ -1,4 +1,5 @@
 @extends('layouts.app')
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 @section('content')
 <div class="container-fluid">
@@ -90,12 +91,12 @@
     </div>
 
 </div>
-<button type="button" class="btn btn-success" onclick="generarPDF()">Imprimir</button>
+<button type="button" class="btn btn-success" onclick="exportarExcel()">Exporta a Excel</button>
 
 @endsection
 
 <script>
-    function generarPDF() {
+     function exportarExcel() {
        // Crear un objeto con los datos a enviar
        var datos = {
            detalles: obtenerDetallesTabla()

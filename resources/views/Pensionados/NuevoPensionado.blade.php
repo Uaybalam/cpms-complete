@@ -1,13 +1,10 @@
 @extends('layouts.app')
 
 @section('content')
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <title>Agregar Nuevo Pensionado</title>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
+   
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
 <body class="bg-light">
     @if(Session::has('error'))
     <div class="alert alert-danger">
@@ -86,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Agregar Pensionado</button>
+                    <button type="submit" class="btn btn-primary mr-2">Agregar Pensionado</button>
                 </form>
 
             </div>
@@ -129,7 +126,6 @@
         })
     </script>
 </body>
-</html>
 @else
 <div class="container mt-4">
     <div class="alert alert-danger" role="alert">

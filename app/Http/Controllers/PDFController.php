@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Factura;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Concerns\FromCollection;
+use App\Exports\VehiclesExport;
 use FPDF;
 
 class PDFController extends Controller{
@@ -282,54 +285,42 @@ class PDFController extends Controller{
 
     }
 
-    public function generarPdfLavadas(Request $request)
-    {
+    public function generarPdfLavadas(Request $request) {
+        $detalles = $request->input('detalles');
+        $json_data = json_encode($detalles);
+        $fileName = 'vehicles.xlsx';
+        $output_path = public_path($fileName);
 
-        set_time_limit(300);
-    // Ruta del archivo HTML
-    $html_file_path = base_path('resources/views/lavadas.blade.php');
+        // Comando para ejecutar el script Python
+        $command = "python " . base_path('scripts/generar_exel.py') . " " . escapeshellarg($output_path);
+        
+        $process = proc_open($command, [
+            0 => ['pipe', 'r'],  // stdin
+            1 => ['pipe', 'w'],  // stdout
+            2 => ['pipe', 'w'],  // stderr
+        ], $pipes);
 
-    // Verifica si el archivo HTML existe
-    if (file_exists($html_file_path)) {
-    // Recibe los datos del formulario
-    $folio = date('Ymdhms').'Z';
-    $detalles = $request->input('detalles');
-    $html_content = view('lavadas', ['folio'=> $folio, 'detalles'=> $detalles])->render();
+        if (is_resource($process)) {
+            fwrite($pipes[0], $json_data);
+            fclose($pipes[0]);
 
-    // Resto del código para generar el PDF
-    $output_path = base_path('public/lavada.pdf');
+            $output = stream_get_contents($pipes[1]);
+            fclose($pipes[1]);
 
-    $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
-        0 => ['pipe', 'r'], // stdin
-        1 => ['pipe', 'w'], // stdout
-        2 => ['pipe', 'w'], // stderr
-    ], $pipes);
+            $error_output = stream_get_contents($pipes[2]);
+            fclose($pipes[2]);
 
-    if (is_resource($process)) {
-        // Escribe la cadena HTML en la entrada estándar del proceso
-        fwrite($pipes[0], $html_content);
-        fclose($pipes[0]);
+            $exit_code = proc_close($process);
 
-        // Espera a que el proceso termine
-        $exit_code = proc_close($process);
-        // Impresion automatica
-        if ($exit_code === 0) {
-            return response()->download($output_path, 'nombre_del_archivo.pdf');
+            if ($exit_code === 0) {
+                return response()->json(['url' => url('excel/' . $fileName)]);
+            } else {
+                return response()->json(['message' => 'Error al generar el archivo Excel', 'error' => $error_output], 500);
+            }
         } else {
-            // Hubo un error en el proceso, manejarlo adecuadamente
-            return response()->json(['message' => 'Error al generar el PDF'], 500);
+            return response()->json(['message' => 'No se pudo iniciar el proceso de Python'], 500);
         }
-    } else {
-        // No se pudo iniciar el proceso, manejar el error
-        return response()->json(['message' => 'Error al iniciar el proceso'], 500);
     }
-
-} else {
-    // El archivo HTML no existe, manejar el error
-    return response()->json(['message' => 'El archivo HTML no existe'], 404);
-}
-
-}
 
 }
 
