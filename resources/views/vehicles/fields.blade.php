@@ -50,7 +50,7 @@
                 <input type="hidden" name="vehicle_id" value="{{ $vehicle->id ?? '' }}">
             </div>
                 <input type="hidden" name="packing_charge" id="packing_charge" value="{{ $vehicle->costo ?? '' }}">
-
+                <input type="hidden" name="visitas" id="visitas">
             </div>
         </div>
 
@@ -96,6 +96,7 @@
             if (response.vehiculo) {
                 document.getElementById('name').value = response.customer.name;
                 document.getElementById('phone').value = response.customer.phone;
+                document.getElementById('visitas').value = response.vehiculo.Visitas;
 
                 if(response.vehiculo.Visitas === 4)
                 {
@@ -190,6 +191,8 @@
         var modelo = document.getElementById('model').value;
         var platNumber = document.getElementById('plat_number').value;
         var name =  document.getElementById('name').value;
+        var visitas = parseInt(document.getElementById('visitas').value, 10);
+
 
 
         // Enviar los datos al controlador utilizando AJAX
@@ -202,6 +205,7 @@
                 modelo: modelo,
                 plat_number: platNumber,
                 name: name,
+                visitas: visitas,
                 _token: '{{ csrf_token() }}'
             },
             success: function(response) {

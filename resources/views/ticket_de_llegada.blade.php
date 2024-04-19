@@ -102,6 +102,21 @@
                 <p>Telefonos: 3323928579 / 3335989730</p>
             </div>
         </div>
+        @if ($visitas === 3)
+        <div class="section">
+            <div class="section-title"><b>No. de Visitas: 4</b></div>
+            <div class="section-content">
+                <p>Esta es tu visita numero 4. En tu siguiente visita se te entregara un obsequio</p>
+            </div>
+        </div>
+    @elseif ($visitas === 8)
+        <div class="section">
+            <div class="section-title"><b>No. de Visitas: 9</b></div>
+            <div class="section-content">
+                <p>Esta es tu visita numero 9. En tu siguiente visita tu estadia sera gratis</p>
+            </div>
+        </div>
+    @endif
         <div class="section">
             <div class="section-title"><b>Responsabilidades</b></div>
             <div class="section-content">

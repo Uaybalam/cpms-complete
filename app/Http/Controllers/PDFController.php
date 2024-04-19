@@ -56,13 +56,14 @@ class PDFController extends Controller{
     // Recibe los datos del formulario
     $Color = $request->input('Color');
     $name = $request->input('name');
+    $visitas = (int) $request->input('visitas');
     $modelo = $request->input('modelo');
     $platNumber = $request->input('plat_number');
     $fechaActual = date('Y-m-d');
     $fechaSalida = $request->input('fechaSalida');
     $folio = date('Ymdhms').'Z';
 
-    $html_content = view('ticket_de_llegada', ['platNumber' => $platNumber, 'modelo' => $modelo, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
+    $html_content = view('ticket_de_llegada', ['platNumber' => $platNumber, 'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/entrada.pdf');
@@ -293,7 +294,7 @@ class PDFController extends Controller{
 
         // Comando para ejecutar el script Python
         $command = "python " . base_path('scripts/generar_exel.py') . " " . escapeshellarg($output_path);
-        
+
         $process = proc_open($command, [
             0 => ['pipe', 'r'],  // stdin
             1 => ['pipe', 'w'],  // stdout

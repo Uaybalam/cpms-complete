@@ -52,10 +52,6 @@
     <label class="form-label">Cambio</label>
     <input type="text" class="form-control" name="Cambio" placeholder="Cambio" id="cambio" aria-label="Cambio" readonly>
     <h4 class="text-Secondary border-bottom pb-2 mb-3"></h4>
-    <div class="form-check">
-        <input class="form-check-input" type="checkbox" value="apagado" id="checkboxPagoTarjeta">
-        <label class="form-check-label" for="checkboxPagoTarjeta">Pago con Tarjeta</label>
-    </div>
     <br>
     <br>
     <button type="button" class="btn btn-success" onclick="funcionesBoton()">Aceptar</button>
