@@ -85,38 +85,69 @@ class VehicleController extends Controller
         if ($diffInMinutes > 15) {
             // Redirigir a donde quieras con un mensaje, por ejemplo a la lista de vehículos
             return redirect()->route('vehicles.index')->with('error', 'No puedes editar este vehículo despues 15 minutos desde su registro.');
+            }
+
+        
+        $vehiculo = Vehicle::where('id', $vehicle->id)->first();
+        $categories = Category::where('id', $vehiculo->category_id)->first();
+        $salida = VehicleIn::where('vehicle_id', $vehicle->id)->first();
+        
+
+        return view('vehicles.edit', ['vehiculo' => $vehiculo, 'categories' => $categories , 'salida' => $salida]);
     }
 
-        // Si han pasado 15 minutos o más, permitir la edición
-        return view('vehicles.edit', compact('vehicle'), [
-        'categories' => Category::get(['id', 'name']),
-        'customers' => Customer::get(['id', 'name'])
+    // public function update(Request $request, Vehicle $vehicle)
+    //     {
+    // // Valida la entrada
+    // $validatedData = $request->validate([
+    //     'name' => 'required|max:255',
+    //     'registration_number' => 'required',
+    //     'category_id' => 'required|exists:categories,id',
+    //     // otros campos según sea necesario
+    // ]);
 
-    ]);
-    }
+    // // Actualiza el vehículo con los datos validados
+    // $vehicle->update($validatedData);
 
+    // // Redirecciona con un mensaje de éxito
+    // return redirect()->route('vehicles.index')->with('sucess', 'Vehiculo Actualizado');
+    // }
     public function update(Request $request, Vehicle $vehicle)
-        {
+{
+    // Asegurarse de que el usuario tiene permiso para actualizar el vehículo
+    // if (!Gate::allows('update-vehicle', $vehicle)) {
+    //     abort(403);
+    // }
+
     // Valida la entrada
     $validatedData = $request->validate([
-        'name' => 'required|max:255',
-        'registration_number' => 'required',
+        'name' => 'required|string|max:255',
+        'registration_number' => 'required|string|max:255',
         'category_id' => 'required|exists:categories,id',
-        // otros campos según sea necesario
+        'salida' => 'required|date',
+        'model' => 'required|string|max:255',
+        'plat_number' => 'required|string|max:20',
+        'color' => 'nullable|string|max:255',
     ]);
 
-    // Actualiza el vehículo con los datos validados
-    $vehicle->update($validatedData);
+    try {
+        // Actualiza el vehículo con los datos validados
+        $vehicle->update($validatedData);
 
-    // Redirecciona con un mensaje de éxito
-    return redirect()->route('vehicles.index')->with('success', 'Vehicle updated successfully!');
+        // Redirecciona con un mensaje de éxito
+        return redirect()->route('vehicles.index')->with('success', 'Vehículo actualizado correctamente.');
+
+    } catch (\Exception $e) {
+        // Manejo de la excepción en caso de error en la base de datos u otro problema
+        return back()->withErrors('error', 'Error al actualizar el vehículo: ' . $e->getMessage());
     }
+}
 
 
     public function destroy(Vehicle $vehicle)
     {
         $vehicle->delete();
-        return redirect()->route('vehicles.index')->with('success', 'Vehicle Deleted Successfully!!');
+        return redirect()->route('vehicles.index')->with('success', 'Vehiculo Eliminado');
 
     }
 }

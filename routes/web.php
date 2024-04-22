@@ -26,7 +26,8 @@ use App\Http\Controllers\UserController;
 */
 Route::post('/lavadas', [PDFController::class, 'generarPdfLavadas']);
 
-Route::put('/vehicles/{vehicle}', 'VehicleController@update')->name('vehicles.update');
+Route::put('/vehicles/{vehicle}', [VehicleController::class, 'update'])->name('vehicles.update');
+
 
 
 
