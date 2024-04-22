@@ -92,6 +92,7 @@
             <div class="section-title"><b>Hora de Entrada y Salida</b></div>
             <div class="section-content">
                 <p>Hora de Entrada: {{$fechaActual}}</p>
+                <p>Hora de Salida: {{$fechasalida}}</p>
             </div>
         </div>
         <div class="section">

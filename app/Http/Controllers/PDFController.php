@@ -60,10 +60,10 @@ class PDFController extends Controller{
     $modelo = $request->input('modelo');
     $platNumber = $request->input('plat_number');
     $fechaActual = date('Y-m-d');
-    $fechaSalida = $request->input('fechaSalida');
+    $fechaSalida = $request->input('salida');
     $folio = date('Ymdhms').'Z';
 
-    $html_content = view('ticket_de_llegada', ['platNumber' => $platNumber, 'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
+    $html_content = view('ticket_de_llegada', ['platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/entrada.pdf');

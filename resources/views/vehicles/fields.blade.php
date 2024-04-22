@@ -22,7 +22,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label for="fechaSalida">Fecha y hora de salida</label>
-                <input type="datetime-local" name="salida" value="{{ isset($customer) ? $customer->fechaSalida : '' }}" class="form-control" id="salida" placeholder="Fecha y hora de salida">
+                <input type="datetime-local" name="salida" id="salida" value="{{ isset($customer) ? $customer->fechaSalida : '' }}" class="form-control" id="salida" placeholder="Fecha y hora de salida">
             </div>
         </div>
 
@@ -192,6 +192,7 @@
         var platNumber = document.getElementById('plat_number').value;
         var name =  document.getElementById('name').value;
         var visitas = parseInt(document.getElementById('visitas').value, 10);
+        var salida = document.getElementById('salida').value;
 
 
 
@@ -206,6 +207,7 @@
                 plat_number: platNumber,
                 name: name,
                 visitas: visitas,
+                salida:salida,
                 _token: '{{ csrf_token() }}'
             },
             success: function(response) {
