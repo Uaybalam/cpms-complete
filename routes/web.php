@@ -12,6 +12,7 @@ use App\Http\Controllers\AutoController;
 use App\Http\Controllers\PlateController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,6 +25,8 @@ use App\Http\Controllers\HomeController;
 |
 */
 Route::post('/lavadas', [PDFController::class, 'generarPdfLavadas']);
+
+Route::put('/vehicles/{vehicle}', 'VehicleController@update')->name('vehicles.update');
 
 
 

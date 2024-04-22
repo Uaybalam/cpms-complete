@@ -1,5 +1,8 @@
-<form action="{{ route('vehicles.store') }}"  class="forms-sample" method="POST">
+<form action="{{ isset($vehicle) ? route('vehicles.update', $vehicle->id) : route('vehicles.store') }}" method="POST" class="forms-sample"  class="forms-sample" method="POST">
     @csrf
+    @if (isset($vehicle))
+        @method('PUT')
+    @endif
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">

@@ -8,6 +8,8 @@ use App\Http\Requests\StoreVehicleRequest;
 use App\Http\Requests\UpdateVehicleRequest;
 use App\Models\Category;
 use App\Models\Customer;
+use Illuminate\Http\Request;
+use Carbon\Carbon; // Importar Carbon para manejo de fechas
 
 class VehicleController extends Controller
 {
@@ -74,14 +76,42 @@ class VehicleController extends Controller
 
     public function edit(Vehicle $vehicle)
     {
-        return view('vehicles.edit', compact('vehicle'), ['categories' => Category::get(['id','name']),
-        'customers' => Customer::get(['id','name'])]);
+
+        $now = Carbon::now(); // Obtener la hora y fecha actual
+        $creationTime = Carbon::parse($vehicle->created_at); // Obtener la hora y fecha de creación del vehículo
+        $diffInMinutes = $creationTime->diffInMinutes($now); // Calcular la diferencia en minutos
+
+        // Comprobar si han pasado menos de 15 minutos desde que se creó el vehículo
+        if ($diffInMinutes > 15) {
+            // Redirigir a donde quieras con un mensaje, por ejemplo a la lista de vehículos
+            return redirect()->route('vehicles.index')->with('error', 'No puedes editar este vehículo despues 15 minutos desde su registro.');
     }
 
-    public function update(UpdateVehicleRequest $request, Vehicle $vehicle)
-    {
-        //
+        // Si han pasado 15 minutos o más, permitir la edición
+        return view('vehicles.edit', compact('vehicle'), [
+        'categories' => Category::get(['id', 'name']),
+        'customers' => Customer::get(['id', 'name'])
+
+    ]);
     }
+
+    public function update(Request $request, Vehicle $vehicle)
+        {
+    // Valida la entrada
+    $validatedData = $request->validate([
+        'name' => 'required|max:255',
+        'registration_number' => 'required',
+        'category_id' => 'required|exists:categories,id',
+        // otros campos según sea necesario
+    ]);
+
+    // Actualiza el vehículo con los datos validados
+    $vehicle->update($validatedData);
+
+    // Redirecciona con un mensaje de éxito
+    return redirect()->route('vehicles.index')->with('success', 'Vehicle updated successfully!');
+    }
+
 
     public function destroy(Vehicle $vehicle)
     {
