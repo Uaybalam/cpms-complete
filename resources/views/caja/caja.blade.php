@@ -277,7 +277,13 @@
 
                             // Ajuste de subtotal después de cada hora
                             if (subtotal > 0) {
+                                if(vehiculo === 11 && dias < 2){
+                                    subtotal += 15;
+                                }
+                                else{
+
                                 subtotal += 30;
+                                }
                             }
 
                             // Incrementar la fecha en una hora
@@ -309,7 +315,12 @@
 
                             // Ajustar el total del subtotal
                             if (subtotal > 0) {
+                                if(vehiculo === 11 && dias < 2){
+                                    totalSubtotal = subtotal - 15;
+                                }
+                                else{
                                 totalSubtotal = subtotal - 30; // Este ajuste parece corregir un incremento anterior, asegúrate de que es lo deseado
+                                }
                             } else {
                                 totalSubtotal = 0;
                             }
