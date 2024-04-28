@@ -266,6 +266,9 @@
                                 {
                                 subtotal = 0;
                                 }
+                                else if(vehiculo === 10){
+                                    subtotal = Math.floor(dias / 7) * 900;
+                                }
                                 else{
                                     subtotal = Math.floor(dias / 7) * 1200; // Incrementar el valor base de 1200 por cada múltiplo de 7
                                 }
@@ -279,6 +282,9 @@
                             if (subtotal > 0) {
                                 if(vehiculo === 11 && dias < 2){
                                     subtotal += 15;
+                                }
+                                else if(vehiculo === 10){
+                                    subtotal +=20
                                 }
                                 else{
 
@@ -301,6 +307,9 @@
                                     {
                                         subtotal = 0;
                                     }
+                                    else if(vehiculo === 10){
+                                        subtotal += 129;
+                                    }
                                     else{
                                         subtotal += 180;
                                         descuento = 0;
@@ -317,6 +326,9 @@
                             if (subtotal > 0) {
                                 if(vehiculo === 11 && dias < 2){
                                     totalSubtotal = subtotal - 15;
+                                }
+                                else if(vehiculo === 10){
+                                    totalSubtotal = subtotal - 20;
                                 }
                                 else{
                                 totalSubtotal = subtotal - 30; // Este ajuste parece corregir un incremento anterior, asegúrate de que es lo deseado
