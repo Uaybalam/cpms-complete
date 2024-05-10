@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-   
+
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -63,11 +63,11 @@
                             </div>
                             <div class="mb-3">
                                 <label for="modelo2" class="form-label">Modelo del Segundo Auto</label>
-                                <input type="text" class="form-control" id="modelo2" name="modelo2" required>
+                                <input type="text" class="form-control" id="modelo2" name="modelo2">
                             </div>
                             <div class="mb-3">
                                 <label for="color2" class="form-label">Color del Segundo Auto</label>
-                                <input type="text" class="form-control" id="color2" name="color2" required>
+                                <input type="text" class="form-control" id="color2" name="color2" >
                             </div>
                             <div class="mb-3">
                                 <label for="telefono" class="form-label">Teléfono</label>

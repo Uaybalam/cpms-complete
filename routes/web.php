@@ -60,6 +60,9 @@ Route::get('/pensionados/{pensionado}/verificar-pago', [PensionesController::cla
 Route::get('/pensionados/{pensionado}/edit', [PensionesController::class, 'edit'])->name('pensionados.edit');
 Route::put('/pensionados/{pensionado}', [PensionesController::class, 'update'])->name('pensionados.update');
 Route::delete('/pensionados/{pensionado}', [PensionesController::class, 'destroy'])->name('pensionados.destroy');
+Route::get('/obtener-pensionados/{id}',[PensionesController::class, 'mostrar'])->name('pensionados.obtener-datos');
+Route::get('/obtener-historial/{id}',[PensionesController::class, 'historial'])->name('pensionados.obtener-historial');
+Route::post('/cobrar',[PensionesController::class, 'cobro'])->name('pensionados.cobrar');
 Route::post('/usuario', [RegisterController::class, 'store'])->name('crear.store');
 
 // Rutas para los autos

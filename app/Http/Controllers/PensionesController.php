@@ -9,6 +9,7 @@ use App\Models\Auto;
 use Illuminate\Http\Request;
 use App\Models\NuevaCaja;
 use App\Models\Corte;
+use App\Models\HistorialP;
 
 class PensionesController extends Controller
 {
@@ -26,6 +27,59 @@ class PensionesController extends Controller
             echo "No se encontró la categoría Pension.";
         }
 
+    }
+
+    public function cobro(Request $request)
+    {
+
+        // Obtener el ID del pensionado desde el request
+        $pensionadoId = $request->input('pensionado_id');
+        $nombre = $request->input('pensionadoNombre');
+        $montoCobro = $request->input('montoCobro');
+        $ultimo_pago = date('Y-m-d');
+
+        // Encontrar el pensionado por ID
+        $pensionado = Pensionado::find($pensionadoId);
+        $pensionado->update([
+                                'ultimo_pago' => date('Y-m-d')  // Esto establece la fecha y hora actual
+                            ]);
+        $pensionado = HistorialP::create([
+                                            'nombre'=> $nombre,
+                                            'ultimo_pago'=> $ultimo_pago,
+                                            'cobro'=> $montoCobro,
+                                            'pensionado_id'=> $pensionadoId
+                                        ]);
+    return redirect()->route('pensionados.pensionados')->with('success', 'Auto actualizado correctamente');
+    }
+
+    public function mostrar($id)
+    {
+        $pensionado = Pensionado::find($id);
+        $auto = Auto::where('pensionado_id',$id)->first();
+        $array = [
+            'pensionado' => $pensionado->toArray(),
+            'auto' => $auto->toArray(),
+        ];
+        return response()->json($array);
+
+    }
+    public function historial($id)
+    {
+        // Buscar todos los registros de HistorialP que corresponden al pensionado_id dado
+        $historial = HistorialP::where('pensionado_id', $id)->get();
+
+        // Preparar la respuesta
+        if ($historial->isEmpty()) {
+            return response()->json([
+                'message' => 'No hay historial disponible para este pensionado',
+                'pensionado' => []
+            ]);
+        }
+
+        // Devolver los datos como JSON
+        return response()->json([
+            'pensionado' => $historial->toArray()
+        ]);
     }
 
     public function pensionados()
@@ -73,7 +127,13 @@ class PensionesController extends Controller
             $pensionado->autos()->save($auto);
 
 
-
+            HistorialP::create([
+                'nombre' => $request->nombre,
+                'ultimo_pago' => date('Y-m-d'),
+                'cobro' => $request->Total,
+                'pensionado_id' => $pensionado->id,
+            ]);
+            
             $datos = NuevaCaja::all();
             $total = $request->input('Total');
             foreach ($datos as $datoOrigen) {
