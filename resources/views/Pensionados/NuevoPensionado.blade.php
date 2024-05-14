@@ -5,7 +5,7 @@
 <meta name="csrf-token" content="{{ csrf_token() }}">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
-<body class="bg-light">
+
     @if(Session::has('error'))
     <div class="alert alert-danger">
         {{ Session::get('error') }}
@@ -15,11 +15,12 @@
         <h1>Agregar Nuevo Pensionado</h1>
     </div>
     @if(auth()->check() && auth()->user()->role == 'Administrador')
+    <form id="formularioPensionado" action="{{ route('pensionados.store') }}" method="POST">
+        @csrf
     <div class="container mt-4">
         <div class="card">
             <div class="card-body">
-                <form action="{{ route('pensionados.store') }}" method="POST">
-                    @csrf
+
                     <div class="row">
                         <div class="col-md-6">
                             <div class="mb-3">
@@ -84,13 +85,39 @@
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary mr-2">Agregar Pensionado</button>
-                </form>
+
 
             </div>
         </div>
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
+</form>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script>
+
+    $(document).ready(function(){
+        $('#formularioPensionado').on('submit', function(e){
+            e.preventDefault(); // Prevenir el envío normal del formulario inicialmente
+
+            var formData = $(this).serialize(); // Serializa los datos del formulario
+
+            $.ajax({
+                type: "POST",
+                url: "{{ route('pdf.pensiones') }}", // Puedes cambiar la URL si necesitas enviar los datos a otro controlador
+                data: formData,
+                success: function(response){
+                    console.log('AJAX response:', response);
+                    // Enviar el formulario normalmente después de la respuesta AJAX
+                    $('#formularioPensionado').unbind('submit').submit();
+                },
+                error: function(error){
+                    console.log('Error:', error);
+                    alert('Error al enviar los datos via AJAX.');
+                }
+            });
+        });
+    });
 
         var today = new Date();
         var dd = String(today.getDate()).padStart(2, '0');
@@ -125,7 +152,7 @@
             totalInput.value = precioFijo.toFixed(2);
         })
     </script>
-</body>
+
 @else
 <div class="container mt-4">
     <div class="alert alert-danger" role="alert">

@@ -29,11 +29,12 @@ Route::post('/lavadas', [PDFController::class, 'generarPdfLavadas']);
 Route::put('/vehicles/{vehicle}', [VehicleController::class, 'update'])->name('vehicles.update');
 
 
-
-
 Route::post('/generar-pdf', [PDFController::class, 'generarQR']);
 Route::post('/generar-pdf-salida', [PDFController::class, 'generarpdfSalida']);
 Route::post('/generar-Cpdf', [PDFController::class, 'generarpdfCierre']);
+Route::post('/generar-pdf-pensiones', [PDFController::class, 'generarpdfPensiones'])-> name('pdf.pensiones');
+Route::post('/pdfhistorico', [PDFController::class, 'pdfhistorico'])-> name('pdf.historico');
+
 
 Route::get('/Nueva-caja', [NuevaCajaController::class, 'abrirModal']) -> name('abrir.caja');
 Route::post('/guardar-datos', [NuevaCajaController::class, 'guardarDatos'])->name('guardar-datos');

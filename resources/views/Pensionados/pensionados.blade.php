@@ -88,7 +88,7 @@
               </button>
             </div>
             <div class="modal-body">
-                <form action="{{ route('pensionados.cobrar') }}" method="POST">
+                <form id="formularioPensionado" action="{{ route('pensionados.cobrar') }}" method="POST">
                     @csrf
                     <!-- Aquí se mostrarán los datos del pensionado en inputs de solo lectura -->
                     <label>ID</label>
@@ -142,6 +142,29 @@
 
 
     <script>
+        $(document).ready(function(){
+            $('#formularioPensionado').on('submit', function(e){
+                e.preventDefault(); // Prevenir el envío normal del formulario inicialmente
+
+                var formData = $(this).serialize(); // Serializa los datos del formulario
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('pdf.historico') }}", // Puedes cambiar la URL si necesitas enviar los datos a otro controlador
+                    data: formData,
+                    success: function(response){
+                        console.log('AJAX response:', response);
+                        // Enviar el formulario normalmente después de la respuesta AJAX
+                        $('#formularioPensionado').unbind('submit').submit();
+                    },
+                    error: function(error){
+                        console.log('Error:', error);
+                        alert('Error al enviar los datos via AJAX.');
+                    }
+                });
+            });
+        });
+
         $('#closeBtn').click(function() {
             location.reload();
         });

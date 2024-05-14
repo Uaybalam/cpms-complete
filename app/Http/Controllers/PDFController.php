@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Factura;
 use Illuminate\Http\Request;
+use App\Models\Pensionado;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Exports\VehiclesExport;
+use App\Models\HistorialP;
 use FPDF;
 
 class PDFController extends Controller{
@@ -323,5 +325,163 @@ class PDFController extends Controller{
         }
     }
 
+    public function generarpdfPensiones(Request $request)
+    {
+
+        set_time_limit(300);
+    // Ruta del archivo HTML
+    $html_file_path = base_path('resources/views/ticket_de_pensionado.blade.php');
+
+    // Verifica si el archivo HTML existe
+    if (file_exists($html_file_path)) {
+    // Recibe los datos del formulario
+    $Color = $request->input('color');
+    $name = $request->input('nombre');
+    $modelo = $request->input('modelo');
+    $placa = $request->input('placa');
+    $Color2 = $request->input('color2');
+    $modelo2 = $request->input('modelo2');
+    $placa2 = $request->input('placa2');
+    $folio = date('Ymdhms').'Z';
+
+    $html_content = view('ticket_de_pensionado', ['placa' => $placa, 'color' => $Color, 'modelo' => $modelo,'placa2' => $placa2, 'color2' => $Color2, 'modelo2' => $modelo2 ])->render();
+
+    // Resto del código para generar el PDF
+    $output_path = base_path('public/pensionado.pdf');
+
+    $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
+        0 => ['pipe', 'r'], // stdin
+        1 => ['pipe', 'w'], // stdout
+        2 => ['pipe', 'w'], // stderr
+    ], $pipes);
+
+    if (is_resource($process)) {
+        // Escribe la cadena HTML en la entrada estándar del proceso
+        fwrite($pipes[0], $html_content);
+        fclose($pipes[0]);
+
+        // Espera a que el proceso termine
+        $exit_code = proc_close($process);
+        // Impresion automatica
+        if ($exit_code === 0) {
+            ob_start();
+            $pdfContent = file_get_contents($output_path);
+            $pdfContent = utf8_encode($pdfContent);
+
+            Factura::create([
+                'cliente' => $name,
+                'folio' => $folio,
+                'pdf_content' => $pdfContent,
+            ]);
+
+            //Impresion automatica
+            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\entrada.ps1';
+            exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
+
+             // Verificación del resultado de la impresión
+             if ($returnVar == 0) {
+                // El comando se ejecutó correctamente
+                echo "El archivo se ha enviado a la impresora correctamente.";
+            } else {
+                // El comando falló
+                echo "Error al enviar el archivo a la impresora. Código de error: $returnVar";
+                // Imprimir la salida del comando para depuración
+                echo "Salida del comando de impresión: " . implode("\n", $output);
+            }
+
+            return response()->download($output_path, 'nombre_del_archivo.pdf');
+        } else {
+            // Hubo un error en el proceso, manejarlo adecuadamente
+            return response()->json(['message' => 'Error al generar el PDF'], 500);
+        }
+    } else {
+        // No se pudo iniciar el proceso, manejar el error
+        return response()->json(['message' => 'Error al iniciar el proceso'], 500);
+    }
+
+} else {
+    // El archivo HTML no existe, manejar el error
+    return response()->json(['message' => 'El archivo HTML no existe'], 404);
+}
+    }
+
+    public function pdfhistorico(Request $request)
+    {
+
+        set_time_limit(300);
+    // Ruta del archivo HTML
+    $html_file_path = base_path('resources/views/pensionado_historico.blade.php');
+
+    // Verifica si el archivo HTML existe
+    if (file_exists($html_file_path)) {
+    // Recibe los datos del formulario
+    $pensionado = HistorialP::where('pensionado_id', $request->input('pensionado_id'))->get();
+    $Color = $request->input('color1');
+    $name = $request->input('pensionadoNombre');
+    $placa = $request->input('placa1');
+    $Color2 = $request->input('color2');
+    $placa2 = $request->input('placa2');
+    $folio = date('Ymdhms').'Z';
+
+    $html_content = view('pensionado_historico', ['placa' => $placa, 'color' => $Color, 'placa2' => $placa2, 'color2' => $Color2, 'pensionados'=> $pensionado ])->render();
+
+    // Resto del código para generar el PDF
+    $output_path = base_path('public/pensionadoH.pdf');
+
+    $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
+        0 => ['pipe', 'r'], // stdin
+        1 => ['pipe', 'w'], // stdout
+        2 => ['pipe', 'w'], // stderr
+    ], $pipes);
+
+    if (is_resource($process)) {
+        // Escribe la cadena HTML en la entrada estándar del proceso
+        fwrite($pipes[0], $html_content);
+        fclose($pipes[0]);
+
+        // Espera a que el proceso termine
+        $exit_code = proc_close($process);
+        // Impresion automatica
+        if ($exit_code === 0) {
+            ob_start();
+            $pdfContent = file_get_contents($output_path);
+            $pdfContent = utf8_encode($pdfContent);
+
+            Factura::create([
+                'cliente' => $name,
+                'folio' => $folio,
+                'pdf_content' => $pdfContent,
+            ]);
+
+            //Impresion automatica
+            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\pensionadoH.ps1';
+            exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
+
+             // Verificación del resultado de la impresión
+             if ($returnVar == 0) {
+                // El comando se ejecutó correctamente
+                echo "El archivo se ha enviado a la impresora correctamente.";
+            } else {
+                // El comando falló
+                echo "Error al enviar el archivo a la impresora. Código de error: $returnVar";
+                // Imprimir la salida del comando para depuración
+                echo "Salida del comando de impresión: " . implode("\n", $output);
+            }
+
+            return response()->download($output_path, 'nombre_del_archivo.pdf');
+        } else {
+            // Hubo un error en el proceso, manejarlo adecuadamente
+            return response()->json(['message' => 'Error al generar el PDF'], 500);
+        }
+    } else {
+        // No se pudo iniciar el proceso, manejar el error
+        return response()->json(['message' => 'Error al iniciar el proceso'], 500);
+    }
+
+} else {
+    // El archivo HTML no existe, manejar el error
+    return response()->json(['message' => 'El archivo HTML no existe'], 404);
+}
+    }
 }
 
