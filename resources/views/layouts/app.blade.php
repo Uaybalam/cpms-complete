@@ -157,7 +157,7 @@
                 <footer class="footer">
                     <div class="w-100 clearfix">
                         <span class="text-center text-sm-left d-md-inline-block">Copyright © 2023 Dparking</span>
-                        <span class="float-none float-sm-right mt-1 mt-sm-0 text-center">Desarrollado por <i class="fa fa-heart text-danger"></i> Copyright ©  <a href="#" class="text-dark" target="_blank">Defiant Systems</a></span>
+                        <span class="float-none float-sm-right mt-1 mt-sm-0 text-center">Desarrollado por Copyright ©  <a href="#" class="text-dark" target="_blank">Defiant Systems</a></span>
                     </div>
                 </footer>
 

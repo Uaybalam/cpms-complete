@@ -10,6 +10,7 @@ use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Exports\VehiclesExport;
 use App\Models\HistorialP;
+use App\Models\Vehicle;
 use FPDF;
 
 class PDFController extends Controller{
@@ -29,7 +30,6 @@ class PDFController extends Controller{
             $output = stream_get_contents($pipes[1]);
             fclose($pipes[1]);
             $retorno = proc_close($process);
-
             if ($retorno === 0) {
                 echo "El código QR se generó correctamente.";
                 // Continuar con la generación del PDF después de que se haya generado el código QR
@@ -63,9 +63,11 @@ class PDFController extends Controller{
     $platNumber = $request->input('plat_number');
     $fechaActual = date('Y-m-d');
     $fechaSalida = $request->input('salida');
-    $folio = date('Ymdhms').'Z';
 
-    $html_content = view('ticket_de_llegada', ['platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
+    $folio = Vehicle::where('plat_number', $platNumber);
+    $folioS = $folio-> registration_number;
+    dd($folioS);
+    $html_content = view('ticket_de_llegada', ['platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folioS, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/entrada.pdf');

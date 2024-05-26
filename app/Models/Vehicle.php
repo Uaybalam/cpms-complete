@@ -35,7 +35,8 @@ class Vehicle extends Model
         static::creating(function($model)
         {
             $model->created_by = auth()->id();
-            $model->registration_number = rand(12,34353).time();
+            $model->registration_number = str_pad(rand(100000, 999999), 6, '0', STR_PAD_LEFT);
+
         });
     }
 }

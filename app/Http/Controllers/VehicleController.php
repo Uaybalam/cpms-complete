@@ -84,72 +84,64 @@ class VehicleController extends Controller
 
     public function edit(Vehicle $vehicle)
     {
-
         $now = Carbon::now(); // Obtener la hora y fecha actual
         $creationTime = Carbon::parse($vehicle->created_at); // Obtener la hora y fecha de creación del vehículo
         $diffInMinutes = $creationTime->diffInMinutes($now); // Calcular la diferencia en minutos
-
+    
         // Comprobar si han pasado menos de 15 minutos desde que se creó el vehículo
-        if ($diffInMinutes > 15) {
-            // Redirigir a donde quieras con un mensaje, por ejemplo a la lista de vehículos
-            return redirect()->route('vehicles.index')->with('error', 'No puedes editar este vehículo despues de 15 minutos desde su registro.');
-            }
-
-        
-        $vehiculo = Vehicle::where('id', $vehicle->id)->first();
-        $categories = Category::where('id', $vehiculo->category_id)->first();
-        $salida = VehicleIn::where('vehicle_id', $vehicle->id)->first();
-        
-
-        return view('vehicles.edit', ['vehiculo' => $vehiculo, 'categories' => $categories , 'salida' => $salida]);
+        // if ($diffInMinutes > 15) {
+        //     // Redirigir a donde quieras con un mensaje, por ejemplo a la lista de vehículos
+        //     return redirect()->route('vehicles.index')->with('error', 'No puedes editar este vehículo después de 15 minutos desde su registro.');
+        // }
+    
+        $vehiculo = Vehicle::find($vehicle->id); // Obtener el vehículo por su ID
+        $categories = Category::all(); // Obtener todas las categorías
+        $salida = VehicleIn::where('vehicle_id', $vehicle->id)->first(); // Obtener la primera entrada de VehicleIn relacionada con el vehículo
+    
+        return view('vehicles.edit', [
+            'vehiculo' => $vehiculo, 
+            'categories' => $categories, 
+            'salida' => $salida
+        ]);
     }
+    
 
-    // public function update(Request $request, Vehicle $vehicle)
-    //     {
-    // // Valida la entrada
-    // $validatedData = $request->validate([
-    //     'name' => 'required|max:255',
-    //     'registration_number' => 'required',
-    //     'category_id' => 'required|exists:categories,id',
-    //     // otros campos según sea necesario
-    // ]);
 
-    // // Actualiza el vehículo con los datos validados
-    // $vehicle->update($validatedData);
 
-    // // Redirecciona con un mensaje de éxito
-    // return redirect()->route('vehicles.index')->with('sucess', 'Vehiculo Actualizado');
-    // }
     public function update(Request $request, Vehicle $vehicle)
-{
-    // Asegurarse de que el usuario tiene permiso para actualizar el vehículo
-    // if (!Gate::allows('update-vehicle', $vehicle)) {
-    //     abort(403);
-    // }
-
-    // Valida la entrada
-    $validatedData = $request->validate([
-        'name' => 'string|max:255',
-        'registration_number' => 'string|max:255',
-        'category_id' => 'exists:categories,id',
-        'salida' => 'date',
-        'model' => 'string|max:255',
-        'plat_number' => 'string|max:20',
-        'color' => 'nullable|string|max:255',
-    ]);
-
-    try {
-        // Actualiza el vehículo con los datos validados
-        $vehicle->update($validatedData);
-
-        // Redirecciona con un mensaje de éxito
-        return redirect()->route('vehicles.index')->with('success', 'Vehículo actualizado correctamente.');
-
-    } catch (\Exception $e) {
-        // Manejo de la excepción en caso de error en la base de datos u otro problema
-        return back()->withErrors('error', 'Error al actualizar el vehículo: ' . $e->getMessage());
+    {
+        // Obtener todos los datos del request
+        $data = $request->all();
+    
+        // Usar los campos ocultos para asegurarse de que los campos readonly también se actualicen
+        $data['registration_number'] = $data['registration_number_hidden'] ?? $vehicle->registration_number;
+        $data['plat_number'] = $data['plat_number_hidden'] ?? $vehicle->plat_number;
+    
+        // Debugging: Log the data
+        \Log::info('Datos recibidos para actualización:', $data);
+    
+        // Eliminar campos que no existen en el modelo
+        unset($data['registration_number_hidden']);
+        unset($data['plat_number_hidden']);
+    
+        try {
+            // Actualiza el vehículo con los datos del request
+            $vehicle->update($data);
+    
+            // Debugging: Confirmar que la actualización se realizó
+            \Log::info('Vehículo actualizado:', $vehicle->toArray());
+    
+            // Redirecciona con un mensaje de éxito
+            return redirect()->route('vehicles.index')->with('success', 'Vehículo actualizado correctamente.');
+        } catch (\Exception $e) {
+            // Manejo de la excepción en caso de error en la base de datos u otro problema
+            \Log::error('Error al actualizar el vehículo:', ['error' => $e->getMessage()]);
+            return back()->withErrors(['error' => 'Error al actualizar el vehículo: ' . $e->getMessage()]);
+        }
     }
-}
+    
+
+    
 
 
     public function destroy(Vehicle $vehicle)

@@ -19,7 +19,7 @@
     <div class="container">
         <h1>Lista de Pensionados</h1>
     </div>
-    @if(auth()->check() && auth()->user()->role == 'Administrador')
+
     <div class="container mt-4">
         <div class="alert alert-info bg-white p-4 rounded shadow">
             <h4 class="text-Secondary border-bottom pb-2 mb-3">Pensionados</h4>
@@ -57,17 +57,20 @@
                             </ul>
                         </td>
                         <td>
-                            <!-- Icono de editar -->
-                            <a href="{{ route('pensionados.edit', $pensionado->id) }}" class="btn btn-primary btn-sm"><i class="ik ik-edit-2"></i></a>
-                            <!-- Icono de eliminar -->
-                            <form action="{{ route('pensionados.destroy', $pensionado->id) }}" method="POST" style="display: inline;">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este registro?')"><i class="ik ik-trash-2"></i></button>
-                            </form>
-
-                            <!-- Icono de editar -->
-                            <a  class="btn btn-success btn-sm openModal" data-id="{{ $pensionado->id }}"><i class="bi bi-currency-dollar"></i></a>
+                            @if(auth()->check() && auth()->user()->role == 'Administrador')
+                                <!-- Icono de editar -->
+                                <a href="{{ route('pensionados.edit', $pensionado->id) }}" class="btn btn-primary btn-sm"><i class="ik ik-edit-2"></i></a>
+                                <!-- Icono de eliminar -->
+                                <form action="{{ route('pensionados.destroy', $pensionado->id) }}" method="POST" style="display: inline;">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este registro?')"><i class="ik ik-trash-2"></i></button>
+                                </form>
+                                <a  class="btn btn-success btn-sm openModal" data-id="{{ $pensionado->id }}"><i class="bi bi-currency-dollar"></i></a>
+                            @else
+                                <!-- Icono de editar -->
+                                <a  class="btn btn-success btn-sm openModal" data-id="{{ $pensionado->id }}"><i class="bi bi-currency-dollar"></i></a>
+                            @endif
                         </td>
                     </tr>
                 @endforeach
@@ -231,12 +234,5 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
-@else
-<div class="container mt-4">
-    <div class="alert alert-danger" role="alert">
-        No tienes permiso de estar aqui
-</div>
-<button type="button" class="btn btn-danger" onclick="location.href='{{route('home')}}';">Abrir Caja</button>
-</div>
-@endif
+
 @endsection

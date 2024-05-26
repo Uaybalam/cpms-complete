@@ -3,7 +3,7 @@
         <tr>
             <th>Id</th>
             <th>Reg #</th>
-            <th>Clinete</th>
+            <th>Cliente</th>
             <th>Placa</th>
             <th>Modelo</th>
             <th>Visitas</th>

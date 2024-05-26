@@ -96,7 +96,7 @@
     {
         generarPDF();
 
-        // generarVenta();
+        generarVenta();
     }
 
 
