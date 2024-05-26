@@ -121,27 +121,6 @@
                 </div>
             </div>
         </div>
-        <div class="section">
-            <div class="section-title"><b>Ubicacion</b></div>
-            <div class="section-content">
-                <p>ONE PARK GDL</p>
-                <p>Av. Solidaridad Iberoamericana No 7822</p>
-                <p>Telefonos: 3323928579 / 3335989730</p>
-            </div>
-        </div>
-        <div class="section">
-            <div class="section-title"><b>Responsabilidades</b></div>
-            <div class="section-content">
-                <p style="text-align: justify;">El estacionamiento o pension se obliga a prestar el servicio en los terminos en materia haciendonos responsables por robo totaL.
-                Favor de revisar en su ticket que la fecha estimada de arribo, sea la misma que usted dio, ya que de esto depende que su vehiculo este lavado a su regreso.
-                RFC de quien expide comprobante: RUAM850614UG4
-                <b>NO NOS HACEMOS RESPONSABLES POR ROBOS PARCIALES NI DA&Ntilde;OS PARCIALES O TOTALES A SU VEHICULO.</b>
-                <br>
-                <br>
-                <br>
-                Costo por boleto extraviado: $50</p>
-            </div>
-        </div>
     </div>
 </body>
 </html>

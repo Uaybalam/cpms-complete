@@ -13,7 +13,7 @@
             </div>
         </div>
 
-@if(auth()->check() && auth()->user()->role == 'Administrador')
+
         <div class="col-lg-4">
             <nav class="breadcrumb-container" aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -42,12 +42,6 @@
     </div>
 </div>
 
-@else
-<div class="container mt-4">
-    <div class="alert alert-danger" role="alert">
-        No tienes permiso de estar aqui
-</div>
-<button type="button" class="btn btn-danger" onclick="location.href='{{route('home')}}';">Regresar a home</button>
-</div>
-@endif
+
+
 @endsection
