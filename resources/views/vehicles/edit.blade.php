@@ -6,6 +6,19 @@
         <div class="card">
             <div class="card-header"><h3>Editar Vehículo</h3></div>
             <div class="card-body">
+                <!-- Mostrar mensajes de éxito o error -->
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
                 <form action="{{ route('vehicles.update', $vehiculo->id) }}" method="POST" class="forms-sample">
                     @csrf
                     @method('PUT')
@@ -27,10 +40,10 @@
                                 @endif
                             </div>
                         </div>
-                        <div class="col-md4">
+                        <div class="col-md-4">
                             <div class="form-group">
-                                <label for="fecha_salida">Fecha y hora de salida</label>
-                                <input type="datetime-local" name="salida" value="{{ $salida ? $salida->salida : '' }}" class="form-control" id="fecha_salida" placeholder="Fecha y hora de salida">
+                                <label for="salida">Fecha y hora de salida</label>
+                                <input type="datetime-local" name="salida" value="{{ $salida ? $salida->salida : '' }}" class="form-control" id="salida" placeholder="Fecha y hora de salida">
                             </div>
                         </div>
 
@@ -91,6 +104,7 @@
     </div>
 </div>
 @endsection
+
 
 
 <script>

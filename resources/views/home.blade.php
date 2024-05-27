@@ -114,7 +114,7 @@
 
            success: function(response) {
                // Manejar la respuesta del controlador (si es necesario)
-               console.log(response);
+               window.open(response.url, '_blank');
 
            },
            error: function(xhr, status, error) {

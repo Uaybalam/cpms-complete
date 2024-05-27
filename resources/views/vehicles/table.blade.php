@@ -6,7 +6,6 @@
             <th>Categoria</th>
             <th>Cliente</th>
             <th>Num. Placa</th>
-            <th>Fecha de Salida</th>
             <th>Creado el</th>
             <th class="nosort">Operacion</th>
 
@@ -20,7 +19,6 @@
             <td>{{ $vehicle->category->name }}</td>
             <td>{{ $vehicle->name }}</td>
             <td>{{ $vehicle->plat_number }}</td>
-            <td>{{ $vehicle->vesalida }}</td>
             <td>{{ $vehicle->created_at->format('Y/m/d') }}</td>
 
 

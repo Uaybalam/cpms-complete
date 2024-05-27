@@ -48,9 +48,9 @@ class VehicleController extends Controller
             {
             $existingVehicle->Visitas++;
             }
-            
 
-            // Actualiza los datos del vehículo y excluye 'vehicle_id' y 'status'
+
+            // Actualiza los datos del vehículo             y excluye 'vehicle_id' y 'status'
             $existingVehicle->update($request->except('registration_number', 'vehicle_id', 'status'));
         } else {
             // Si no existe, crea un nuevo vehículo con 'Visitas' establecido en 1
@@ -85,69 +85,58 @@ class VehicleController extends Controller
     public function edit(Vehicle $vehicle)
     {
         $now = Carbon::now(); // Obtener la hora y fecha actual
-        $creationTime = Carbon::parse($vehicle->created_at); // Obtener la hora y fecha de creación del vehículo
+        $creationTime = Carbon::parse($vehicle->updated_at); // Obtener la hora y fecha de creación del vehículo
         $diffInMinutes = $creationTime->diffInMinutes($now); // Calcular la diferencia en minutos
-    
-        // Comprobar si han pasado menos de 15 minutos desde que se creó el vehículo
-        // if ($diffInMinutes > 15) {
-        //     // Redirigir a donde quieras con un mensaje, por ejemplo a la lista de vehículos
-        //     return redirect()->route('vehicles.index')->with('error', 'No puedes editar este vehículo después de 15 minutos desde su registro.');
-        // }
-    
+
+        //Comprobar si han pasado menos de 15 minutos desde que se creó el vehículo
+
+        if ($diffInMinutes > 15) {
+            // Redirigir a donde quieras con un mensaje, por ejemplo a la lista de vehículos
+            return redirect()->route('vehicles.index')->with('error', 'No puedes editar este vehículo después de 15 minutos desde su registro.');
+         }
+
         $vehiculo = Vehicle::find($vehicle->id); // Obtener el vehículo por su ID
         $categories = Category::all(); // Obtener todas las categorías
         $salida = VehicleIn::where('vehicle_id', $vehicle->id)->first(); // Obtener la primera entrada de VehicleIn relacionada con el vehículo
-    
+
         return view('vehicles.edit', [
-            'vehiculo' => $vehiculo, 
-            'categories' => $categories, 
+            'vehiculo' => $vehiculo,
+            'categories' => $categories,
             'salida' => $salida
         ]);
     }
-    
-
 
 
     public function update(Request $request, Vehicle $vehicle)
     {
-        // Obtener todos los datos del request
-        $data = $request->all();
-    
-        // Usar los campos ocultos para asegurarse de que los campos readonly también se actualicen
-        $data['registration_number'] = $data['registration_number_hidden'] ?? $vehicle->registration_number;
-        $data['plat_number'] = $data['plat_number_hidden'] ?? $vehicle->plat_number;
-    
-        // Debugging: Log the data
-        \Log::info('Datos recibidos para actualización:', $data);
-    
-        // Eliminar campos que no existen en el modelo
-        unset($data['registration_number_hidden']);
-        unset($data['plat_number_hidden']);
-    
-        try {
-            // Actualiza el vehículo con los datos del request
-            $vehicle->update($data);
-    
-            // Debugging: Confirmar que la actualización se realizó
-            \Log::info('Vehículo actualizado:', $vehicle->toArray());
-    
-            // Redirecciona con un mensaje de éxito
-            return redirect()->route('vehicles.index')->with('success', 'Vehículo actualizado correctamente.');
-        } catch (\Exception $e) {
-            // Manejo de la excepción en caso de error en la base de datos u otro problema
-            \Log::error('Error al actualizar el vehículo:', ['error' => $e->getMessage()]);
-            return back()->withErrors(['error' => 'Error al actualizar el vehículo: ' . $e->getMessage()]);
+        // Obtener el vehículo por número de registro
+        $vehiculo = Vehicle::where('registration_number', $request->input('registration_number'))->first();
+
+        if ($vehiculo) {
+            // Obtener la instancia de VehicleIn relacionada
+            $vehiculoin = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
+
+            // Actualizar el vehículo
+            $vehiculo->update($request->except(['_token', '_method', 'vehicle_id', 'status', 'updated_at']));
+
+            // Actualizar la fecha de salida en VehicleIn
+            if ($vehiculoin) {
+                $vehiculoin->update(['salida' => $request->input('salida')]);
+            }
+
+            return redirect()->route('vehicles.index', $vehiculo->id)->with('success', 'Vehículo actualizado correctamente.');
+        } else {
+            return redirect()->route('vehicles.index', $vehicle->id)->with('error', 'Vehículo no existe.');
         }
     }
-    
 
-    
+
 
 
     public function destroy(Vehicle $vehicle)
     {
         $vehicle->delete();
-        return redirect()->route('vehicles.index')->with('success', 'Vehiculo Eliminado');
+        return redirect()->route('vehicles.index')->with('    su    cces    s', 'Vehiculo Eliminado');
 
     }
 }

@@ -64,10 +64,8 @@ class PDFController extends Controller{
     $fechaActual = date('Y-m-d');
     $fechaSalida = $request->input('salida');
 
-    $folio = Vehicle::where('plat_number', $platNumber);
-    $folioS = $folio-> registration_number;
-    dd($folioS);
-    $html_content = view('ticket_de_llegada', ['platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folioS, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
+    $folio = $request->input('folio');
+    $html_content = view('ticket_de_llegada', ['platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/entrada.pdf');
@@ -290,14 +288,15 @@ class PDFController extends Controller{
 
     }
 
-    public function generarPdfLavadas(Request $request) {
+    public function generarPdfLavadas(Request $request)
+    {
         $detalles = $request->input('detalles');
         $json_data = json_encode($detalles);
-        $fileName = 'vehicles.xlsx';
-        $output_path = public_path($fileName);
+        $fileName = 'lavadas.xlsx';
+        $output_path = public_path($fileName); // Guardar temporalmente en el almacenamiento
 
         // Comando para ejecutar el script Python
-        $command = "python " . base_path('scripts/generar_exel.py') . " " . escapeshellarg($output_path);
+        $command = escapeshellcmd("python " . base_path('scripts/generar_exel.py') . " " . escapeshellarg($output_path));
 
         $process = proc_open($command, [
             0 => ['pipe', 'r'],  // stdin
@@ -318,7 +317,12 @@ class PDFController extends Controller{
             $exit_code = proc_close($process);
 
             if ($exit_code === 0) {
-                return response()->json(['url' => url('excel/' . $fileName)]);
+                if (file_exists($output_path)) {
+                    // Devolver el archivo como una respuesta de descarga
+                    return response()->json(['url' => url($fileName)]);
+                } else {
+                    return response()->json(['message' => 'El archivo no se generó correctamente'], 500);
+                }
             } else {
                 return response()->json(['message' => 'Error al generar el archivo Excel', 'error' => $error_output], 500);
             }

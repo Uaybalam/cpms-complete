@@ -12,7 +12,7 @@ class Vehicle extends Model
     use HasFactory;
 
     protected $fillable = ['name', 'plat_number','model', 'registration_number',
-    'status', 'duration', 'color', 'FechaS' , 'Visitas' , 'packing_charge', 'customer_id', 'category_id', 'created_by'];
+    'status', 'duration', 'color', 'Visitas' , 'packing_charge', 'customer_id', 'category_id', 'created_by'];
 
 
     public function customer(): BelongsTo
@@ -35,7 +35,7 @@ class Vehicle extends Model
         static::creating(function($model)
         {
             $model->created_by = auth()->id();
-            $model->registration_number = str_pad(rand(100000, 999999), 6, '0', STR_PAD_LEFT);
+
 
         });
     }

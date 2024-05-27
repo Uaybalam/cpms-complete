@@ -14,10 +14,23 @@ class VehicleOutController extends Controller
 
     public function index()
     {
-
         $vehiclesOut = VehicleOut::all();
-        // Pasar los datos combinados a la vista
-        return view('vehicles_out.index', ['vehiclesOut' => $vehiclesOut]);
+        $users = User::all();
+
+        $userNames = $users->pluck('name', 'id')->toArray();
+
+        $vehicleData = $vehiclesOut->map(function ($vehicleOut) use ($userNames) {
+            return [
+                'id' => $vehicleOut->id,
+                'registration_number' => $vehicleOut->registration_number,
+                'name' => $vehicleOut->name,
+                'plat_number' => $vehicleOut->plat_number,
+                'created_at' => $vehicleOut->created_at,
+                'created_by' => $userNames[$vehicleOut->created_by] ?? 'Unknown',
+            ];
+        });
+
+        return view('vehicles_out.index', compact('vehicleData'));
     }
 
     public function create()

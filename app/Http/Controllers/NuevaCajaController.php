@@ -97,14 +97,16 @@ class NuevaCajaController extends Controller
         $inputPlaca = $request->input('placa');
         $vehiculo = Vehicle::where('plat_number', $inputPlaca)->first();
         $user = User::where('id', $vehiculo->created_by)->first();
-        $vehiculoIn = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
+
          // Crear una nueva instancia en VehicleOut con los datos seleccionados de VehicleIn
         $vehiculoOut = new VehicleOut();
         $vehiculoOut->registration_number = $vehiculo->registration_number;
         $vehiculoOut->plat_number = $vehiculo->plat_number;
         $vehiculoOut->name = $vehiculo->name;
         $vehiculoOut->created_by = $user->name; // Ejemplo de cambio de nombre de columna
+
         $vehiculoOut->save();
+        $vehiculoIn = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
         $vehiculoIn->delete();
 
 

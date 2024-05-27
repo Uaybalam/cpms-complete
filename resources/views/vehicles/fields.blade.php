@@ -1,11 +1,11 @@
-{{--  <form action="{{ route('vehicles.store') }}" method="POST" class="forms-sample"  class="forms-sample" method="POST">  --}}
+<form action="{{ route('vehicles.store') }}" method="POST" class="forms-sample"  class="forms-sample" method="POST">
     @csrf
     <div class="row">
         <div class="col-md-4">
             <div class="form-group">
                 <label for="exampleInputEmail3">Registration Number</label>
                 <input type="text" name="registration_number"
-                    value="{{ isset($vehicle) ? $vehicle->registration_number : '' }}" class="form-control"
+                    value="{{ date('ymdHms')}}" class="form-control"
                     id="folio" readonly placeholder="Registration Number Auto">
             </div>
         </div>

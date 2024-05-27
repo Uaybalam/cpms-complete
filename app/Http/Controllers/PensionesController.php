@@ -85,14 +85,6 @@ class PensionesController extends Controller
     public function pensionados()
     {
         $pensionados = Pensionado::all();
-         // Transformar los datos para la vista
-        $pensionados->transform(function ($pensionado) {
-         if ($pensionado->precio_fijo == 0) {
-             $pensionado->precio_fijo = 'Vigente';
-         }
-         return $pensionado;
-        });
-
         return view('Pensionados.pensionados', compact('pensionados'));
     }
 
@@ -141,7 +133,7 @@ class PensionesController extends Controller
                 'cobro' => $request->Total,
                 'pensionado_id' => $pensionado->id,
             ]);
-            
+
             $datos = NuevaCaja::all();
             $total = $request->input('Total');
             foreach ($datos as $datoOrigen) {
