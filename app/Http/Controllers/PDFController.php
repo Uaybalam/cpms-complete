@@ -350,7 +350,7 @@ class PDFController extends Controller{
     $placa2 = $request->input('placa2');
     $folio = date('Ymdhms').'Z';
 
-    $html_content = view('ticket_de_pensionado', ['placa' => $placa, 'color' => $Color, 'modelo' => $modelo,'placa2' => $placa2, 'color2' => $Color2, 'modelo2' => $modelo2 ])->render();
+    $html_content = view('ticket_de_pensionado', ['name' => $name,'placa' => $placa, 'color' => $Color, 'modelo' => $modelo,'placa2' => $placa2, 'color2' => $Color2, 'modelo2' => $modelo2 ])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/pensionado.pdf');
