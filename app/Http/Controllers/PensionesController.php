@@ -171,7 +171,7 @@ class PensionesController extends Controller
               ]);
 
               // Redireccionar con un mensaje de éxito
-              return redirect()->route('Pensionados.pensionados')->with('success', 'Auto actualizado correctamente');
+              return redirect()->route('pensionados.pensionados')->with('success', 'Auto actualizado correctamente');
 
       }
 
@@ -179,7 +179,7 @@ class PensionesController extends Controller
       public function destroy(Pensionado $pensionado)
       {
           $pensionado->delete();
-          return redirect()->route('Pensionados.pensionados')->with('success', 'Pensionado eliminado exitosamente.');
+          return redirect()->route('pensionados.pensionados')->with('success', 'Pensionado eliminado exitosamente.');
       }
 
 }

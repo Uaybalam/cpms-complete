@@ -61,11 +61,13 @@ class PDFController extends Controller{
     $visitas = (int) $request->input('visitas');
     $modelo = $request->input('modelo');
     $platNumber = $request->input('plat_number');
-    $fechaActual = date('Y-m-d');
+    $category_id = $request->input('category_id');
+    $fechaActual = date('Y-m-d H:i');
     $fechaSalida = $request->input('salida');
+    $fechaSalida = str_replace('T', ' ', $fechaSalida);
 
     $folio = $request->input('folio');
-    $html_content = view('ticket_de_llegada', ['platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
+    $html_content = view('ticket_de_llegada', ['category_id' => $category_id ,'platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/entrada.pdf');
@@ -381,7 +383,7 @@ class PDFController extends Controller{
             ]);
 
             //Impresion automatica
-            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\entrada.ps1';
+            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\pensionado.ps1';
             exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
 
              // Verificación del resultado de la impresión
@@ -429,7 +431,7 @@ class PDFController extends Controller{
     $placa2 = $request->input('placa2');
     $folio = date('Ymdhms').'Z';
 
-    $html_content = view('pensionado_historico', ['placa' => $placa, 'color' => $Color, 'placa2' => $placa2, 'color2' => $Color2, 'pensionados'=> $pensionado ])->render();
+    $html_content = view('pensionado_historico', ['name' => $name , 'placa' => $placa, 'color' => $Color, 'placa2' => $placa2, 'color2' => $Color2, 'pensionados'=> $pensionado ])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/pensionadoH.pdf');

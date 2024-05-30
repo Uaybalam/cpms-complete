@@ -81,6 +81,7 @@
                     <div class="vehicle-details">
                         <p>Folio: {{ $folio = date('Ymdhms').'Z'}}</p>
                         <p>Servicio: UN MES</p>
+                        <p>Servicio: {{$name}}</p>
                         <p>Placas: {{$placa}}</p>
 
                         <p>Color: {{$color}}</p>

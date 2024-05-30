@@ -1,4 +1,4 @@
-<form action="{{ route('vehicles.store') }}" method="POST" class="forms-sample"  class="forms-sample" method="POST">
+{{-- <form action="{{ route('vehicles.store') }}" method="POST" class="forms-sample"  class="forms-sample" method="POST"> --}}
     @csrf
     <div class="row">
         <div class="col-md-4">
@@ -98,20 +98,6 @@
                 document.getElementById('phone').value = response.customer.phone;
                 document.getElementById('visitas').value = response.vehiculo.Visitas;
 
-                if(response.vehiculo.Visitas === 4)
-                {
-                    document.getElementById('packing_charge').value = response.category.costo;
-                    alert('Esta es la visita numero 5 del cliente, Hacer entrega de su obsequio');
-                }
-                if(response.vehiculo.Visitas === 9)
-                {
-                    document.getElementById('packing_charge').value = 0;
-                    alert('Esta es la visita numero 10 del cliente, su estadia sera Gratis');
-                }
-                else
-                {
-                document.getElementById('packing_charge').value = response.category.costo;
-                }
                 // Seleccionar la categoría automáticamente
                 var categoryId = response.vehiculo.category_id; // Asegúrate de que la propiedad sea correcta
                 if (categoryId) {
@@ -123,6 +109,21 @@
                         }
                     }
                 }
+                if(response.vehiculo.Visitas === 4 && response.vehiculo.category_id !== 13)
+                {
+                    document.getElementById('packing_charge').value = response.category.costo;
+                    alert('Esta es la visita numero 5 del cliente, Hacer entrega de su obsequio');
+                }
+                if(response.vehiculo.Visitas === 9 && response.vehiculo.category_id !== 13)
+                {
+                    document.getElementById('packing_charge').value = 0;
+                    alert('Esta es la visita numero 10 del cliente, su estadia sera Gratis');
+                }
+                else
+                {
+                document.getElementById('packing_charge').value = response.category.costo;
+                }
+
 
                 document.getElementById('model').value = response.vehiculo.model;
                 document.getElementById('Color').value = response.vehiculo.color;
@@ -193,6 +194,8 @@
         var name =  document.getElementById('name').value;
         var visitas = parseInt(document.getElementById('visitas').value, 10);
         var salida = document.getElementById('salida').value;
+        var categoryId = document.getElementById('category_id').value; // Obtener el valor del select
+
 
 
 
@@ -208,6 +211,7 @@
                 name: name,
                 visitas: visitas,
                 salida:salida,
+                category_id: categoryId,
                 _token: '{{ csrf_token() }}'
             },
             success: function(response) {
