@@ -19,7 +19,7 @@
     <input type="text" id="inputPlaca" name="inputPlaca" class="form-control" placeholder="Ingresa la placa del vehículo">
 
 
-        <table id="registros-table" class="table table-striped">
+        <table id="registros-table" class="table table-striped" hidden>
             <thead>
                 <tr>
                     <th scope="col">ID</th>
@@ -29,6 +29,27 @@
                 </tr>
             </thead>
             <tbody>
+            </tbody>
+        </table>
+        <table id="registros-de-tabla" class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">ID</th>
+                    <th scope="col">Fecha</th>
+                    <th scope="col">Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td name="numero"></td>
+                    <td name="fechainicio"></td>
+                    <td name="subtotal"></td>
+                </tr>
+                <tr>
+                    <td name="numero2"></td>
+                    <td name="fechasalida"></td>
+                    <td name="total"></td>
+                </tr>
             </tbody>
         </table>
         <button type="button" class="btn btn-danger" onclick="cancelar()">Cancelar venta</button>
@@ -168,19 +189,13 @@
     function obtenerDetallesTabla() {
         // Obtener los datos de la tabla
         var detalles = [];
-        $('#registros-table tbody tr').each(function () {
+        $('#registros-de-tabla tbody tr').each(function () {
             var fila = $(this);
-            var dias = fila.find('td:eq(0)').text();
             var fecha = fila.find('td:eq(1)').text();
-            var vehiculo = fila.find('td:eq(2)').text();
-            var descuento = fila.find('td:eq(3)').text();
-            var subtotal = fila.find('td:eq(4)').text();
+            var subtotal = fila.find('td:eq(2)').text();
 
             detalles.push({
-                dias: dias,
                 fecha: fecha,
-                vehiculo: vehiculo,
-                descuento: descuento,
                 subtotal: subtotal
             });
         });
@@ -238,6 +253,9 @@
                         var ajusteEspecialAplicado = false;
                         var ajusteEspecialAplicadoP = false;
                         var entrada = fechaInicio.getHours();
+
+                        $('td[name="fechainicio"]').text(fechaInicio.toLocaleString());
+                        $('td[name="subtotal"]').text('$' + subtotal.toFixed(2));
 
 
                         if (data.pensionados && data.pensionados.ultimo_pago) {
@@ -342,6 +360,10 @@
                         $('#registros-table tbody').html(detallesHTML);
                         $('input[name="total"]').val(totalSubtotal.toFixed(2));
 
+                        $('td[name="numero"]').text('1');
+                        $('td[name="numero2"]').text('2');
+                        $('td[name="fechasalida"]').text(fechaFin.toLocaleString());
+                        $('td[name="total"]').text('$' + totalSubtotal.toFixed(2));
                         // Llenar el campo de nombre de cliente con el nombre del propietario del vehículo
                         $('input[name="cliente"]').val(data.vehiculo.name);
                         $('input[name="folio"]').val(data.vehiculo.registration_number);

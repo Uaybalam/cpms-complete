@@ -1,4 +1,4 @@
-{{-- <form action="{{ route('vehicles.store') }}" method="POST" class="forms-sample"  class="forms-sample" method="POST"> --}}
+<form action="{{ route('vehicles.store') }}" method="POST" class="forms-sample"  class="forms-sample" method="POST">
     @csrf
     <div class="row">
         <div class="col-md-4">

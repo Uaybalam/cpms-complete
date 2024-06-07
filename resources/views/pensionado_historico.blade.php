@@ -88,12 +88,16 @@
                         <p>Placas: {{$placa2}}</p>
 
                         <p>Color: {{$color2}}</p>
+                        <p>Ultimo Cobro: {{$pensionado->ultimo_pago}}</p>
+                        <p>Fecha de Termino: {{ $fechaTermino->format('Y-m-d') }}</p>
+
+
                     </div>
                 </div>
             </div>
         </div>
         <div class="section">
-            <div class="section-title"><b>Historico de pagos</b></div>
+            <div class="section-title"><b><h2>Historico de pagos<h2></b></div>
             <div class="section-content">
                 <div class="vehicle-info">
 
@@ -112,7 +116,7 @@
                                 <tr>
                                     <td>{{ $pensionado->id }}</td>
                                     <td>{{ $pensionado->nombre }}</td>
-                                    <td>{{ $pensionado->precio_fijo }}</td>
+                                    <td>{{ $pensionado->cobro }}</td>
                                     <td>{{ $pensionado->ultimo_pago }}</td>
                                 </tr>
                                 @endforeach

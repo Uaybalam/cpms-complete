@@ -4,6 +4,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Factura;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Models\Pensionado;
 use Maatwebsite\Excel\Facades\Excel;
@@ -424,6 +425,9 @@ class PDFController extends Controller{
     if (file_exists($html_file_path)) {
     // Recibe los datos del formulario
     $pensionado = HistorialP::where('pensionado_id', $request->input('pensionado_id'))->get();
+    $pensionados = Pensionado::where('id', $request->input('pensionado_id'))->first();
+    $fechaUltimoPago = Carbon::parse($pensionados->ultimo_pago);
+    $fechaTermino = $fechaUltimoPago->addDays(30);
     $Color = $request->input('color1');
     $name = $request->input('pensionadoNombre');
     $placa = $request->input('placa1');
@@ -431,7 +435,7 @@ class PDFController extends Controller{
     $placa2 = $request->input('placa2');
     $folio = date('Ymdhms').'Z';
 
-    $html_content = view('pensionado_historico', ['name' => $name , 'placa' => $placa, 'color' => $Color, 'placa2' => $placa2, 'color2' => $Color2, 'pensionados'=> $pensionado ])->render();
+    $html_content = view('pensionado_historico', ['name' => $name , 'placa' => $placa, 'color' => $Color, 'placa2' => $placa2, 'color2' => $Color2,'pensionado'=> $pensionados, 'pensionados'=> $pensionado, 'fechaTermino'=>$fechaTermino ])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/pensionadoH.pdf');

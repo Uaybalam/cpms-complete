@@ -83,6 +83,9 @@
                 </div>
                 <div class="nav-lavel">Caja</div>
                 <div class="nav-item ">
+                    <a href="{{ route('abrir.caja') }}"><i class="x-fas-history"></i><span>Abrir nueva caja</span></a>
+                </div>
+                <div class="nav-item ">
                     <a href="{{ route('caja.venta') }}"><i class="ik ik-wal"></i><span>Cobrar</span></a>
                 </div>
                 <div class="nav-item ">
