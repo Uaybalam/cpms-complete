@@ -16,6 +16,10 @@ pip install weasyprint
 ## Qrcode
 es una biblioteca de Python que permite generar códigos QR. Puedes instalarlo utilizando pip:
 pip install qrcode
+## Pandas y openpyxl
+es una biblioteca de Python que permite generar excel. Puedes instalarlo utilizando pip:
+pip install pandas openpyxl
+
 
 ## GObject Introspection (gobject-2.0-0)
 

@@ -25,6 +25,7 @@
             <td>{{ $vehicleIn->created_at->format('Y-m-d H:i A') }}</td>
             <td>{{ $vehicleIn->salida }}</td>
             <td>{{ $vehicleIn->user->name }}</td>
+            @if (auth()->check() && auth()->user()->role == 'Administrador')
             <td>
                 <div class="table-actions">
                     <a href="#" onclick=" confirm('Are you sure you want to delete this?');
@@ -35,6 +36,7 @@
                     </form>
                 </div>
             </td>
+            @endif
             <td></td>
         </tr>
         @endforeach
