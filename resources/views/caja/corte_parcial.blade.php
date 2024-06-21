@@ -14,6 +14,7 @@
                         <tr>
                             <th scope="col">ID</th>
                             <th scope="col">Cajero</th>
+                            <th scope="col">Placa</th>
                             <th scope="col">Total</th>
                             <th scope="col">cantidad Inicial</th>
                             <th scope="col">Retiro</th>
@@ -25,6 +26,7 @@
                             <tr>
                                 <td>{{ $registro->id }}</td>
                                 <td>{{ $registro->Cajero }}</td>
+                                <td>{{ $registro->Placa }}</td>
                                 <td>{{ $registro->Total }}</td>
                                 <td>{{ $registro->cantidad_inicial }}</td>
                                 <td>{{ $registro->Retiro }}</td>
@@ -150,14 +152,16 @@
                     var fila = $(this);
                     var id = fila.find('td:eq(0)').text();
                     var Cajero = fila.find('td:eq(1)').text();
-                    var Total = fila.find('td:eq(2)').text();
-                    var cantidad = fila.find('td:eq(3)').text();
-                    var Retiro = fila.find('td:eq(4)').text();
-                    var Fecha = fila.find('td:eq(5)').text();
+                    var Placa = fila.find('td:eq(2)').text();
+                    var Total = fila.find('td:eq(3)').text();
+                    var cantidad = fila.find('td:eq(4)').text();
+                    var Retiro = fila.find('td:eq(5)').text();
+                    var Fecha = fila.find('td:eq(6)').text();
 
                     detalles.push({
                         id: id,
                         Cajero: Cajero,
+                        Placa: Placa,
                         Total: Total,
                         cantidad: cantidad,
                         Retiro: Retiro,

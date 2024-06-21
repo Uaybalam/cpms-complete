@@ -21,7 +21,7 @@
                             placeholder="Ingresa la placa del vehículo">
 
 
-                        <table id="registros-table" class="table table-striped" >
+                        <table id="registros-table" class="table table-striped" hidden>
                             <thead>
                                 <tr>
                                     <th scope="col">ID</th>
@@ -122,7 +122,7 @@
 
 
             function funcionesBoton() {
-                generarPDF();
+                //generarPDF();
 
                 generarVenta();
             }

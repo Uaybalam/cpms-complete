@@ -18,12 +18,12 @@
             justify-content: center;
         }
         .container {
-            width: 65mm;
+            width: 75mm;
             /* margin: 5mm 0; */
             border: 1px solid #ccc;
             padding: 0 3em;
             border-radius: 5px;
-            font-size: 8pt;
+            font-size: 6pt;
         }
         .header {
             text-align: center;
@@ -53,7 +53,7 @@
         }
         .details th, .details td {
             border: 1px solid #ccc;
-            padding: 2px; /* Reduce el padding si es necesario */
+            padding: 2px 5px; /* Reduce el padding si es necesario */
             overflow: hidden; /* Agrega esto para evitar el desbordamiento del texto */
             text-overflow: ellipsis; /* Agrega esto para poner puntos suspensivos si el texto es muy largo */
             white-space: nowrap;
@@ -81,8 +81,9 @@
                     <tr>
                         <th>ID</th>
                         <th>Cajero</th>
+                        <th>Placa</th>
                         <th>Total</th>
-                        <th>Cantidad Inicial</th>
+                        <th>Cantidad</th>
                         <th>Retiro</th>
                     </tr>
                 </thead>
@@ -91,6 +92,7 @@
                     <tr>
                         <td>{{ $detalle['id'] }}</td>
                         <td>{{ $detalle['Cajero'] }}</td>
+                        <td>{{ $detalle['Placa'] }}</td>
                         <td>{{ $detalle['Total'] }}</td>
                         <td>{{ $detalle['cantidad'] }}</td>
                         <td>{{ $detalle['Retiro'] }}</td>

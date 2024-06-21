@@ -115,6 +115,7 @@ class NuevaCajaController extends Controller
         foreach ($datos as $datoOrigen) {
             Corte::create([
                 'Cajero' => $datoOrigen->nombre,
+                'Placa' => $inputPlaca,
                 'Total' => $total,
                 'cantidad_inicial' => $datoOrigen->cantidad_inicial,
                 'Retiro' => 0
@@ -130,6 +131,7 @@ class NuevaCajaController extends Controller
         $cantidad = NuevaCaja::first();
         Corte::create([
             'Cajero' => $retiro,
+            'Placa' => 'NA',
             'Total' => 0,
             'cantidad_inicial' => 0,
             'Retiro'=>$cantidad->cantidad_inicial,
