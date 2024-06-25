@@ -15,10 +15,10 @@
             <div class="container mt-4">
                 <form id="ventaForm" action="generarVenta()">
                     <div class="alert alert-info bg-white p-4 rounded shadow">
-                        <h4 class="text-Secondary border-bottom pb-2 mb-3">Registros</h4>
-                        <label for="selectFiltrado" class="form-label">Selecciona un vehiculo:</label>
+                        <h4 class="text-Secondary border-bottom pb-2 mb-3">Cobrar</h4>
+                        <label for="selectFiltrado" class="form-label" style="font-size:18px;">Ingresa Num. de Placa</label>
                         <input type="text" id="inputPlaca" name="inputPlaca" class="form-control"
-                            placeholder="Ingresa la placa del vehículo">
+                            placeholder="Ingresa la placa del vehículo" style="font-size:18px;">
 
 
                         <table id="registros-table" class="table table-striped" hidden>
@@ -61,29 +61,29 @@
                     </div>
                     <div class="alert alert-info bg-white p-4 rounded shadow">
                         <h4 class="text-Secondary border-bottom pb-2 mb-3">Datos venta</h4>
-                        <label class="form-label">Cliente</label>
+                        <label class="form-label" style="font-size:18px;">Cliente</label>
                         <input type="text" class="form-control" name="cliente" id="cliente"
                             placeholder="Nombre del cliente" aria-label="Nombre del cliente" readonly>
                         <h4 class="text-Secondary border-bottom pb-2 mb-3"></h4>
-                        <label class="form-label">Folio</label>
+                        <label class="form-label" style="font-size:18px;">Folio</label>
                         <input type="text" class="form-control" name="folio" id="folio" placeholder="Folio"
                             aria-label="Folio" readonly>
                     </div>
                     <div class="alert alert-info bg-white p-4 rounded shadow">
                         <h4 class="text-Secondary border-bottom pb-2 mb-3">Realizar venta</h4>
-                        <input type="text" class="form-control" name="total" placeholder="Total" id="total"
+                        <input type="text" class="form-control" style="font-size:23px;" name="total" placeholder="Total" id="total"
                             aria-label="Total" readonly>
                         <h4 class="text-Secondary border-bottom pb-2 mb-3"></h4>
-                        <label class="form-label">Cantidad</label>
-                        <input type="text" class="form-control" name="Cantidad" id="Cantidad" placeholder="Cantidad"
+                        <label class="form-label" style="font-size:18px;">Cantidad Recibida</label>
+                        <input type="text" class="form-control" style="font-size:23px;" name="Cantidad" id="Cantidad" placeholder="Cantidad Recibida"
                             aria-label="cantidad">
-                        <label class="form-label">Cambio</label>
-                        <input type="text" class="form-control" name="Cambio" placeholder="Cambio" id="cambio"
+                        <label class="form-label" style="font-size:18px; margin-top:10px;">Cambio</label>
+                        <input type="text" class="form-control" style="font-size:23px;" name="Cambio" placeholder="Cambio" id="cambio"
                             aria-label="Cambio" readonly>
                         <h4 class="text-Secondary border-bottom pb-2 mb-3"></h4>
                         <br>
                         <br>
-                        <button type="button" class="btn btn-success" onclick="funcionesBoton()">Aceptar</button>
+                        <button type="button" class="btn btn-success" onclick="funcionesBoton()">Cobrar</button>
                     </div>
                 </form>
             </div>
