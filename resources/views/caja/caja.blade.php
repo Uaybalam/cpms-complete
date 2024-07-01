@@ -246,14 +246,14 @@
                             url: '/obtener-datos/' + placa,
                             method: 'GET',
                             success: function(data) {
-                                // Llenar la tabla con los detalles del vehículo
-                                var fechaInicio = new Date(data.vehiculoIn.created_at);
+                                                             // Llenar la tabla con los detalles del vehículo
+                                                             var fechaInicio = new Date(data.vehiculoIn.created_at);
                                 var fechaFin = new Date();
                                 var detallesHTML = '';
 
                                 var subtotal = parseFloat(data.vehiculo.packing_charge);
                                 var totalSubtotal = subtotal;
-                                var dias = 1;
+                                var dias = 0;
                                 var descuento = 0;
                                 var vehiculo = data.vehiculo.category_id;
                                 var ajusteEspecialAplicado = false;
@@ -282,8 +282,8 @@
                                         subtotal = 210;
                                         ajusteEspecialAplicadoP = true;
                                     }
-                                    if (dias === 2 && vehiculo === 11 && !ajusteEspecialAplicado) {
-                                        subtotal = 420;
+                                    if (dias === 1 && vehiculo === 11 && !ajusteEspecialAplicado) {
+                                        subtotal = 210;
                                         ajusteEspecialAplicado =
                                         true; // Marcar que el ajuste especial se ha aplicado
                                     }
@@ -308,7 +308,7 @@
 
                                     // Ajuste de subtotal después de cada hora
                                     if (subtotal > 0 && !primerDia) {
-                                        if (vehiculo === 11 && dias < 2) {
+                                        if (vehiculo === 11 && dias < 1) {
                                             subtotal += 15;
                                         } else if (vehiculo === 10) {
                                             subtotal += 20;
@@ -346,7 +346,7 @@
 
                                     // Ajustar el total del subtotal
                                     if (subtotal > 0 && !primerDia) {
-                                        if (vehiculo === 11 && dias < 2) {
+                                        if (vehiculo === 11 && dias < 1) {
                                             totalSubtotal = subtotal - 15;
                                         } else if (vehiculo === 10) {
                                             totalSubtotal = subtotal - 20;
@@ -368,14 +368,15 @@
                                 $('#registros-table tbody').html(detallesHTML);
                                 $('input[name="total"]').val(totalSubtotal.toFixed(2));
 
-                                $('td[name="numero"]').text('1');
-                                $('td[name="numero2"]').text('2');
+                                $('td[name="numero"]').text('0');
+                                $('td[name="numero2"]').text(dias);
                                 $('td[name="fechasalida"]').text(fechaFin.toLocaleString());
                                 $('td[name="total"]').text('$' + totalSubtotal.toFixed(2));
                                 // Llenar el campo de nombre de cliente con el nombre del propietario del vehículo
                                 $('input[name="cliente"]').val(data.vehiculo.name);
                                 $('input[name="folio"]').val(data.vehiculo.registration_number);
                                 // Inicializar la tabla con DataTables después de que se hayan llenado los datos
+
 
 
 
