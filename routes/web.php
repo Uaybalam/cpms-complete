@@ -13,6 +13,7 @@ use App\Http\Controllers\PlateController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CsvImportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,6 +35,8 @@ Route::post('/generar-pdf-salida', [PDFController::class, 'generarpdfSalida']);
 Route::post('/generar-Cpdf', [PDFController::class, 'generarpdfCierre']);
 Route::post('/generar-pdf-pensiones', [PDFController::class, 'generarpdfPensiones'])-> name('pdf.pensiones');
 Route::post('/pdfhistorico', [PDFController::class, 'pdfhistorico'])-> name('pdf.historico');
+Route::post('/csv-import', [CsvImportController::class, 'importCsv']);
+Route::get('/obtener-datos/{placa}', [NuevaCajaController::class, 'obtenerDatosPlaca']);
 
 
 Route::get('/Nueva-caja', [NuevaCajaController::class, 'abrirModal']) -> name('abrir.caja');

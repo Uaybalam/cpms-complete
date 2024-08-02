@@ -1,19 +1,35 @@
-<form action="{{ route('categories.store') }}" class="forms-sample" method="POST">
-    @csrf
-    <div class="form-group">
-        <label for="exampleInputName1">Nombre</label>
-        <input type="text" name="name" value="{{ isset($category) ? $category->name : '' }}" class="form-control" id="exampleInputName1" placeholder="Name">
-        @if (isset($category))
-        <input type="hidden" name="category_id" value="{{ $category->id }}">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Importar CSV</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2>Importar CSV</h2>
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+                <pre>{{ session('output') }}</pre>
+            </div>
         @endif
-    </div>
-    <div class="form-group">
-        <label for="exampleInputName1">Costo 24hrs</label>
-        <input type="number" name="costo" value="{{ isset($costo) ? $costo->name : '' }}" class="form-control" id="costo" placeholder="Costo">
-        @if (isset($category))
-        <input type="hidden" name="costo_id" value="{{ $category->id }}">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         @endif
+        <form action="/csv-import" method="post" enctype="multipart/form-data">
+            @csrf
+            <div class="form-group">
+                <label for="csv_file">Seleccionar archivo CSV:</label>
+                <input type="file" class="form-control-file" id="csv_file" name="csv_file" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Importar</button>
+        </form>
     </div>
-    <button type="submit" class="btn btn-primary mr-2">Crear</button>
-    <button class="btn btn-light">Cancelar</button>
-</form>
+</body>
