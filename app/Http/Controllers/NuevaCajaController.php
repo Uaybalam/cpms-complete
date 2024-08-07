@@ -176,7 +176,7 @@ class NuevaCajaController extends Controller
         return response()->json(['success' => true, 'redirect' => url('/Ventas')]);
     }
 
-        public function obtenerDatosPlaca($placa)
+    public function obtenerDatosPlaca($placa)
     {
         $vehiculo = Vehicle::where('plat_number', $placa)->first();
         if (!$vehiculo) {
@@ -189,32 +189,37 @@ class NuevaCajaController extends Controller
         }
 
         $categoria = Category::where('id', $vehiculo->category_id)->first();
-        if (!$vehiculoin) {
+        if (!$categoria) {
             return response()->json(['error' => 'Categoria no encontrada'], 404);
         }
 
-       // Eliminar la parte de la zona horaria
-    $fechaEntradaString = str_replace(['.0', ' America/Mexico_City (-06:00)'], '', $vehiculoin->created_at);
+        // Eliminar la parte de la zona horaria
+        $fechaEntradaString = str_replace(['.0', ' America/Mexico_City (-06:00)'], '', $vehiculoin->created_at);
 
-    // Convertir la fecha
-    $fechaEntrada = Carbon::createFromFormat('Y-m-d H:i:s', $fechaEntradaString);
-    $fechaSalida = Carbon::now();
-    $diferenciaHoras = $fechaEntrada->diffInHours($fechaSalida);
+        // Convertir la fecha
+        $fechaEntrada = Carbon::createFromFormat('Y-m-d H:i:s', $fechaEntradaString);
+        $fechaSalida = Carbon::now();
+        $diferenciaHoras = $fechaEntrada->diffInHours($fechaSalida);
 
         // Obteniendo la tarifa adecuada según las horas
-        $tarifa = precios::where('horas', '<=', $diferenciaHoras)
-                        ->orderBy('horas', 'desc')
+        $tarifa = precios::where('horas', '>=', $diferenciaHoras)
+                        ->orderBy('horas', 'asc')
                         ->first();
 
+        // Si no se encontró una tarifa con horas mayores, usamos la última tarifa disponible
+        if (!$tarifa) {
+            $tarifa = precios::orderBy('horas', 'desc')->first();
+        }
+
         // Asegurándose de que la categoría existe en la tarifa
-        $category = $categoria -> name;
-        // dd($categoria);
-        if (!isset($tarifa->$categoria)) {
+        $category = $categoria->name;
+
+        if (!isset($tarifa->$category)) {
             return response()->json(['error' => 'Categoría de tarifa no encontrada'], 404);
         }
 
         // Calculando el total a pagar basado en la categoría del vehículo
-        $totalAPagar = $tarifa->$categoria;
+        $totalAPagar = $tarifa->$category;
 
         return response()->json([
             'vehiculo' => $vehiculo,

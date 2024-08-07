@@ -36,7 +36,7 @@
                         <table id="registros-de-tabla" class="table table-striped">
                             <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
+                                    <th scope="col">Dias</th>
                                     <th scope="col">Fecha</th>
                                     <th scope="col">Subtotal</th>
                                 </tr>
@@ -245,8 +245,14 @@
                 success: function(data) {
                     var fechaEntrada = new Date(data.fechaEntrada);
                     var fechaSalida = new Date(data.fechaSalida);
+                    // Calcula la diferencia en milisegundos
+                    var diferenciaMilisegundos = fechaSalida - fechaEntrada;
+
+                    // Convierte la diferencia a días
+                    var diasDiferencia = diferenciaMilisegundos / (1000 * 60 * 60 * 24);
                     var diferenciaHoras = data.diferenciaHoras;
                     var totalAPagar = data.totalAPagar;
+                    var subtotal = data.vehiculo.packing_charge;
 
                     var detallesHTML = `
                         <tr>
@@ -260,9 +266,9 @@
                     $('#registros-table tbody').html(detallesHTML);
                     $('input[name="total"]').val(totalAPagar.toFixed(2));
                     $('td[name="fechainicio"]').text(fechaEntrada.toLocaleString());
-                    $('td[name="subtotal"]').text('$' + totalAPagar.toFixed(2));
+                    $('td[name="subtotal"]').text('$' + subtotal.toFixed(2));
                     $('td[name="numero"]').text('1');
-                    $('td[name="numero2"]').text(diferenciaHoras);
+                    $('td[name="numero2"]').text(diasDiferencia.toFixed(0));
                     $('td[name="fechasalida"]').text(fechaSalida.toLocaleString());
                     $('td[name="total"]').text('$' + totalAPagar.toFixed(2));
                     $('input[name="cliente"]').val(data.vehiculo.propietario);
