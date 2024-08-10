@@ -7,16 +7,12 @@ use Illuminate\Support\Facades\Storage;
 
 class CsvImportController extends Controller
 {
-    // public function showForm()
-    // {
-    //     return view('csv_import');
-    // }
 
     public function importCsv(Request $request)
     {
-        // $request->validate([
-        //     'csv_file' => 'required|mimes:csv,txt|max:2048',
-        // ]);
+        $request->validate([
+            'csv_file' => 'required|mimes:csv,txt|max:2048',
+        ]);
 
         $file = $request->file('csv_file');
         $path = $file->storeAs('uploads', $file->getClientOriginalName());

@@ -254,6 +254,7 @@
                     var totalAPagar = data.totalAPagar;
                     var subtotal = data.vehiculo.packing_charge;
 
+
                     var detallesHTML = `
                         <tr>
                             <td>1</td>
@@ -266,13 +267,21 @@
                     $('#registros-table tbody').html(detallesHTML);
                     $('input[name="total"]').val(totalAPagar.toFixed(2));
                     $('td[name="fechainicio"]').text(fechaEntrada.toLocaleString());
+                    
+                    if(data.pensionados)
+                    {
+                        $('td[name="subtotal"]').text(data.vigencia);
+                    }
+                    else{
                     $('td[name="subtotal"]').text('$' + subtotal.toFixed(2));
+                    }
+
                     $('td[name="numero"]').text('1');
                     $('td[name="numero2"]').text(diasDiferencia.toFixed(0));
                     $('td[name="fechasalida"]').text(fechaSalida.toLocaleString());
                     $('td[name="total"]').text('$' + totalAPagar.toFixed(2));
-                    $('input[name="cliente"]').val(data.vehiculo.propietario);
-                    $('input[name="folio"]').val(data.vehiculo.folio);
+                    $('input[name="cliente"]').val(data.vehiculo.name);
+                    $('input[name="folio"]').val(data.vehiculo.registration_number);
                 },
                 error: function(error) {
                     console.error('Error al obtener detalles:', error);

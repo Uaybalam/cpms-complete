@@ -178,6 +178,119 @@ class NuevaCajaController extends Controller
 
     public function obtenerDatosPlaca($placa)
     {
+        $sacarpensionado = Auto::where('placa', $placa)->orWhere('placa2', $placa)->first();
+        if($sacarpensionado)
+         {
+            $pensionados =  Pensionado::where('id', $sacarpensionado-> pensionado_id)->first();
+            $fechaActual = Carbon::now();
+
+            // Obtener la fecha del ultimo_pago
+            $fechaUltimoPago = Carbon::parse($pensionados->ultimo_pago);
+
+            $fechacobro = $fechaUltimoPago->copy()->addDays(35);
+
+            // Calcular la diferencia en días
+            $diasDiferencia = $fechaUltimoPago->diffInDays($fechaActual);
+            if($diasDiferencia <= 35)
+            {
+                $vehiculo = Vehicle::where('plat_number', $placa)->first();
+                if (!$vehiculo) {
+                    return response()->json(['error' => 'Vehículo no encontrado'], 404);
+                }
+
+                $vehiculoin = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
+                if (!$vehiculoin) {
+                    return response()->json(['error' => 'Vehículo no encontrado'], 404);
+                }
+
+                $categoria = Category::where('id', $vehiculo->category_id)->first();
+                if (!$categoria) {
+                    return response()->json(['error' => 'Categoria no encontrada'], 404);
+                }
+                        // Eliminar la parte de la zona horaria
+                 $fechaEntradaString = str_replace(['.0', ' America/Mexico_City (-06:00)'], '', $vehiculoin->created_at);
+
+                // Convertir la fecha
+                 $fechaEntrada = Carbon::createFromFormat('Y-m-d H:i:s', $fechaEntradaString);
+                 $fechaSalida = Carbon::now();
+                 $diferenciaHoras = $fechaEntrada->diffInHours($fechaSalida);
+                 $totalAPagar = 0;
+                 $vigencia = 'Vigente';
+                return response()->json([
+                    'vehiculo' => $vehiculo,
+                    'fechaEntrada' => $fechaEntrada,
+                    'fechaSalida' => $fechaSalida,
+                    'diferenciaHoras' => $diferenciaHoras,
+                    'totalAPagar' => $totalAPagar,
+                    'vehiculoIn' => $vehiculoin,
+                    'pensionados' => $pensionados,
+                    'vigencia' => $vigencia
+                ]);
+            }
+            else
+            {
+
+
+                $vehiculo = Vehicle::where('plat_number', $placa)->first();
+                if (!$vehiculo) {
+                    return response()->json(['error' => 'Vehículo no encontrado'], 404);
+                }
+
+                $vehiculoin = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
+                if (!$vehiculoin) {
+                    return response()->json(['error' => 'Vehículo no encontrado'], 404);
+                }
+
+                $categoria = Category::where('id', $vehiculo->category_id)->first();
+                if (!$categoria) {
+                    return response()->json(['error' => 'Categoria no encontrada'], 404);
+                }
+
+
+
+                // Eliminar la parte de la zona horaria
+                $fechaEntradaString = str_replace(['.0', ' America/Mexico_City (-06:00)'], '', $fechacobro);
+
+                // Convertir la fecha
+                $fechaEntrada = Carbon::createFromFormat('Y-m-d H:i:s', $fechaEntradaString);
+                $fechaSalida = Carbon::now();
+                $diferenciaHoras = $fechaEntrada->diffInHours($fechaSalida);
+
+                // Obteniendo la tarifa adecuada según las horas
+                $tarifa = precios::where('horas', '>=', $diferenciaHoras)
+                                ->orderBy('horas', 'asc')
+                                ->first();
+
+                // Si no se encontró una tarifa con horas mayores, usamos la última tarifa disponible
+                if (!$tarifa) {
+                    $tarifa = precios::orderBy('horas', 'desc')->first();
+                }
+
+                // Asegurándose de que la categoría existe en la tarifa
+                $category = 'T-REGULAR';
+
+                if (!isset($tarifa->$category)) {
+                    return response()->json(['error' => 'Categoría de tarifa no encontrada'], 404);
+                }
+
+                // Calculando el total a pagar basado en la categoría del vehículo
+                $totalAPagar = $tarifa->$category;
+                $vigencia = 'No Vigente';
+
+                return response()->json([
+                    'vehiculo' => $vehiculo,
+                    'fechaEntrada' => $fechaEntrada,
+                    'fechaSalida' => $fechaSalida,
+                    'diferenciaHoras' => $diferenciaHoras,
+                    'totalAPagar' => $totalAPagar,
+                    'vehiculoIn' => $vehiculoin,
+                    'pensionados' => $pensionados,
+                    'vigencia' => $vigencia
+                ]);
+
+            }
+         }
+
         $vehiculo = Vehicle::where('plat_number', $placa)->first();
         if (!$vehiculo) {
             return response()->json(['error' => 'Vehículo no encontrado'], 404);
@@ -192,6 +305,8 @@ class NuevaCajaController extends Controller
         if (!$categoria) {
             return response()->json(['error' => 'Categoria no encontrada'], 404);
         }
+
+
 
         // Eliminar la parte de la zona horaria
         $fechaEntradaString = str_replace(['.0', ' America/Mexico_City (-06:00)'], '', $vehiculoin->created_at);
@@ -228,58 +343,60 @@ class NuevaCajaController extends Controller
             'diferenciaHoras' => $diferenciaHoras,
             'totalAPagar' => $totalAPagar
         ]);
+
+
     }
 
-    public function obtenerdatos($platNumber)
-    {
-        $sacarpensionado = Auto::where('placa', $platNumber)->orWhere('placa2', $platNumber)->first();
-        if($sacarpensionado)
-        {
-            $vehiculo = Vehicle::where('plat_number', $platNumber)->first();
+    // public function obtenerdatos($platNumber)
+    // {
+    //     $sacarpensionado = Auto::where('placa', $platNumber)->orWhere('placa2', $platNumber)->first();
+    //     if($sacarpensionado)
+    //     {
+    //         $vehiculo = Vehicle::where('plat_number', $platNumber)->first();
 
-            if (!$vehiculo) {
-                return response()->json(['error' => 'Vehículo no encontrado'], 404);
-            }
+    //         if (!$vehiculo) {
+    //             return response()->json(['error' => 'Vehículo no encontrado'], 404);
+    //         }
 
-            $vehiculoIn = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
+    //         $vehiculoIn = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
 
-            if (!$vehiculoIn) {
-                return response()->json(['error' => 'Entrada de vehículo no encontrada'], 404);
-            }
-            $pensionados =  Pensionado::where('id', $sacarpensionado-> pensionado_id)->first();
-            $array = [
-                'vehiculo' => $vehiculo->toArray(),
-                'vehiculoIn' => $vehiculoIn->toArray(),
-                'pensionados' => $pensionados->toArray(),
-            ];
-            return response()->json($array);
-        }
-        else
-        {
-        $vehiculo = Vehicle::where('plat_number', $platNumber)->first();
+    //         if (!$vehiculoIn) {
+    //             return response()->json(['error' => 'Entrada de vehículo no encontrada'], 404);
+    //         }
+    //         $pensionados =  Pensionado::where('id', $sacarpensionado-> pensionado_id)->first();
+    //         $array = [
+    //             'vehiculo' => $vehiculo->toArray(),
+    //             'vehiculoIn' => $vehiculoIn->toArray(),
+    //             'pensionados' => $pensionados->toArray(),
+    //         ];
+    //         return response()->json($array);
+    //     }
+    //     else
+    //     {
+    //     $vehiculo = Vehicle::where('plat_number', $platNumber)->first();
 
-        if (!$vehiculo) {
-            return response()->json(['error' => 'Vehículo no encontrado'], 404);
-        }
+    //     if (!$vehiculo) {
+    //         return response()->json(['error' => 'Vehículo no encontrado'], 404);
+    //     }
 
-        $vehiculoIn = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
+    //     $vehiculoIn = VehicleIn::where('vehicle_id', $vehiculo->id)->first();
 
-        if (!$vehiculoIn) {
-            return response()->json(['error' => 'Entrada de vehículo no encontrada'], 404);
-        }
-
-
-
-        $array = [
-            'vehiculo' => $vehiculo->toArray(),
-            'vehiculoIn' => $vehiculoIn->toArray(),
-        ];
+    //     if (!$vehiculoIn) {
+    //         return response()->json(['error' => 'Entrada de vehículo no encontrada'], 404);
+    //     }
 
 
 
+    //     $array = [
+    //         'vehiculo' => $vehiculo->toArray(),
+    //         'vehiculoIn' => $vehiculoIn->toArray(),
+    //     ];
 
-        return response()->json($array);
-    }
-    }
+
+
+
+    //     return response()->json($array);
+    // }
+    // }
 
 }

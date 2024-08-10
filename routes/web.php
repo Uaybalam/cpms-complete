@@ -43,7 +43,7 @@ Route::get('/Nueva-caja', [NuevaCajaController::class, 'abrirModal']) -> name('a
 Route::post('/guardar-datos', [NuevaCajaController::class, 'guardarDatos'])->name('guardar-datos');
 Route::get('/Ventas', [NuevaCajaController::class, 'abrirparcial'])-> name('cierreCaja');
 Route::get('/Caja', [NuevaCajaController::class, 'Venta'])->name('caja.venta');
-Route::get('/obtener-datos/{platNumber}', [NuevaCajaController::class, 'obtenerdatos']);
+// Route::get('/obtener-datos/{platNumber}', [NuevaCajaController::class, 'obtenerdatos']);
 Route::post('/venta', [NuevaCajaController::class, 'guardarVenta']);
 Route::get('/retiro-parcial', [NuevaCajaController::class, 'retiroParcial']);
 Route::get('/cierre-Caja', [NuevaCajaController::class, 'cierreCaja']);
