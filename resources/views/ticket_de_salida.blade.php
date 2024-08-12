@@ -102,6 +102,21 @@
         <div class="footer">
             <p>Gracias por su compra!</p>
         </div>
+        @if ($visitas === 5 && $category_id !== 13)
+        <div class="section">
+            <div class="section-title"><b>No. de Visitas: 5</b></div>
+            <div class="section-content">
+                <p>Esta es tu visita numero 5.Solicita tu obsequio por esta visita</p>
+            </div>
+        </div>
+    @elseif ($visitas === 10 && $category_id !== 13)
+        <div class="section">
+            <div class="section-title"><b>No. de Visitas: 10</b></div>
+            <div class="section-content">
+                <p>Esta es tu visita numero 10.Tu estadia sera gratis</p>
+            </div>
+        </div>
+    @endif
         <div class="section">
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">
@@ -123,6 +138,27 @@
                 Costo por boleto extraviado: $150</p>
             </div>
         </div>
+                {{-- <div class="section">
+            <div class="section-title"><b>Ubicacion</b></div>
+            <div class="section-content">
+                <p>EASY PARK GDL</p>
+                <p>Av. Solidaridad Iberoamericana No 7822</p>
+                <p>Telefonos: 3334579196 / 3337430001</p>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title"><b>Responsabilidades</b></div>
+            <div class="section-content">
+                <p style="text-align: justify;">El estacionamiento o pension se obliga a prestar el servicio en los terminos en materia haciendonos responsables por robo totaL.
+                Favor de revisar en su ticket que la fecha estimada de arribo, sea la misma que usted dio, ya que de esto depende que su vehiculo este lavado a su regreso.
+                RFC de quien expide comprobante: MAMJ861217S70
+                <b>NO NOS HACEMOS RESPONSABLES POR ROBOS PARCIALES NI DA&Ntilde;OS PARCIALES O TOTALES A SU VEHICULO.</b>
+                <br>
+                <br>
+                <br>
+                Costo por boleto extraviado: $150</p>
+            </div>
+        </div> --}}
     </div>
 </body>
 </html>

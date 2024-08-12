@@ -44,9 +44,9 @@
                         </div>
                         <div class="modal-body">
                             <div class="input-group mb-3">
-                                <span class="input-group-text" id="basic-addon1">Nombre</span>
+                                <span class="input-group-text" id="basic-addon1">Cajero</span>
                                 <input type="text" class="form-control" name="nombre" placeholder="Nombre de usuario"
-                                    aria-label="Nombre de usuario" aria-describedby="basic-addon1">
+                                    aria-label="Nombre de usuario" aria-describedby="basic-addon1" value="{{auth()->user()->name}}" readonly>
                             </div>
                             <div class="input-group mb-3">
                                 <span class="input-group-text" id="basic-addon2">Cantidad inicial ($)</span>

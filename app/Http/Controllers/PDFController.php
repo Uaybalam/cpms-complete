@@ -3,10 +3,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Auto;
+use App\Models\Pensionado;
 use App\Models\Factura;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
-use App\Models\Pensionado;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Exports\VehiclesExport;
@@ -57,6 +58,7 @@ class PDFController extends Controller{
     // Verifica si el archivo HTML existe
     if (file_exists($html_file_path)) {
     // Recibe los datos del formulario
+    $vigencia = $request->input('vigencia');
     $Color = $request->input('Color');
     $name = $request->input('name');
     $visitas = (int) $request->input('visitas');
@@ -66,9 +68,15 @@ class PDFController extends Controller{
     $fechaActual = date('Y-m-d H:i');
     $fechaSalida = $request->input('salida');
     $fechaSalida = str_replace('T', ' ', $fechaSalida);
-
     $folio = $request->input('folio');
-    $html_content = view('ticket_de_llegada', ['category_id' => $category_id ,'platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color])->render();
+    $sacarpensionado = Auto::where('placa', $platNumber)->orWhere('placa2', $platNumber)->first();
+    $pensionados =  Pensionado::where('id', $sacarpensionado-> pensionado_id)->first();
+    // Obtener la fecha del ultimo_pago
+    $fechaUltimoPago = Carbon::parse($pensionados->ultimo_pago);
+    $fechacobro = $fechaUltimoPago->copy()->addDays(30);
+
+
+    $html_content = view('ticket_de_llegada', ['category_id' => $category_id ,'platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color, 'vigencia' => $vigencia, 'fechacobro' => $fechacobro])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/entrada.pdf');
@@ -141,7 +149,8 @@ class PDFController extends Controller{
     // Verifica si el archivo HTML existe
     if (file_exists($html_file_path)) {
     // Recibe los datos del formulario
-
+    $visitas = (int) $request->input('visitas');
+    $category_id = $request->input('category_id');
     $cliente = $request->input('cliente');
     $folio = $request->input('folio');
     $total = $request->input('total');
@@ -149,7 +158,7 @@ class PDFController extends Controller{
     $cantidad = $request->input('cantidad');
     $detalles = $request->input('detalles');
 
-    $html_content = view('ticket_de_salida', ['cliente' => $cliente, 'folio' => $folio, 'total' => $total, 'cambio' => $cambio, 'cantidad' => $cantidad, 'detalles' => $detalles])->render();
+    $html_content = view('ticket_de_salida', ['cliente' => $cliente,'category_id' => $category_id,  'visitas'=>$visitas, 'folio' => $folio, 'total' => $total, 'cambio' => $cambio, 'cantidad' => $cantidad, 'detalles' => $detalles])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/salida.pdf');

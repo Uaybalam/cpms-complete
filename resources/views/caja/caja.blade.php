@@ -19,8 +19,8 @@
                         <label for="selectFiltrado" class="form-label" style="font-size:18px;">Ingresa Num. de Placa</label>
                         <input type="text" id="inputPlaca" name="inputPlaca" class="form-control"
                             placeholder="Ingresa la placa del vehículo" style="font-size:18px;">
-
-
+                            <input type="" name="visitas" id="visitas">
+                            <input type="" name="category_id" id="category_id">
                         <table id="registros-table" class="table table-striped" hidden>
                             <thead>
                                 <tr>
@@ -122,18 +122,21 @@
 
 
             function funcionesBoton() {
-                //generarPDF();
+                generarPDF();
 
-                generarVenta();
+                // generarVenta();
             }
 
 
             function generarVenta() {
                 var total = $('input[name="total"]').val();
                 var placa = $('input[name="inputPlaca"]').val();
+                var subtotal = $('td[name="subtotal"]').text();
+
                 var datos = {
                     total: total,
                     placa: placa,
+                    subtotal: subtotal,
                 };
                 $.ajax({
                     url: '/venta',
@@ -164,6 +167,8 @@
                 var total = $('input[name="total"]').val();
                 var cantidad = $('input[name="Cantidad"]').val();
                 var cambio = $('input[name="Cambio"]').val();
+                var visitas = $('input[name="visitas"]').val();
+                var category_id = $('input[name="category_id"]').val();
                 // Crear un objeto con los datos a enviar
                 var datos = {
                     cliente: cliente,
@@ -171,6 +176,8 @@
                     total: total,
                     cambio: cambio,
                     cantidad: cantidad,
+                    visitas: visitas,
+                    category_id: category_id,
                     detalles: obtenerDetallesTabla()
 
                 };
@@ -267,7 +274,7 @@
                     $('#registros-table tbody').html(detallesHTML);
                     $('input[name="total"]').val(totalAPagar.toFixed(2));
                     $('td[name="fechainicio"]').text(fechaEntrada.toLocaleString());
-                    
+
                     if(data.pensionados)
                     {
                         $('td[name="subtotal"]').text(data.vigencia);
@@ -282,6 +289,8 @@
                     $('td[name="total"]').text('$' + totalAPagar.toFixed(2));
                     $('input[name="cliente"]').val(data.vehiculo.name);
                     $('input[name="folio"]').val(data.vehiculo.registration_number);
+                    $('input[name="visitas"]').val(data.vehiculo.Visitas);
+                    $('input[name="category_id"]').val(data.vehiculo.category_id);
                 },
                 error: function(error) {
                     console.error('Error al obtener detalles:', error);

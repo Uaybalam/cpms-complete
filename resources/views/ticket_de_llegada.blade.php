@@ -83,7 +83,7 @@
                         <p>Placas: {{$platNumber}}</p>
                         <p>Marca: {{$modelo}}</p>
                         <p>Color: {{$Color}}</p>
-                        
+
                     </div>
                     <div class="vehicle-image"></div>
                 </div>
@@ -96,14 +96,24 @@
                 <p>Hora de Salida: {{$fechaSalida}}</p>
             </div>
         </div>
+
+        @if ($vigencia === 1)
         <div class="section">
-            <div class="section-title"><b>Ubicacion</b></div>
+            <div class="section-title"><b>Pension Vigente</b></div>
             <div class="section-content">
-                <p>ONE PARK GDL</p>
-                <p>Av. Solidaridad Iberoamericana No 7822</p>
-                <p>Telefonos: 3323928579 / 3335989730</p>
+                <p>Le informamos que su pension se encuentra vigente y la proxima fecha de pago sera el {{$fechacobro}}. Le solicitamos amablemente que realice el pago en esa fecha. Ademas, le recordamos que dispone de un periodo de gracia de 5 dias adicionales para completar el pago sin incurrir en cargos adicionales.</p>
+                <p>Muchas gracias por su atencion.</p>
             </div>
         </div>
+    @elseif ($visitas === 0)
+        <div class="section">
+            <div class="section-title"><b>Pension No Vigente</b></div>
+            <div class="section-content">
+                <p>Le informamos que la fecha de pago de su pension correspondiente era el {{$fechacobro}}, y el periodo de gracia de 5 dias adicionales ya ha expirado. Por lo tanto, el pago esta actualmente retrasado.</p>
+                <p>Agradecemos su atencion y cooperacion en este asunto.</p></div>
+        </div>
+    @endif
+
         @if ($visitas === 3 && $category_id !== 13)
         <div class="section">
             <div class="section-title"><b>No. de Visitas: 4</b></div>
@@ -120,6 +130,14 @@
         </div>
     @endif
         <div class="section">
+            <div class="section-title"><b>Ubicacion</b></div>
+            <div class="section-content">
+                <p>ONE PARK GDL</p>
+                <p>Av. Solidaridad Iberoamericana No 7822</p>
+                <p>Telefonos: 3323928579 / 3335989730</p>
+            </div>
+        </div>
+        <div class="section">
             <div class="section-title"><b>Responsabilidades</b></div>
             <div class="section-content">
                 <p style="text-align: justify;">El estacionamiento o pension se obliga a prestar el servicio en los terminos en materia haciendonos responsables por robo totaL.
@@ -129,9 +147,30 @@
                 <br>
                 <br>
                 <br>
-                Costo por boleto extraviado: $50</p>
+                Costo por boleto extraviado: $150</p>
             </div>
         </div>
+        {{-- <div class="section">
+            <div class="section-title"><b>Ubicacion</b></div>
+            <div class="section-content">
+                <p>EASY PARK GDL</p>
+                <p>Av. Solidaridad Iberoamericana No 7822</p>
+                <p>Telefonos: 3334579196 / 3337430001</p>
+            </div>
+        </div>
+        <div class="section">
+            <div class="section-title"><b>Responsabilidades</b></div>
+            <div class="section-content">
+                <p style="text-align: justify;">El estacionamiento o pension se obliga a prestar el servicio en los terminos en materia haciendonos responsables por robo totaL.
+                Favor de revisar en su ticket que la fecha estimada de arribo, sea la misma que usted dio, ya que de esto depende que su vehiculo este lavado a su regreso.
+                RFC de quien expide comprobante: MAMJ861217S70
+                <b>NO NOS HACEMOS RESPONSABLES POR ROBOS PARCIALES NI DA&Ntilde;OS PARCIALES O TOTALES A SU VEHICULO.</b>
+                <br>
+                <br>
+                <br>
+                Costo por boleto extraviado: $150</p>
+            </div>
+        </div> --}}
     </div>
 </body>
 </html>

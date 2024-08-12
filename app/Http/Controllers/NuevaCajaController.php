@@ -116,15 +116,59 @@ class NuevaCajaController extends Controller
 
         $datos = NuevaCaja::all();
         $total = $request->input('total');
-        foreach ($datos as $datoOrigen) {
-            Corte::create([
-                'Cajero' => $datoOrigen->nombre,
-                'Placa' => $inputPlaca,
-                'Total' => $total,
-                'cantidad_inicial' => $datoOrigen->cantidad_inicial,
-                'Retiro' => 0
-            ]);
+
+        $subtotal = $request->post('subtotal');
+
+        if($vehiculo->category_id === 13){
+            if($subtotal === 'No Vigente'){
+            foreach ($datos as $datoOrigen) {
+                Corte::create([
+                    'Cajero' => $datoOrigen->nombre,
+                    'Placa' => $inputPlaca,
+                    'Total' => $total,
+                    'cantidad_inicial' => $datoOrigen->cantidad_inicial,
+                    'Retiro' => 0
+                ]);
+            }
         }
+        else if($subtotal === 'Vigente'){
+            foreach ($datos as $datoOrigen) {
+                Corte::create([
+                    'Cajero' => $datoOrigen->nombre,
+                    'Placa' => $inputPlaca,
+                    'Total' => $subtotal,
+                    'cantidad_inicial' => $datoOrigen->cantidad_inicial,
+                    'Retiro' => 0
+                ]);
+            }
+        }
+    }
+        else if($vehiculo->category_id === 9 || $vehiculo->category_id === 10 || $vehiculo->category_id === 11 || $vehiculo->category_id === 12){
+            if($total === '0.00'){
+                $condonacion = 'Condonacion';
+                foreach ($datos as $datoOrigen) {
+                    Corte::create([
+                        'Cajero' => $datoOrigen->nombre,
+                        'Placa' => $inputPlaca,
+                        'Total' => $condonacion,
+                        'cantidad_inicial' => $datoOrigen->cantidad_inicial,
+                        'Retiro' => 0
+                    ]);
+                }
+            }
+            else{
+                foreach ($datos as $datoOrigen) {
+                    Corte::create([
+                        'Cajero' => $datoOrigen->nombre,
+                        'Placa' => $inputPlaca,
+                        'Total' => $total,
+                        'cantidad_inicial' => $datoOrigen->cantidad_inicial,
+                        'Retiro' => 0
+                    ]);
+                }
+            }
+
+    }
 
         return response()->json(['success' => true, 'redirect' => url('/Caja')]);
 
@@ -207,6 +251,7 @@ class NuevaCajaController extends Controller
                 if (!$categoria) {
                     return response()->json(['error' => 'Categoria no encontrada'], 404);
                 }
+
                         // Eliminar la parte de la zona horaria
                  $fechaEntradaString = str_replace(['.0', ' America/Mexico_City (-06:00)'], '', $vehiculoin->created_at);
 
@@ -247,10 +292,15 @@ class NuevaCajaController extends Controller
                 }
 
 
-
+                if($vehiculoin->created_at >= $fechacobro)
+                {
                 // Eliminar la parte de la zona horaria
-                $fechaEntradaString = str_replace(['.0', ' America/Mexico_City (-06:00)'], '', $fechacobro);
+                $fechaEntradaString = str_replace(['.0', ' America/Mexico_City (-06:00)'], '', $vehiculoin->created_at);
+                }
+                else if($vehiculoin->created_at <= $fechacobro){
 
+                    $fechaEntradaString = str_replace(['.0', ' America/Mexico_City (-06:00)'], '', $fechacobro);
+                }
                 // Convertir la fecha
                 $fechaEntrada = Carbon::createFromFormat('Y-m-d H:i:s', $fechaEntradaString);
                 $fechaSalida = Carbon::now();
@@ -333,8 +383,14 @@ class NuevaCajaController extends Controller
             return response()->json(['error' => 'Categoría de tarifa no encontrada'], 404);
         }
 
-        // Calculando el total a pagar basado en la categoría del vehículo
-        $totalAPagar = $tarifa->$category;
+        if($vehiculo->Visitas === 10){
+            $totalAPagar = 0;
+        }
+        else{
+            // Calculando el total a pagar basado en la categoría del vehículo
+            $totalAPagar = $tarifa->$category;
+        }
+
 
         return response()->json([
             'vehiculo' => $vehiculo,

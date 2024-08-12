@@ -53,6 +53,7 @@
             </div>
             <input type="hidden" name="packing_charge" id="packing_charge" value="{{ $vehicle->costo ?? '' }}">
             <input type="hidden" name="visitas" id="visitas">
+            <input type="hidden" name="vigencia" id="vigencia">
         </div>
     </div>
 
@@ -144,11 +145,18 @@
                                 }
                             }
                         }
-
+                        if(response.vigencia === 1)
+                        {
+                            alert('Pension vigente');
+                        }
+                        else if(response.vigencia === 0){
+                            alert('Pension Pendiente de pago, favor de realizar el pago de la pension o se debera cobrar como T-REGULAR');
+                        }
                         document.getElementById('model').value = response.auto ? response.auto.Modelo :
                             response.auto2.Modelo2;
                         document.getElementById('Color').value = response.auto ? response.auto.Color :
                             response.auto2.Color2;
+                        document.getElementById('vigencia').value = response.vigencia;
 
                     }
 
@@ -196,7 +204,7 @@
         var visitas = parseInt(document.getElementById('visitas').value, 10);
         var salida = document.getElementById('salida').value;
         var categoryId = document.getElementById('category_id').value; // Obtener el valor del select
-
+        var vigencia = document.getElementById('vigencia').value;
 
 
 
@@ -213,6 +221,7 @@
                 visitas: visitas,
                 salida: salida,
                 category_id: categoryId,
+                vigencia: vigencia,
                 _token: '{{ csrf_token() }}'
             },
             success: function(response) {
