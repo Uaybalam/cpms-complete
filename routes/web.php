@@ -14,6 +14,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CsvImportController;
+use App\Http\Controllers\CategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -43,6 +44,7 @@ Route::get('/Nueva-caja', [NuevaCajaController::class, 'abrirModal']) -> name('a
 Route::post('/guardar-datos', [NuevaCajaController::class, 'guardarDatos'])->name('guardar-datos');
 Route::get('/Ventas', [NuevaCajaController::class, 'abrirparcial'])-> name('cierreCaja');
 Route::get('/Caja', [NuevaCajaController::class, 'Venta'])->name('caja.venta');
+Route::get('/import', [CategoryController::class, 'import'])->name('categoria.import');
 // Route::get('/obtener-datos/{platNumber}', [NuevaCajaController::class, 'obtenerdatos']);
 Route::post('/venta', [NuevaCajaController::class, 'guardarVenta']);
 Route::get('/retiro-parcial', [NuevaCajaController::class, 'retiroParcial']);

@@ -19,6 +19,11 @@ class CategoryController extends Controller
        return view('categories.create');
     }
 
+    public function import()
+    {
+       return view('categories.import');
+    }
+
     public function store(StoreCategoryRequest $request)
     {
         Category::updateOrCreate(['id' => $request->category_id], $request->except('category_id'));

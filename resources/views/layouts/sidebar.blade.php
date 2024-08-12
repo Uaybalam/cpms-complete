@@ -38,6 +38,8 @@
                         <div class="submenu-content">
                             <a href="{{ route('categories.create') }}"
                                 class="menu-item  {{ request()->routeIs('categories.create') ? 'active' : '' }}" style="font-size:16px;">Crear</a>
+                                <a href="{{ route('categoria.import') }}"
+                                class="menu-item  {{ request()->routeIs('categoria.import') ? 'active' : '' }}" style="font-size:16px;">Importar Tabla</a>
                             <a href="{{ route('categories.index') }}"
                                 class="menu-item  {{ request()->routeIs('categories.index') ? 'active' : '' }}" style="font-size:16px;">Lista</a>
                         </div>

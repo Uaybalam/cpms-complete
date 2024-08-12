@@ -1,6 +1,6 @@
 import sys
 import pandas as pd
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, text
 
 def main():
     try:
@@ -23,6 +23,15 @@ def main():
         # Obtener el nombre del archivo sin extensión para usarlo como nombre de la tabla
         table_name = file_path.split('/')[-1].split('.')[0]
         print(f"Nombre de la tabla a crear: {table_name}")
+
+        # Crear una conexión a la base de datos para ejecutar comandos SQL
+        with engine.connect() as connection:
+            # Verificar si la tabla existe
+            result = connection.execute(text(f"SHOW TABLES LIKE '{table_name}'"))
+            if result.fetchone():
+                print(f"La tabla '{table_name}' ya existe. Se eliminará.")
+                # Eliminar la tabla existente
+                connection.execute(text(f"DROP TABLE `{table_name}`"))
 
         # Volcar los datos del DataFrame en la tabla de la base de datos
         df.to_sql(table_name, engine, index=False, if_exists='replace')
