@@ -19,8 +19,8 @@
                         <label for="selectFiltrado" class="form-label" style="font-size:18px;">Ingresa Num. de Placa</label>
                         <input type="text" id="inputPlaca" name="inputPlaca" class="form-control"
                             placeholder="Ingresa la placa del vehículo" style="font-size:18px;">
-                            <input type="" name="visitas" id="visitas">
-                            <input type="" name="category_id" id="category_id">
+                            <input type="hidden" name="visitas" id="visitas" readonly>
+                            <input type="hidden" name="category_id" id="category_id" readonly>
                         <table id="registros-table" class="table table-striped" hidden>
                             <thead>
                                 <tr>
@@ -124,7 +124,7 @@
             function funcionesBoton() {
                 generarPDF();
 
-                // generarVenta();
+                generarVenta();
             }
 
 
@@ -169,6 +169,8 @@
                 var cambio = $('input[name="Cambio"]').val();
                 var visitas = $('input[name="visitas"]').val();
                 var category_id = $('input[name="category_id"]').val();
+                var inputPlaca = $('input[name="inputPlaca"]').val();
+
                 // Crear un objeto con los datos a enviar
                 var datos = {
                     cliente: cliente,
@@ -178,6 +180,7 @@
                     cantidad: cantidad,
                     visitas: visitas,
                     category_id: category_id,
+                    inputPlaca: inputPlaca,
                     detalles: obtenerDetallesTabla()
 
                 };

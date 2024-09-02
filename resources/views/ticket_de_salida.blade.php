@@ -66,6 +66,7 @@
 <body>
     <div class="container">
         <div class="header">
+        <h1>ONEPARK</h1>
             <h2>TICKET DE VENTA</h2>
         </div>
         <div class="divider">
@@ -74,6 +75,8 @@
         <div class="details">
             <p>Cliente: {{ $cliente }}</p>
             <p>Folio: {{ $folio }}</p>
+            <p>Placa: {{ $inputPlaca }}</p>
+
             <table>
                 <thead>
                     <tr>
@@ -138,7 +141,7 @@
                 Costo por boleto extraviado: $150</p>
             </div>
         </div>
-                {{-- <div class="section">
+                <!-- {{-- <div class="section">
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">
                 <p>EASY PARK GDL</p>
@@ -158,7 +161,7 @@
                 <br>
                 Costo por boleto extraviado: $150</p>
             </div>
-        </div> --}}
+        </div> --}} -->
     </div>
 </body>
 </html>

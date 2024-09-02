@@ -71,6 +71,7 @@
 <body>
     <div class="ticket">
         <div class="ticket-header">
+        <h1><b>ONEPARK</b></h1>
             <h1><b>Ticket de Estacionamiento</b></h1>
         </div>
         <div class="section">
@@ -105,7 +106,7 @@
                 <p>Muchas gracias por su atencion.</p>
             </div>
         </div>
-    @elseif ($visitas === 0)
+    @elseif ($vigencia === 0)
         <div class="section">
             <div class="section-title"><b>Pension No Vigente</b></div>
             <div class="section-content">
@@ -150,7 +151,7 @@
                 Costo por boleto extraviado: $150</p>
             </div>
         </div>
-        {{-- <div class="section">
+        <!-- {{-- <div class="section">
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">
                 <p>EASY PARK GDL</p>
@@ -170,7 +171,7 @@
                 <br>
                 Costo por boleto extraviado: $150</p>
             </div>
-        </div> --}}
+        </div> --}} -->
     </div>
 </body>
 </html>

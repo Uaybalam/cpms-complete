@@ -4,6 +4,19 @@
 
     <body class="bg-light">
         <div class="container mt-4">
+            <!-- Mensajes de sesión -->
+            @if (session('success'))
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            @endif
+
+            @if (session('error'))
+                <div class="alert alert-danger">
+                    {{ session('error') }}
+                </div>
+            @endif
+
             <div class="alert alert-success bg-white p-4 rounded shadow mb-4">
                 <h4 class="text-Secondary border-bottom pb-2 mb-3">Caja</h4>
                 <button class="btn btn-primary btn-custom" data-bs-toggle="modal" data-bs-target="#myModal">Apertura
@@ -62,6 +75,5 @@
                 </div>
             </form>
         </div>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     @endsection

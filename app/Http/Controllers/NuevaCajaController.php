@@ -45,6 +45,7 @@ class NuevaCajaController extends Controller
     }
     public function abrirModal()
     {
+        
         $registros = NuevaCaja::all(); // Obtén todos los registros de la tabla
 
         return view('caja.welcome', ['registros' => $registros]);
@@ -53,27 +54,42 @@ class NuevaCajaController extends Controller
     // Puedes agregar un método para guardar los datos en la base de datos
     public function guardarDatos(Request $request)
     {
-
+        // Validar los datos de entrada
         $datos = $request->validate([
             'nombre' => 'required|string',
             'cantidad_inicial' => 'required|numeric',
         ]);
-
-        NuevaCaja::create($datos);
-
-        $retiro = 'Fondo';
-        $cantidad = NuevaCaja::first();
-        Corte::create([
-            'Cajero' => $retiro,
-            'Total' => 0,
-            'cantidad_inicial' => $cantidad->cantidad_inicial,
-            'Retiro' => 0
-        ]);
-        return redirect()->back()->with('success', 'Datos guardados correctamente.');
+    
+        try {
+            // Verificar si ya existe algún dato en la tabla NuevaCaja
+            if (NuevaCaja::count() > 0) {
+                // Si ya existen registros, redirigir con mensaje de error
+                return redirect()->back()->with('error', 'Ya existe una caja abierta. No se pueden agregar más registros.');
+            }
+    
+            // Crear una nueva caja
+            NuevaCaja::create($datos);
+    
+            // Crear un registro en Corte
+            Corte::create([
+                'Cajero' => 'Fondo',
+                'Total' => 0,
+                'cantidad_inicial' => $datos['cantidad_inicial'],
+                'Retiro' => 0
+            ]);
+    
+            // Redirigir con mensaje de éxito
+            return redirect()->back()->with('success', 'Datos guardados correctamente.');
+        } catch (\Exception $e) {
+            // Manejar cualquier excepción
+            return redirect()->back()->with('error', 'Ocurrió un error al guardar los datos.');
+        }
     }
+    
 
     public function abrirparcial()
     {
+        
         $registros = Corte::all();
         $suma = Corte::sum('Total');
         $cantidad = NuevaCaja::first();

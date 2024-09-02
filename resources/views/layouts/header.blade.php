@@ -22,9 +22,7 @@
                                 </span>
                             </a>
                             <a href="#" class="media">
-                                <span class="d-flex">
-                                    <img src="{{ getUserAvatar(auth()->user()->avatar) }}" class="rounded-circle" alt="">
-                                </span>
+                               
                                 <span class="media-body">
                                     <span class="heading-font-family media-heading">Steve Smith</span>
                                     <span class="media-content">I slowly updated projects</span>

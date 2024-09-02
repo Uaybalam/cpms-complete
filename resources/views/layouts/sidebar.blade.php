@@ -92,6 +92,8 @@
                         <div class="submenu-content">
                             <a href="{{ route('vehicles.create') }}"
                                 class="menu-item  {{ request()->routeIs('vehicles.create') ? 'active' : '' }}"style="font-size:17px;">Crear</a>
+                            <a href="{{ route('vehicles.index') }}"
+                                class="menu-item  {{ request()->routeIs('vehicles.index') ? 'active' : '' }}" style="font-size:17px;">Lista</a>
                         </div>
                     </div>
                     <div class="nav-lavel">Caja</div>

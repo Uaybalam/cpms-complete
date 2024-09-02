@@ -13,7 +13,7 @@ def main():
         db_name = sys.argv[6]
 
         # Leer el archivo CSV
-        df = pd.read_csv(f'C:/Users/angel/OneDrive/Escritorio/cpms-complete/storage/app/{file_path}')
+        df = pd.read_csv(f'C:/xampp/htdocs/cpms-complete/storage/app/{file_path}')
         print(f"Archivo CSV leído correctamente: {file_path}")
 
         # Crear la conexión a la base de datos MySQL

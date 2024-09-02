@@ -70,13 +70,20 @@ class PDFController extends Controller{
     $fechaSalida = str_replace('T', ' ', $fechaSalida);
     $folio = $request->input('folio');
     $sacarpensionado = Auto::where('placa', $platNumber)->orWhere('placa2', $platNumber)->first();
+    if($sacarpensionado){
     $pensionados =  Pensionado::where('id', $sacarpensionado-> pensionado_id)->first();
     // Obtener la fecha del ultimo_pago
-    $fechaUltimoPago = Carbon::parse($pensionados->ultimo_pago);
-    $fechacobro = $fechaUltimoPago->copy()->addDays(30);
+    if($pensionados)
+    {
+        $fechaUltimoPago = Carbon::parse($pensionados->ultimo_pago);
+        $fechacobro = $fechaUltimoPago->copy()->addDays(30);
+        $html_content = view('ticket_de_llegada', ['category_id' => $category_id ,'platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color, 'vigencia' => $vigencia, 'fechacobro' => $fechacobro])->render();
 
+    }
 
-    $html_content = view('ticket_de_llegada', ['category_id' => $category_id ,'platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color, 'vigencia' => $vigencia, 'fechacobro' => $fechacobro])->render();
+    }
+    $html_content = view('ticket_de_llegada', ['category_id' => $category_id ,'platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color, 'vigencia' => $vigencia])->render();
+
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/entrada.pdf');
@@ -157,8 +164,9 @@ class PDFController extends Controller{
     $cambio = $request->input('cambio');
     $cantidad = $request->input('cantidad');
     $detalles = $request->input('detalles');
+    $inputPlaca = $request->input('inputPlaca');
 
-    $html_content = view('ticket_de_salida', ['cliente' => $cliente,'category_id' => $category_id,  'visitas'=>$visitas, 'folio' => $folio, 'total' => $total, 'cambio' => $cambio, 'cantidad' => $cantidad, 'detalles' => $detalles])->render();
+    $html_content = view('ticket_de_salida', ['cliente' => $cliente,'category_id' => $category_id,  'visitas'=>$visitas, 'folio' => $folio, 'total' => $total, 'cambio' => $cambio, 'cantidad' => $cantidad, 'inputPlaca' => $inputPlaca , 'detalles' => $detalles])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/salida.pdf');
