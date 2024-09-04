@@ -88,7 +88,7 @@
                         <p>Placas: {{$placa2}}</p>
 
                         <p>Color: {{$color2}}</p>
-                        <p>Ultimo Cobro: {{$pensionado->ultimo_pago}}</p>
+                        <p>Ultimo Cobro: {{now()->format('Y-m-d') }}</p>
                         <p>Fecha de Termino: {{ $fechaTermino->format('Y-m-d') }}</p>
 
 
