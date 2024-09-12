@@ -19,7 +19,7 @@
             @method('PUT')
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre del Pensionado</label>
-                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $pensionado->nombre }}" readonly>
+                <input type="text" class="form-control" id="nombre" name="nombre" value="{{ $pensionado->nombre }}" >
             </div>
             @foreach($pensionado->autos as $index => $auto)
                 <div class="mb-3">

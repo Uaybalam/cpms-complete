@@ -16,7 +16,7 @@ class PlateController extends Controller
     public function buscarPlaca($platNumber)
     {
         $vehiculo = Vehicle::where('plat_number', $platNumber)->first();
-
+        if ($vehiculo) {
         if($vehiculo->category_id !== 13)
         {
             $customer = Customer::where('id', $vehiculo->customer_id)->first();
@@ -29,11 +29,11 @@ class PlateController extends Controller
             ];
             return response()->json($array);
         }
-
+    }
         else
         {
             $sacarpensionado = Auto::where('placa', $platNumber)->orWhere('placa2', $platNumber)->first();
-
+            
 
             $auto = Auto::where('placa', $platNumber)->select('Modelo', 'Color')->first();
 

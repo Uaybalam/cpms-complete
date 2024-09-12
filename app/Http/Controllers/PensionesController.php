@@ -158,7 +158,11 @@ class PensionesController extends Controller
       {
 
         $auto = Auto::where('pensionado_id', $id)->first();
+        $pensionados = Pensionado::where('id', $id)->first();
 
+            $pensionados->update([
+                'nombre' => $request->nombre
+            ]);
               // Actualizar los datos del auto
               $auto->update([
                   'placa' => $request->placa1,

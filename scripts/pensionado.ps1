@@ -2,14 +2,26 @@
 $acrobatPath = "C:\Program Files\Adobe\Acrobat DC\Acrobat\Acrobat.exe"
 $pdfPath = "C:\xampp\htdocs\cpms-complete\public\pensionado.pdf"
 
-# Construye el comando de impresión
-$printCommand = "& `"$acrobatPath`" /t `"$pdfPath`""
+# Función para ejecutar la impresión
+function Print-PDF {
+    param (
+        [string]$acrobatPath,
+        [string]$pdfPath
+    )
 
-# Ejecuta el comando de impresión
-Invoke-Expression $printCommand
+    # Construye el comando de impresión
+    $printCommand = "& `"$acrobatPath`" /t `"$pdfPath`""
 
-# Espera un momento para permitir que el documento se imprima
-Start-Sleep -Seconds 5
+    # Ejecuta el comando de impresión
+    Invoke-Expression $printCommand
 
-# Cierra Acrobat
-Get-Process Acrobat | ForEach-Object { $_.CloseMainWindow() } | Out-Null
+    # Espera un momento para permitir que el documento se imprima
+    Start-Sleep -Seconds 5
+
+    # Cierra Acrobat
+    Get-Process Acrobat | ForEach-Object { $_.CloseMainWindow() } | Out-Null
+}
+
+# Imprime el PDF dos veces
+Print-PDF -acrobatPath $acrobatPath -pdfPath $pdfPath
+Print-PDF -acrobatPath $acrobatPath -pdfPath $pdfPath

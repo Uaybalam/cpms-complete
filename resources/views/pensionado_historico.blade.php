@@ -83,6 +83,7 @@
                         <p>Servicio: UN MES</p>
                         <p>Servicio: {{$name}}</p>
                         <p>Placas: {{$placa}}</p>
+                        <p>Total Cobrado: $ {{$montoCobro}}</p>
 
                         <p>Color: {{$color}}</p>
                         <p>Placas: {{$placa2}}</p>

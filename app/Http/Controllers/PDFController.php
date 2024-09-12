@@ -65,24 +65,57 @@ class PDFController extends Controller{
     $modelo = $request->input('modelo');
     $platNumber = $request->input('plat_number');
     $category_id = $request->input('category_id');
-    $fechaActual = date('Y-m-d H:i');
+    $fechaActual = date('d-m-Y H:i');
     $fechaSalida = $request->input('salida');
     $fechaSalida = str_replace('T', ' ', $fechaSalida);
     $folio = $request->input('folio');
     $sacarpensionado = Auto::where('placa', $platNumber)->orWhere('placa2', $platNumber)->first();
+       // Define $fechacobro por defecto
+       $fechacobro = 'No disponible';
+
     if($sacarpensionado){
     $pensionados =  Pensionado::where('id', $sacarpensionado-> pensionado_id)->first();
+
     // Obtener la fecha del ultimo_pago
     if($pensionados)
     {
-        $fechaUltimoPago = Carbon::parse($pensionados->ultimo_pago);
-        $fechacobro = $fechaUltimoPago->copy()->addDays(30);
-        $html_content = view('ticket_de_llegada', ['category_id' => $category_id ,'platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color, 'vigencia' => $vigencia, 'fechacobro' => $fechacobro])->render();
+
+        $fechaUltimoPago = $pensionados->ultimo_pago; // Fecha original
+        $fechacobro = date('d-m-Y', strtotime($fechaUltimoPago . ' + 30 days')); // Suma 30 días a la fecha
+
+        $data = [
+            'category_id' => $category_id,
+            'platNumber' => $platNumber,
+            'fechaSalida' => $fechaSalida,
+            'modelo' => $modelo,
+            'visitas' => $visitas,
+            'folio' => $folio,
+            'fechaActual' => $fechaActual,
+            'Color' => $Color,
+            'vigencia' => $vigencia,
+            'fechacobro' => $fechacobro // Pasar la nueva fecha
+        ];
+        // dd($data);
+
+        $html_content = view('ticket_de_llegada', $data)->render();
 
     }
 
     }
-    $html_content = view('ticket_de_llegada', ['category_id' => $category_id ,'platNumber' => $platNumber, 'fechaSalida' => $fechaSalida ,'modelo' => $modelo, 'visitas' => $visitas, 'folio' => $folio, 'fechaActual' => $fechaActual, 'Color' => $Color, 'vigencia' => $vigencia])->render();
+    $data = [
+        'category_id' => $category_id,
+        'platNumber' => $platNumber,
+        'fechaSalida' => $fechaSalida,
+        'modelo' => $modelo,
+        'visitas' => $visitas,
+        'folio' => $folio,
+        'fechaActual' => $fechaActual,
+        'Color' => $Color,
+        'vigencia' => $vigencia,
+        'fechacobro' => $fechacobro
+    ];
+
+    $html_content = view('ticket_de_llegada', $data)->render();
 
 
     // Resto del código para generar el PDF
@@ -361,6 +394,7 @@ class PDFController extends Controller{
     // Verifica si el archivo HTML existe
     if (file_exists($html_file_path)) {
     // Recibe los datos del formulario
+    $Total = $request->input('Total');
     $Color = $request->input('color');
     $name = $request->input('nombre');
     $modelo = $request->input('modelo');
@@ -370,7 +404,7 @@ class PDFController extends Controller{
     $placa2 = $request->input('placa2');
     $folio = date('Ymdhms').'Z';
 
-    $html_content = view('ticket_de_pensionado', ['name' => $name,'placa' => $placa, 'color' => $Color, 'modelo' => $modelo,'placa2' => $placa2, 'color2' => $Color2, 'modelo2' => $modelo2 ])->render();
+    $html_content = view('ticket_de_pensionado', ['name' => $name,'placa' => $placa, 'color' => $Color, 'modelo' => $modelo,'placa2' => $placa2, 'color2' => $Color2, 'modelo2' => $modelo2, 'Total' => $Total ])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/pensionado.pdf');
@@ -446,13 +480,14 @@ class PDFController extends Controller{
     $fechaUltimoPago = Carbon::parse($pensionados->ultimo_pago);
     $fechaTermino = $fechaUltimoPago->addDays(30);
     $Color = $request->input('color1');
+    $montoCobro = $request->input('montoCobro');
     $name = $request->input('pensionadoNombre');
     $placa = $request->input('placa1');
     $Color2 = $request->input('color2');
     $placa2 = $request->input('placa2');
     $folio = date('Ymdhms').'Z';
 
-    $html_content = view('pensionado_historico', ['name' => $name , 'placa' => $placa, 'color' => $Color, 'placa2' => $placa2, 'color2' => $Color2,'pensionado'=> $pensionados, 'pensionados'=> $pensionado, 'fechaTermino'=>$fechaTermino ])->render();
+    $html_content = view('pensionado_historico', ['name' => $name , 'placa' => $placa, 'color' => $Color, 'placa2' => $placa2, 'color2' => $Color2,'pensionado'=> $pensionados, 'pensionados'=> $pensionado, 'fechaTermino'=>$fechaTermino, 'montoCobro'=> $montoCobro ])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/pensionadoH.pdf');

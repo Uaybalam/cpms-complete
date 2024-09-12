@@ -98,7 +98,7 @@
             </div>
         </div>
 
-        @if ($vigencia === 1)
+        @if ($vigencia === '1')
         <div class="section">
             <div class="section-title"><b>Pension Vigente</b></div>
             <div class="section-content">
@@ -106,7 +106,7 @@
                 <p>Muchas gracias por su atencion.</p>
             </div>
         </div>
-    @elseif ($vigencia === 0)
+    @elseif ($vigencia === '0')
         <div class="section">
             <div class="section-title"><b>Pension No Vigente</b></div>
             <div class="section-content">
@@ -151,11 +151,11 @@
                 Costo por boleto extraviado: $150</p>
             </div>
         </div>
-        <!-- {{-- <div class="section">
+        <!-- <div class="section">
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">
                 <p>EASY PARK GDL</p>
-                <p>Av. Solidaridad Iberoamericana No 7822</p>
+                <p>Av. Solidaridad Iberoamericana No 7968</p>
                 <p>Telefonos: 3334579196 / 3337430001</p>
             </div>
         </div>
@@ -171,7 +171,7 @@
                 <br>
                 Costo por boleto extraviado: $150</p>
             </div>
-        </div> --}} -->
+        </div> -->
     </div>
 </body>
 </html>

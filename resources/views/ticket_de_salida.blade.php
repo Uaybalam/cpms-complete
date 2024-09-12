@@ -145,7 +145,7 @@
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">
                 <p>EASY PARK GDL</p>
-                <p>Av. Solidaridad Iberoamericana No 7822</p>
+                <p>Av. Solidaridad Iberoamericana No 7968</p>
                 <p>Telefonos: 3334579196 / 3337430001</p>
             </div>
         </div>
