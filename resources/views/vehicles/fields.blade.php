@@ -89,7 +89,7 @@
         var platNumber = document.getElementById('plat_number').value;
 
         // Realizar solicitud AJAX solo si la longitud de la placa es mayor a cierta longitud (por ejemplo, 3 caracteres)
-        if (platNumber.length >= 7) {
+        if (platNumber.length >= 5) {
             // Realizar solicitud AJAX
             $.ajax({
                 type: 'GET',

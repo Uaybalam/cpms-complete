@@ -1,4 +1,4 @@
-<table id="data_table" class="table">
+<table id="show_table" class="table">
     <thead>
         <tr>
             <th>Id</th>

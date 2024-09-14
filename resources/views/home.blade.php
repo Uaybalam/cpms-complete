@@ -127,7 +127,7 @@
    function obtenerDetallesTabla() {
        // Obtener los datos de la tabla
        var detalles = [];
-       $('#data_table tbody tr').each(function () {
+       $('#show_table tbody tr').each(function () {
            var fila = $(this);
            var cliente = fila.find('td:eq(2)').text();
            var placa = fila.find('td:eq(3)').text();
