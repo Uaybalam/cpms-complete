@@ -130,7 +130,7 @@
             </div>
         </div>
     @endif
-     <!-- <div class="section">
+        <div class="section">
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">
                 <p>ONE PARK GDL</p>
@@ -150,8 +150,8 @@
                 <br>
                 Costo por boleto extraviado: $150</p>
             </div>
-        </div> -->
-         <div class="section">
+        </div> 
+                <!-- <div class="section">
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">
                 <p>EASY PARK GDL</p>
@@ -169,8 +169,7 @@
                 <br>
                 <br>
                 <br>
-                Costo por boleto extraviado: $150</p>
-            </div>
+                Costo por boleto extraviado: $150</p> -->
         </div>
     </div>
 </body>
