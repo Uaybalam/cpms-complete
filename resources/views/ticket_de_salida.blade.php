@@ -66,7 +66,7 @@
 <body>
     <div class="container">
         <div class="header">
-        <h1>ONEPARK</h1>
+        <h1>EASY PARK</h1>
             <h2>TICKET DE VENTA</h2>
         </div>
         <div class="divider">
