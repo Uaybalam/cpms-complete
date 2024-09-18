@@ -71,7 +71,7 @@
 <body>
     <div class="ticket">
         <div class="ticket-header">
-        <h1><b>ONEPARK</b></h1>
+        <h1><b>EASYPARK</b></h1>
             <h1><b>Ticket de Estacionamiento</b></h1>
         </div>
         <div class="section">
@@ -130,7 +130,7 @@
             </div>
         </div>
     @endif
-        <div class="section">
+<!--         <div class="section">
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">
                 <p>ONE PARK GDL</p>
@@ -150,8 +150,8 @@
                 <br>
                 Costo por boleto extraviado: $150</p>
             </div>
-        </div> 
-                <!-- <div class="section">
+        </div>  -->
+                <div class="section">
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">
                 <p>EASY PARK GDL</p>
@@ -169,7 +169,7 @@
                 <br>
                 <br>
                 <br>
-                Costo por boleto extraviado: $150</p> -->
+                Costo por boleto extraviado: $150</p>
         </div>
     </div>
 </body>
