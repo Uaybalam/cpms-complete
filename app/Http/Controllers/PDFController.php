@@ -276,7 +276,7 @@ class PDFController extends Controller{
     $total = $request->input('total');
     $cantidad = $request->input('cantidad');
     $detalles = $request->input('detalles');
-
+   
     $html_content = view('ticket_Cierre', ['total' => $total, 'cantidad' => $cantidad, 'detalles' => $detalles])->render();
 
     // Resto del código para generar el PDF

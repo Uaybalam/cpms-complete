@@ -19,11 +19,10 @@
         }
         .container {
             width: 75mm;
-            /* margin: 5mm 0; */
             border: 1px solid #ccc;
             padding: 0 3em;
             border-radius: 5px;
-            font-size: 6pt;
+            font-size: 10pt; /* Cambia este valor para aumentar el tamaño general de la letra */
         }
         .header {
             text-align: center;
@@ -32,7 +31,7 @@
         .header h2 {
             margin: 0;
             padding: 0;
-            font-size: 10pt;
+            font-size: 14pt; /* Cambia este valor para aumentar el tamaño del título */
         }
         .divider {
             margin-top: 5px;
@@ -53,9 +52,10 @@
         }
         .details th, .details td {
             border: 1px solid #ccc;
-            padding: 2px 5px; /* Reduce el padding si es necesario */
-            overflow: hidden; /* Agrega esto para evitar el desbordamiento del texto */
-            text-overflow: ellipsis; /* Agrega esto para poner puntos suspensivos si el texto es muy largo */
+            padding: 5px 10px; /* Aumenta el padding si es necesario */
+            font-size: 10pt; /* Cambia este valor para aumentar el tamaño de la fuente en la tabla */
+            overflow: hidden;
+            text-overflow: ellipsis;
             white-space: nowrap;
         }
         .details th {
@@ -66,46 +66,78 @@
             text-align: center;
         }
     </style>
+
 </head>
 <body>
     <div class="container">
         <div class="header">
+            <h1><b>ONEPARK</b></h1>
+            <!-- <h1><b>EASY PARK</b></h1> -->
             <h2>Cierre de Ventas</h2>
         </div>
         <div class="divider">
             <hr>
         </div>
         <div class="details">
-            <table>
-                <thead>
+            @php
+            $ultimoCajero = null;
+            $fechaEntrada = null;
+            $fechaSalida = null;
+            $turno = null;
+        @endphp
+
+        @if (count($detalles) > 0)
+            @php
+                $ultimoCajero = $detalles[1]['Cajero'];
+                $fechaEntrada = $detalles[0]['Fecha'];
+                $fechaSalida = end($detalles)['Fecha'];
+
+                // Determinar el turno según la hora de entrada
+                $horaEntrada = \Carbon\Carbon::parse($fechaEntrada)->format('H');
+                if ($horaEntrada >= 7 && $horaEntrada < 19) {
+                    $turno = 'Matutino';
+                } else {
+                    $turno = 'Nocturno';
+                }
+            @endphp
+
+            <p>Cajero : {{ $ultimoCajero }}</p>
+            <p>Hora de Entrada : {{ \Carbon\Carbon::parse($fechaEntrada)->format('d-m-Y H:i:s') }}</p>
+            <p>Hora de Salida : {{ \Carbon\Carbon::parse($fechaSalida)->format('d-m-Y H:i:s') }}</p>
+            <p>Turno : {{ $turno }}</p>
+        @endif
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Placa</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($detalles as $detalle)
+                    @if ($detalle['Total'] > 0) <!-- Condición para omitir los totales que estén en 0 -->
                     <tr>
-                        <th>ID</th>
-                        <th>Cajero</th>
-                        <th>Placa</th>
-                        <th>Total</th>
-                        <th>Cantidad</th>
-                        <th>Retiro</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($detalles as $detalle)
-                    <tr>
-                        <td>{{ $detalle['id'] }}</td>
-                        <td>{{ $detalle['Cajero'] }}</td>
                         <td>{{ $detalle['Placa'] }}</td>
                         <td>{{ $detalle['Total'] }}</td>
-                        <td>{{ $detalle['cantidad'] }}</td>
-                        <td>{{ $detalle['Retiro'] }}</td>
                     </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    @endif
+                @endforeach
+            </tbody>
+        </table>
+
+
             <p>Total: ${{ $total }}</p>
         </div>
+        <br>
+        <br>
+        <br>
+        <br>
         <div class="divider">
             <hr>
         </div>
         <div class="footer">
+            <p>Firma del Cajero</p>
             <p>Excelente Turno</p>
         </div>
     </div>
