@@ -71,8 +71,8 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1><b>ONEPARK</b></h1>
-            <!-- <h1><b>EASY PARK</b></h1> -->
+<!--             <h1><b>ONEPARK</b></h1> -->
+            <h1><b>EASY PARK</b></h1>
             <h2>Cierre de Ventas</h2>
         </div>
         <div class="divider">
