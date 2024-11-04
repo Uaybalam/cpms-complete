@@ -12,8 +12,6 @@
                 </div>
             </div>
         </div>
-
-
         <div class="col-lg-4">
             <nav class="breadcrumb-container" aria-label="breadcrumb">
                 <ol class="breadcrumb">
@@ -30,18 +28,30 @@
     </div>
 </div>
 
+<div class="row mb-4">
+    <div class="col-md-12">
+        <!-- Formulario de filtro -->
+        <form method="GET" action="{{ route('vehicles.index') }}" class="form-inline">
+            <div class="form-group mr-2">
+                <input type="text" name="search" class="form-control" placeholder="Buscar por nombre o placa" value="{{ request('search') }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Filtrar</button>
+            <a href="{{ route('vehicles.index') }}" class="btn btn-secondary ml-2">Limpiar</a>
+        </form>
+    </div>
+</div>
 
 <div class="row">
     <div class="col-md-12">
         <div class="card">
-            {{-- <div class="card-header"><h3>Lista de Clientes</h3></div> --}}
             <div class="card-body">
-              @include('vehicles.table')
+                @include('vehicles.table')
+            </div>
+            <div class="d-flex justify-content-center">
+                {{ $vehicles->links() }}
             </div>
         </div>
     </div>
 </div>
-
-
 
 @endsection

@@ -304,7 +304,7 @@
 
     $('#inputPlaca').on('input', function() {
         var platNumber = $(this).val().trim();
-        if (platNumber.length >= 7) {
+        if (platNumber.length >= 5) {
             obtenerDatosPlaca(platNumber);
         }
     });

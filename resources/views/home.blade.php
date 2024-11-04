@@ -85,13 +85,14 @@
     <div class="card">
 
         <div class="card-body">
+        <button type="button" class="btn btn-success" onclick="exportarExcel()">Exporta a Excel</button>
             @include('vehicles_in.table')
         </div>
-
+        {{ $vehiclesIn->links() }}
     </div>
 
 </div>
-<button type="button" class="btn btn-success" onclick="exportarExcel()">Exporta a Excel</button>
+
 
 @endsection
 

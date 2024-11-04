@@ -1,15 +1,6 @@
-# Define la ruta al ejecutable de Acrobat y al archivo PDF que deseas imprimir
-$acrobatPath = "C:\Program Files\Adobe\Acrobat DC\Acrobat\Acrobat.exe"
+$sumatraPath = "C:\Program Files\SumatraPDF\SumatraPDF.exe"
 $pdfPath = "C:\xampp\htdocs\cpms-complete\public\entrada.pdf"
+$printerName = "EPSON TM-T(203dpi) Receipt6"
 
-# Construye el comando de impresión
-$printCommand = "& `"$acrobatPath`" /t `"$pdfPath`""
-
-# Ejecuta el comando de impresión
-Invoke-Expression $printCommand
-
-# Espera un momento para permitir que el documento se imprima
-Start-Sleep -Seconds 5
-
-# Cierra Acrobat
-Get-Process Acrobat | ForEach-Object { $_.CloseMainWindow() } | Out-Null
+# Agrega opciones para ajustar la escala y forzar que el PDF ocupe todo el tamaño del ticket
+Start-Process -FilePath $sumatraPath -ArgumentList '-print-to "', $printerName, '" "', $pdfPath, '" -print-settings "shrink" ' -NoNewWindow -Wait

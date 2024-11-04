@@ -11,8 +11,9 @@ use Illuminate\Http\Request;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use App\Exports\VehiclesExport;
+use App\Models\historial;
 use App\Models\HistorialP;
-use App\Models\Vehicle;
+use App\Models\VehicleIn;
 use FPDF;
 
 class PDFController extends Controller{
@@ -20,12 +21,17 @@ class PDFController extends Controller{
     {
         $texto = $request->input('plat_number');
 
-        // Ejecuta el script Python para generar el código QR
-        $process = proc_open('python3 ' . base_path('scripts/generar_qr.py') . ' ' . escapeshellarg($texto), [
+        $pythonPath = env('USERPROFILE') . '\AppData\Local\Programs\Python\Python313\python.exe';
+        $scriptPath = base_path('scripts/generar_qr.py');
+        $command = $pythonPath . ' ' . escapeshellarg($scriptPath) . ' ' . escapeshellarg($texto);
+
+        $process = proc_open($command, [
             0 => ['pipe', 'r'],
             1 => ['pipe', 'w'],
             2 => ['pipe', 'w'],
         ], $pipes);
+
+
 
         if (is_resource($process)) {
             fclose($pipes[0]);
@@ -34,16 +40,14 @@ class PDFController extends Controller{
             $retorno = proc_close($process);
             if ($retorno === 0) {
                 echo "El código QR se generó correctamente.";
-                // Continuar con la generación del PDF después de que se haya generado el código QR
-                $this->generarPDF($request);
+                $this->generarPDF($request); // Llama a la función de generar PDF
             } else {
-                echo "Hubo un error al generar el código QR.";
-                // Manejar el error adecuadamente
+                echo "Hubo un error al generar el código QR: " ;
             }
         } else {
             echo "Error al iniciar el proceso para generar el código QR.";
-            // Manejar el error adecuadamente
         }
+
     }
 
 
@@ -121,7 +125,9 @@ class PDFController extends Controller{
     // Resto del código para generar el PDF
     $output_path = base_path('public/entrada.pdf');
 
-    $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
+    $pythonPath = env('USERPROFILE') . '\AppData\Local\Programs\Python\Python313\python.exe';
+
+    $process = proc_open($pythonPath . ' ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
         0 => ['pipe', 'r'], // stdin
         1 => ['pipe', 'w'], // stdout
         2 => ['pipe', 'w'], // stderr
@@ -131,6 +137,8 @@ class PDFController extends Controller{
         // Escribe la cadena HTML en la entrada estándar del proceso
         fwrite($pipes[0], $html_content);
         fclose($pipes[0]);
+        $output = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
 
         // Espera a que el proceso termine
         $exit_code = proc_close($process);
@@ -146,19 +154,26 @@ class PDFController extends Controller{
                 'pdf_content' => $pdfContent,
             ]);
 
-            //Impresion automatica
-            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\entrada.ps1';
-            exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
+            $printerName = "EPSON TM-T(203dpi) Receipt6";  // Nombre de la impresora
+            $pdfPath = 'C:\\xampp\\htdocs\\cpms-complete\\public\\entrada.pdf';
+            $sumatraPath = "C:\\Program Files\\SumatraPDF\\SumatraPDF.exe";  // Ruta a SumatraPDF
 
-             // Verificación del resultado de la impresión
-             if ($returnVar == 0) {
-                // El comando se ejecutó correctamente
+            // Construir el comando completo
+            $command = "\"$sumatraPath\" -print-to \"$printerName\" \"$pdfPath\" -print-settings \"noscale\" 2>&1";
+
+            // Ejecuta SumatraPDF con opciones para imprimir el PDF en tamaño real
+            exec($command, $output, $returnVar);
+
+            // Depuración del comando
+            echo "Comando ejecutado: " . $command . "<br>";
+
+            // Verificación del resultado de la impresión
+            if ($returnVar == 0) {
                 echo "El archivo se ha enviado a la impresora correctamente.";
             } else {
-                // El comando falló
+                // Capturar y mostrar cualquier error en la salida
                 echo "Error al enviar el archivo a la impresora. Código de error: $returnVar";
-                // Imprimir la salida del comando para depuración
-                echo "Salida del comando de impresión: " . implode("\n", $output);
+                echo "Salida del comando de impresión (detalle): " . implode("\n", $output);
             }
 
             return response()->download($output_path, 'nombre_del_archivo.pdf');
@@ -205,8 +220,9 @@ class PDFController extends Controller{
     $output_path = base_path('public/salida.pdf');
 
 
+    $pythonPath = env('USERPROFILE') . '\AppData\Local\Programs\Python\Python313\python.exe';
 
-    $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
+    $process = proc_open($pythonPath . ' ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
         0 => ['pipe', 'r'], // stdin
         1 => ['pipe', 'w'], // stdout
         2 => ['pipe', 'w'], // stderr
@@ -232,19 +248,28 @@ class PDFController extends Controller{
         ]);
 
             //Impresion automatica
-            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\salida.ps1';
-            exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
+             $printerName = "EPSON TM-T(203dpi) Receipt6";  // Nombre de la impresora
+            $pdfPath = 'C:\\xampp\\htdocs\\cpms-complete\\public\\salida.pdf';
+            $sumatraPath = "C:\\Program Files\\SumatraPDF\\SumatraPDF.exe";  // Ruta a SumatraPDF
 
-             // Verificación del resultado de la impresión
-             if ($returnVar == 0) {
-                // El comando se ejecutó correctamente
+            // Construir el comando completo
+            $command = "\"$sumatraPath\" -print-to \"$printerName\" \"$pdfPath\" -print-settings \"noscale\" 2>&1";
+
+            // Ejecuta SumatraPDF con opciones para imprimir el PDF en tamaño real
+            exec($command, $output, $returnVar);
+
+            // Depuración del comando
+            echo "Comando ejecutado: " . $command . "<br>";
+
+            // Verificación del resultado de la impresión
+            if ($returnVar == 0) {
                 echo "El archivo se ha enviado a la impresora correctamente.";
             } else {
-                // El comando falló
+                // Capturar y mostrar cualquier error en la salida
                 echo "Error al enviar el archivo a la impresora. Código de error: $returnVar";
-                // Imprimir la salida del comando para depuración
-                echo "Salida del comando de impresión: " . implode("\n", $output);
+                echo "Salida del comando de impresión (detalle): " . implode("\n", $output);
             }
+
 
             return response()->download($output_path, 'nombre_del_archivo.pdf');
         } else {
@@ -276,15 +301,16 @@ class PDFController extends Controller{
     $total = $request->input('total');
     $cantidad = $request->input('cantidad');
     $detalles = $request->input('detalles');
-   
+
     $html_content = view('ticket_Cierre', ['total' => $total, 'cantidad' => $cantidad, 'detalles' => $detalles])->render();
 
     // Resto del código para generar el PDF
     $output_path = base_path('public/cierre.pdf');
 
 
+    $pythonPath = env('USERPROFILE') . '\AppData\Local\Programs\Python\Python313\python.exe';
 
-    $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
+    $process = proc_open($pythonPath . ' ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
         0 => ['pipe', 'r'], // stdin
         1 => ['pipe', 'w'], // stdout
         2 => ['pipe', 'w'], // stderr
@@ -311,19 +337,28 @@ class PDFController extends Controller{
         ]);
 
             //Impresion automatica
-            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\cierre.ps1';
-            exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
+            $printerName = "EPSON TM-T(203dpi) Receipt6";  // Nombre de la impresora
+            $pdfPath = 'C:\\xampp\\htdocs\\cpms-complete\\public\\cierre.pdf';
+            $sumatraPath = "C:\\Program Files\\SumatraPDF\\SumatraPDF.exe";  // Ruta a SumatraPDF
 
-             // Verificación del resultado de la impresión
-             if ($returnVar == 0) {
-                // El comando se ejecutó correctamente
+            // Construir el comando completo
+            $command = "\"$sumatraPath\" -print-to \"$printerName\" \"$pdfPath\" -print-settings \"noscale\" 2>&1";
+
+            // Ejecuta SumatraPDF con opciones para imprimir el PDF en tamaño real
+            exec($command, $output, $returnVar);
+
+            // Depuración del comando
+            echo "Comando ejecutado: " . $command . "<br>";
+
+            // Verificación del resultado de la impresión
+            if ($returnVar == 0) {
                 echo "El archivo se ha enviado a la impresora correctamente.";
             } else {
-                // El comando falló
+                // Capturar y mostrar cualquier error en la salida
                 echo "Error al enviar el archivo a la impresora. Código de error: $returnVar";
-                // Imprimir la salida del comando para depuración
-                echo "Salida del comando de impresión: " . implode("\n", $output);
+                echo "Salida del comando de impresión (detalle): " . implode("\n", $output);
             }
+
             return response()->download($output_path, 'nombre_del_archivo.pdf');
         } else {
             // Hubo un error en el proceso, manejarlo adecuadamente
@@ -341,48 +376,131 @@ class PDFController extends Controller{
 
     }
 
-    public function generarPdfLavadas(Request $request)
-    {
-        $detalles = $request->input('detalles');
-        $json_data = json_encode($detalles);
-        $fileName = 'lavadas.xlsx';
-        $output_path = public_path($fileName); // Guardar temporalmente en el almacenamiento
+    public function generarpdfHCierre(Request $request)
+{
+     // Recibir filtros desde el frontend
+     $fecha = $request->input('fecha');
+     $turno = $request->input('turno');
 
-        // Comando para ejecutar el script Python
-        $command = escapeshellcmd("python " . base_path('scripts/generar_exel.py') . " " . escapeshellarg($output_path));
+     // Aplicar filtros a la consulta
+     $query = historial::query();
 
-        $process = proc_open($command, [
-            0 => ['pipe', 'r'],  // stdin
-            1 => ['pipe', 'w'],  // stdout
-            2 => ['pipe', 'w'],  // stderr
-        ], $pipes);
+     if ($fecha) {
+         $query->whereDate('created_at', $fecha);
+     }
 
-        if (is_resource($process)) {
-            fwrite($pipes[0], $json_data);
-            fclose($pipes[0]);
+     if ($turno) {
+         if ($turno === 'matutino') {
+             $query->whereTime('created_at', '>=', '07:00:00')
+                   ->whereTime('created_at', '<=', '19:00:00');
+         } elseif ($turno === 'vespertino') {
+             $query->where(function($query) {
+                 $query->whereTime('created_at', '>=', '20:00:00')
+                       ->orWhereTime('created_at', '<=', '06:00:00');
+             });
+         }
+     }
 
-            $output = stream_get_contents($pipes[1]);
-            fclose($pipes[1]);
+     // Obtener todos los registros filtrados (sin paginación)
+     $cierres = $query->get();
 
-            $error_output = stream_get_contents($pipes[2]);
-            fclose($pipes[2]);
+     // Verifica si hay resultados para generar el PDF
+     if ($cierres->isEmpty()) {
+         return response()->json(['message' => 'No se encontraron registros para los filtros seleccionados.'], 404);
+     }
 
-            $exit_code = proc_close($process);
+     // Generar el contenido HTML para el PDF usando una vista
+     $html_content = view('ticket_HCierre', compact('cierres'))->render();
 
-            if ($exit_code === 0) {
-                if (file_exists($output_path)) {
-                    // Devolver el archivo como una respuesta de descarga
-                    return response()->json(['url' => url($fileName)]);
-                } else {
-                    return response()->json(['message' => 'El archivo no se generó correctamente'], 500);
-                }
+     // Ruta para guardar el PDF
+     $output_path = public_path('Hcierre.pdf');
+
+     // Generar el PDF usando la librería que ya tienes configurada
+     // Aquí asumimos que tienes una función en Python o algún otro método que procesa el HTML y genera el PDF
+     $pythonPath = env('USERPROFILE') . '\AppData\Local\Programs\Python\Python313\python.exe';
+     $scriptPath = base_path('scripts/generar_pdf.py');
+
+     // Ejecutar el script de Python para generar el PDF
+     $process = proc_open("$pythonPath $scriptPath " . escapeshellarg($output_path), [
+         0 => ['pipe', 'r'], // stdin
+         1 => ['pipe', 'w'], // stdout
+         2 => ['pipe', 'w'], // stderr
+     ], $pipes);
+
+     if (!is_resource($process)) {
+         return response()->json(['message' => 'Error al iniciar el proceso de generación de PDF'], 500);
+     }
+
+     // Escribir el contenido HTML en la entrada estándar del proceso
+     fwrite($pipes[0], $html_content);
+     fclose($pipes[0]);
+     $output = stream_get_contents($pipes[2]);
+
+     // Verifica el estado de cierre del proceso
+     $exit_code = proc_close($process);
+     if ($exit_code !== 0) {
+         return response()->json(['message' => 'Error al generar el PDF'], 500);
+     }
+
+     // Retornar la ruta del PDF generado
+     return response()->json(['pdf_path' => asset('Hcierre.pdf')]);
+}
+
+public function generarPdfLavadas(Request $request)
+{
+    // Obtén todos los registros de `VehicleIn` con las relaciones necesarias
+    $vehiclesIn = VehicleIn::with(['vehicle:id,name,registration_number,plat_number,model', 'user:id,name'])
+    ->orderBy('salida', 'desc') // Ordena por fecha en orden descendente
+    ->get();
+
+    // Convierte los registros a JSON para pasarlos al script de Python
+    $vehiclesInData = $vehiclesIn->map(function($vehicleIn) {
+        return [
+            'Vehicle Name' => $vehicleIn->vehicle->name ,  // Nombre del vehículo
+            'Plate Number' => $vehicleIn->vehicle->plat_number,
+            'Model' => $vehicleIn->vehicle->model,
+            'Salida' => $vehicleIn->salida,
+        ];
+    });
+
+    $json_data = json_encode($vehiclesInData);
+    $fileName = 'lavadas.xlsx';
+    $output_path = public_path($fileName);
+
+    $pythonPath = env('USERPROFILE') . '\AppData\Local\Programs\Python\Python313\python.exe';
+    $command = escapeshellcmd($pythonPath . ' ' . base_path('scripts/generar_exel.py') . ' ' . escapeshellarg($output_path));
+
+    $process = proc_open($command, [
+        0 => ['pipe', 'r'],  // stdin
+        1 => ['pipe', 'w'],  // stdout
+        2 => ['pipe', 'w'],  // stderr
+    ], $pipes);
+
+    if (is_resource($process)) {
+        fwrite($pipes[0], $json_data);
+        fclose($pipes[0]);
+
+        $output = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
+
+        $error_output = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
+
+        $exit_code = proc_close($process);
+
+        if ($exit_code === 0) {
+            if (file_exists($output_path)) {
+                return response()->json(['url' => url($fileName)]);
             } else {
-                return response()->json(['message' => 'Error al generar el archivo Excel', 'error' => $error_output], 500);
+                return response()->json(['message' => 'El archivo no se generó correctamente'], 500);
             }
         } else {
-            return response()->json(['message' => 'No se pudo iniciar el proceso de Python'], 500);
+            return response()->json(['message' => 'Error al generar el archivo Excel', 'error' => $error_output], 500);
         }
+    } else {
+        return response()->json(['message' => 'No se pudo iniciar el proceso de Python'], 500);
     }
+}
 
     public function generarpdfPensiones(Request $request)
     {
@@ -409,7 +527,8 @@ class PDFController extends Controller{
     // Resto del código para generar el PDF
     $output_path = base_path('public/pensionado.pdf');
 
-    $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
+    $pythonPath = env('USERPROFILE') . '\AppData\Local\Programs\Python\Python313\python.exe';
+    $process = proc_open($pythonPath . ' ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
         0 => ['pipe', 'r'], // stdin
         1 => ['pipe', 'w'], // stdout
         2 => ['pipe', 'w'], // stderr
@@ -435,18 +554,26 @@ class PDFController extends Controller{
             ]);
 
             //Impresion automatica
-            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\pensionado.ps1';
-            exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
+            $printerName = "EPSON TM-T(203dpi) Receipt6";  // Nombre de la impresora
+            $pdfPath = 'C:\\xampp\\htdocs\\cpms-complete\\public\\pensionado.pdf';
+            $sumatraPath = "C:\\Program Files\\SumatraPDF\\SumatraPDF.exe";  // Ruta a SumatraPDF
 
-             // Verificación del resultado de la impresión
-             if ($returnVar == 0) {
-                // El comando se ejecutó correctamente
+            // Construir el comando completo
+            $command = "\"$sumatraPath\" -print-to \"$printerName\" \"$pdfPath\" -print-settings \"noscale\" 2>&1";
+
+            // Ejecuta SumatraPDF con opciones para imprimir el PDF en tamaño real
+            exec($command, $output, $returnVar);
+
+            // Depuración del comando
+            echo "Comando ejecutado: " . $command . "<br>";
+
+            // Verificación del resultado de la impresión
+            if ($returnVar == 0) {
                 echo "El archivo se ha enviado a la impresora correctamente.";
             } else {
-                // El comando falló
+                // Capturar y mostrar cualquier error en la salida
                 echo "Error al enviar el archivo a la impresora. Código de error: $returnVar";
-                // Imprimir la salida del comando para depuración
-                echo "Salida del comando de impresión: " . implode("\n", $output);
+                echo "Salida del comando de impresión (detalle): " . implode("\n", $output);
             }
 
             return response()->download($output_path, 'nombre_del_archivo.pdf');
@@ -492,12 +619,14 @@ class PDFController extends Controller{
     // Resto del código para generar el PDF
     $output_path = base_path('public/pensionadoH.pdf');
 
-    $process = proc_open('python ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
+    $pythonPath = env('USERPROFILE') . '\AppData\Local\Programs\Python\Python313\python.exe';
+
+    $process = proc_open($pythonPath . ' ' . base_path('scripts/generar_pdf.py') . ' ' . escapeshellarg($output_path), [
         0 => ['pipe', 'r'], // stdin
         1 => ['pipe', 'w'], // stdout
         2 => ['pipe', 'w'], // stderr
     ], $pipes);
-
+    // dd($process);
     if (is_resource($process)) {
         // Escribe la cadena HTML en la entrada estándar del proceso
         fwrite($pipes[0], $html_content);
@@ -518,19 +647,28 @@ class PDFController extends Controller{
             ]);
 
             //Impresion automatica
-            $scriptPath = 'C:\xampp\htdocs\cpms-complete\scripts\pensionadoH.ps1';
-            exec("powershell -ExecutionPolicy Bypass -File $scriptPath", $output, $returnVar);
+            $printerName = "EPSON TM-T(203dpi) Receipt6";  // Nombre de la impresora
+            $pdfPath = 'C:\\xampp\\htdocs\\cpms-complete\\public\\pensionadoH.pdf';
+            $sumatraPath = "C:\\Program Files\\SumatraPDF\\SumatraPDF.exe";  // Ruta a SumatraPDF
 
-             // Verificación del resultado de la impresión
-             if ($returnVar == 0) {
-                // El comando se ejecutó correctamente
+            // Construir el comando completo
+            $command = "\"$sumatraPath\" -print-to \"$printerName\" \"$pdfPath\" -print-settings \"noscale\" 2>&1";
+
+            // Ejecuta SumatraPDF con opciones para imprimir el PDF en tamaño real
+            exec($command, $output, $returnVar);
+
+            // Depuración del comando
+            echo "Comando ejecutado: " . $command . "<br>";
+
+            // Verificación del resultado de la impresión
+            if ($returnVar == 0) {
                 echo "El archivo se ha enviado a la impresora correctamente.";
             } else {
-                // El comando falló
+                // Capturar y mostrar cualquier error en la salida
                 echo "Error al enviar el archivo a la impresora. Código de error: $returnVar";
-                // Imprimir la salida del comando para depuración
-                echo "Salida del comando de impresión: " . implode("\n", $output);
+                echo "Salida del comando de impresión (detalle): " . implode("\n", $output);
             }
+
 
             return response()->download($output_path, 'nombre_del_archivo.pdf');
         } else {

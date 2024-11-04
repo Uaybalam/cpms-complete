@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ImageController;
-use App\Http\Controllers\CierrePDFController;
+
 use App\Http\Controllers\NuevaCajaController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\VehicleController;
@@ -15,6 +15,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CsvImportController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CierreController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +27,9 @@ use App\Http\Controllers\CategoryController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+
+Route::get('/historial-cierre-caja', [CierreController::class, 'index'])->name('cierre_caja.index');
+
 Route::post('/lavadas', [PDFController::class, 'generarPdfLavadas']);
 
 Route::put('/vehicles/{vehicle}', [VehicleController::class, 'update'])->name('vehicles.update');
@@ -34,6 +38,7 @@ Route::put('/vehicles/{vehicle}', [VehicleController::class, 'update'])->name('v
 Route::post('/generar-pdf', [PDFController::class, 'generarQR']);
 Route::post('/generar-pdf-salida', [PDFController::class, 'generarpdfSalida']);
 Route::post('/generar-Cpdf', [PDFController::class, 'generarpdfCierre']);
+Route::post('/generar-HCpdf', [PDFController::class, 'generarpdfHCierre']);
 Route::post('/generar-pdf-pensiones', [PDFController::class, 'generarpdfPensiones'])-> name('pdf.pensiones');
 Route::post('/pdfhistorico', [PDFController::class, 'pdfhistorico'])-> name('pdf.historico');
 Route::post('/csv-import', [CsvImportController::class, 'importCsv']);

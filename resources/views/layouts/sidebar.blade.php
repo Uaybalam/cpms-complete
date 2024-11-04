@@ -75,6 +75,9 @@
                     <div class="nav-item ">
                         <a href="{{ route('cierreCaja') }}"><i class="x-fas-history"></i><span style="font-size:1rem;">Cierre de Caja</span></a>
                     </div>
+                    <div class="nav-item ">
+                        <a href="{{ route('cierre_caja.index') }}"><i class="x-fas-history"></i><span style="font-size:1rem;">Historico de Cierre de Caja</span></a>
+                    </div>
                     <div class="nav-item has-sub">
                         <a href="#"><i class="x-fas-history"></i><span style="font-size:1rem;">Pensiones</span></a>
                         <div class="submenu-content">
@@ -83,7 +86,7 @@
                         </div>
                     </div>
                     <div class="nav-item ">
-                        <a href="{{ route('historial') }}"><i class="x-fas-history"></i><span style="font-size:1rem;">Historial</span></a>
+                        <a href="{{ route('historial') }}"><i class="x-fas-history"></i><span style="font-size:1rem;">Historial de Tickets</span></a>
                     </div>
                 @endif
                 @if (auth()->check() && auth()->user()->role == 'Cajero')
@@ -115,7 +118,7 @@
                         </div>
                     </div>
                     <div class="nav-item ">
-                        <a href="{{ route('historial') }}"><i class="x-fas-history"></i><span style="font-size:1rem;">Historial</span></a>
+                        <a href="{{ route('historial') }}"><i class="x-fas-history"></i><span style="font-size:1rem;">Historial de Tickets</span></a>
                     </div>
                 @endif
             </nav>

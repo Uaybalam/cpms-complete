@@ -14,29 +14,31 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
+            /* Eliminamos el display flex para evitar centrado */
         }
         .container {
-            width: 75mm;
+            width: 65mm;
+            margin: 5mm 0;
             border: 1px solid #ccc;
             padding: 0 3em;
             border-radius: 5px;
-            font-size: 10pt; /* Cambia este valor para aumentar el tamaño general de la letra */
+            font-size: 8pt;
+            /* Aseguramos que esté alineado a la izquierda */
+            margin-left: 0;
         }
         .header {
-            text-align: center;
+            text-align: left; /* Alinea el encabezado a la izquierda */
             margin-bottom: 10px;
         }
         .header h2 {
             margin: 0;
             padding: 0;
-            font-size: 14pt; /* Cambia este valor para aumentar el tamaño del título */
+            font-size: 12pt;
         }
         .divider {
             margin-top: 5px;
             margin-bottom: 5px;
-            text-align: center;
+            text-align: left; /* Alinea la división a la izquierda */
         }
         .divider hr {
             border: 0;
@@ -44,26 +46,24 @@
         }
         .details {
             margin-bottom: 10px;
+            text-align: left; /* Aseguramos que el texto esté a la izquierda */
         }
         .details table {
             width: 100%;
             border-collapse: collapse;
-            table-layout: fixed;
+            text-align: left; /* Alinea todo el contenido de la tabla a la izquierda */
         }
         .details th, .details td {
             border: 1px solid #ccc;
-            padding: 5px 10px; /* Aumenta el padding si es necesario */
-            font-size: 10pt; /* Cambia este valor para aumentar el tamaño de la fuente en la tabla */
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            padding: 5px;
         }
         .details th {
             background-color: #f2f2f2;
+            text-align: left; /* Alinea las celdas de la tabla a la izquierda */
         }
         .footer {
             margin-top: 10px;
-            text-align: center;
+            text-align: left; /* Alinea el pie de página a la izquierda */
         }
     </style>
 
@@ -71,8 +71,7 @@
 <body>
     <div class="container">
         <div class="header">
-<!--             <h1><b>ONEPARK</b></h1> -->
-            <h1><b>EASY PARK</b></h1>
+          <h1><b>EASY PARK</b></h1> 
             <h2>Cierre de Ventas</h2>
         </div>
         <div class="divider">

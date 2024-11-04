@@ -4,7 +4,7 @@
         <div class="col-md-4">
             <div class="form-group">
                 <label for="exampleInputEmail3">Registration Number</label>
-                <input type="text" name="registration_number" value="{{ date('ymdHms') }}" class="form-control"
+                <input type="text" name="registration_number" value="{{ $nextFolio }}" class="form-control"
                     id="folio" readonly placeholder="Registration Number Auto">
             </div>
         </div>
@@ -163,9 +163,9 @@
 
 
                 },
-                error: function(response) {
-                    alert('No se pudo encontrar la placa');
-                }
+                // error: function(response) {
+                //     alert('No se pudo encontrar la placa');
+                // }
             });
 
         }
@@ -194,6 +194,7 @@
         }
     }
 
+
     function generarPDF() {
         // Obtener los valores de los campos del formulario
         var Color = document.getElementById('Color').value;
@@ -206,7 +207,11 @@
         var categoryId = document.getElementById('category_id').value; // Obtener el valor del select
         var vigencia = document.getElementById('vigencia').value;
 
-
+        // Validar que los campos requeridos no estén vacíos
+        if (!folio || !modelo || !platNumber || !categoryId) {
+            alert("Por favor, complete todos los campos obligatorios.");
+            return; // No procede a generar el PDF
+        }
 
         // Enviar los datos al controlador utilizando AJAX
         $.ajax({
@@ -225,15 +230,21 @@
                 _token: '{{ csrf_token() }}'
             },
             success: function(response) {
-                // Manejar la respuesta del controlador (si es necesario)
-                console.log(response);
-
+                if (response.success) {
+                    // Manejar la respuesta del controlador y abrir el PDF
+                    window.open(response.pdf_url, '_blank'); // Asumiendo que se devuelve la URL del PDF
+                } else {
+                    // Muestra el mensaje de error devuelto por el backend
+                    alert(response.message);
+                }
             },
             error: function(xhr, status, error) {
                 // Manejar cualquier error que ocurra durante la solicitud AJAX
                 console.error(error);
-
+                alert("Hubo un error al generar el PDF. Inténtalo de nuevo.");
             }
         });
     }
+
+
 </script>

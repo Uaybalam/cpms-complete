@@ -5,6 +5,7 @@
             <th>Reg #</th>
             <th>Categoria</th>
             <th>Cliente</th>
+            <th>Visitas</th>
             <th>Num. Placa</th>
             <th>Creado el</th>
             <th class="nosort">Operacion</th>
@@ -18,6 +19,7 @@
                 <td>{{ $vehicle->registration_number }}</td>
                 <td>{{ $vehicle->category->name }}</td>
                 <td>{{ $vehicle->name }}</td>
+                <td>{{ $vehicle->Visitas }}</td>
                 <td>{{ $vehicle->plat_number }}</td>
                 <td>{{ $vehicle->created_at->format('Y/m/d') }}</td>
 
@@ -31,7 +33,7 @@
                             <a href="#" data-toggle="modal" data-target="#delete{{ $key }}"><i
                                     class="ik ik-trash-2"></i></a>
                         @else
-                            
+
                         @endif
                     </div>
                 </td>

@@ -14,8 +14,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
+            /* Eliminamos el display flex para evitar centrado */
         }
         .container {
             width: 65mm;
@@ -24,9 +23,11 @@
             padding: 0 3em;
             border-radius: 5px;
             font-size: 8pt;
+            /* Aseguramos que esté alineado a la izquierda */
+            margin-left: 0;
         }
         .header {
-            text-align: center;
+            text-align: left; /* Alinea el encabezado a la izquierda */
             margin-bottom: 10px;
         }
         .header h2 {
@@ -37,7 +38,7 @@
         .divider {
             margin-top: 5px;
             margin-bottom: 5px;
-            text-align: center;
+            text-align: left; /* Alinea la división a la izquierda */
         }
         .divider hr {
             border: 0;
@@ -45,10 +46,12 @@
         }
         .details {
             margin-bottom: 10px;
+            text-align: left; /* Aseguramos que el texto esté a la izquierda */
         }
         .details table {
             width: 100%;
             border-collapse: collapse;
+            text-align: left; /* Alinea todo el contenido de la tabla a la izquierda */
         }
         .details th, .details td {
             border: 1px solid #ccc;
@@ -56,17 +59,18 @@
         }
         .details th {
             background-color: #f2f2f2;
+            text-align: left; /* Alinea las celdas de la tabla a la izquierda */
         }
         .footer {
             margin-top: 10px;
-            text-align: center;
+            text-align: left; /* Alinea el pie de página a la izquierda */
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
-        <h1>EASY PARK</h1>
+        <h1>EASYPARK</h1>
             <h2>TICKET DE VENTA</h2>
         </div>
         <div class="divider">
@@ -120,27 +124,7 @@
             </div>
         </div>
     @endif
-<!--         <div class="section">
-            <div class="section-title"><b>Ubicacion</b></div>
-            <div class="section-content">
-                <p>ONE PARK GDL</p>
-                <p>Av. Solidaridad Iberoamericana No 7822</p>
-                <p>Telefonos: 3323928579 / 3335989730</p>
-            </div>
-        </div>
-        <div class="section">
-            <div class="section-title"><b>Responsabilidades</b></div>
-            <div class="section-content">
-                <p style="text-align: justify;">El estacionamiento o pension se obliga a prestar el servicio en los terminos en materia haciendonos responsables por robo totaL.
-                Favor de revisar en su ticket que la fecha estimada de arribo, sea la misma que usted dio, ya que de esto depende que su vehiculo este lavado a su regreso.
-                RFC de quien expide comprobante: RUAM850614UG4
-                <b>NO NOS HACEMOS RESPONSABLES POR ROBOS PARCIALES NI DA&Ntilde;OS PARCIALES O TOTALES A SU VEHICULO.</b>
-                <br>
-                <br>
-                <br>
-                Costo por boleto extraviado: $150</p>
-            </div>
-        </div>  -->
+
                 <div class="section">
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">

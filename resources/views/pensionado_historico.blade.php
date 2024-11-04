@@ -14,8 +14,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            justify-content: center;
         }
         .ticket {
             width: 65mm;
@@ -23,11 +21,11 @@
             border: 1px solid #ccc;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             font-size: 8pt;
-            margin: auto; /* Centra el ticket en la página */
             padding: 0 3em;
+            margin-left: 0; /* Alinea el ticket al lado izquierdo */
         }
         .ticket-header {
-            text-align: center;
+            text-align: left; /* Alinea el encabezado a la izquierda */
             margin-bottom: 10px;
         }
         .ticket-header h1 {
@@ -47,25 +45,35 @@
             text-align: right;
             font-weight: bold;
         }
-        /* Agrega este CSS a tu estilo */
+
         .vehicle-info {
             display: flex;
+            justify-content: flex-start; /* Alinea los elementos de vehículo al inicio */
         }
 
         .vehicle-image {
-            background-image: url('http://dparking.com/codigo_qr.png'); /* Ruta de la imagen del código QR en línea */
-            background-size: contain; /* Ajusta el tamaño de la imagen para que se ajuste al contenedor */
-            background-repeat: no-repeat; /* Evita que la imagen se repita */
-            width: 200px; /* Ancho de la imagen */
-            height: 200px; /* Altura de la imagen */
-            margin-right: 10px; /* Espacio entre la imagen y los detalles del vehículo */
+            background-image: url('http://dparking.com/codigo_qr.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            width: 100px; /* Ajustar el tamaño según sea necesario */
+            height: 100px;
+            margin-right: 10px;
         }
 
         .vehicle-details {
             flex: 1;
-            float: left;
         }
 
+        .section {
+            margin-bottom: 10px;
+        }
+        .section-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .section-content {
+            text-align: left; /* Alinea todo el contenido de las secciones a la izquierda */
+        }
     </style>
 </head>
 <body>

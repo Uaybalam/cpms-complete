@@ -18,6 +18,15 @@
 
     <div class="container">
         <h1>Lista de Pensionados</h1>
+
+        <!-- Formulario de filtro -->
+        <form method="GET" action="{{ route('pensionados.pensionados') }}" class="form-inline mb-4">
+            <div class="form-group mr-2">
+                <input type="text" name="search" class="form-control" placeholder="Buscar por nombre o placa" value="{{ request('search') }}">
+            </div>
+            <button type="submit" class="btn btn-primary">Buscar</button>
+            <a href="{{ route('pensionados.pensionados') }}" class="btn btn-secondary ml-2">Limpiar</a>
+        </form>
     </div>
 
     <div class="container mt-4">
@@ -58,25 +67,24 @@
                         </td>
                         <td>
                             @if(auth()->check() && auth()->user()->role == 'Administrador')
-                                <!-- Icono de editar -->
                                 <a href="{{ route('pensionados.edit', $pensionado->id) }}" class="btn btn-primary btn-sm"><i class="ik ik-edit-2"></i></a>
-                                <!-- Icono de eliminar -->
                                 <form action="{{ route('pensionados.destroy', $pensionado->id) }}" method="POST" style="display: inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('¿Estás seguro de que deseas eliminar este registro?')"><i class="ik ik-trash-2"></i></button>
                                 </form>
-                                <a  class="btn btn-success btn-sm openModal" data-id="{{ $pensionado->id }}"><i class="bi bi-currency-dollar"></i></a>
+                                <a class="btn btn-success btn-sm openModal" data-id="{{ $pensionado->id }}"><i class="bi bi-currency-dollar"></i></a>
                             @else
-                                <!-- Icono de editar -->
-                                <a  class="btn btn-success btn-sm openModal" data-id="{{ $pensionado->id }}"><i class="bi bi-currency-dollar"></i></a>
+                                <a class="btn btn-success btn-sm openModal" data-id="{{ $pensionado->id }}"><i class="bi bi-currency-dollar"></i></a>
                             @endif
                         </td>
                     </tr>
                 @endforeach
-
                 </tbody>
             </table>
+            <div class="d-flex justify-content-center">
+                {{ $pensionados->links() }}
+            </div>
         </div>
     </div>
 
@@ -175,13 +183,13 @@
             location.reload();
         });
 
-        $(document).ready(function() {
-            // Inicializar la tabla con DataTables
-            $('#pensionados-table').DataTable();
+        // $(document).ready(function() {
+        //     // Inicializar la tabla con DataTables
+        //     $('#pensionados-table').DataTable();
 
-            // Agregar el filtro de búsqueda
-            $('#pensionados-table_filter input').addClass('form-control');
-        });
+        //     // Agregar el filtro de búsqueda
+        //     $('#pensionados-table_filter input').addClass('form-control');
+        // });
 
         $(document).ready(function(){
             $(".openModal").click(function(){

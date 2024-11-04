@@ -14,17 +14,40 @@ use Carbon\Carbon; // Importar Carbon para manejo de fechas
 class VehicleController extends Controller
 {
 
-    public function index()
-    {
-       return view('vehicles.index',
-       ['vehicles' =>
-       Vehicle::with(['customer:id,name', 'user:id,name', 'category:id,name'])->get()]);
+    public function index(Request $request)
+{
+    $query = Vehicle::with(['customer:id,name', 'user:id,name', 'category:id,name']);
+
+    // Aplicar filtro de búsqueda si existe
+    if ($request->filled('search')) {
+        $search = $request->input('search');
+        $query->where(function($q) use ($search) {
+            $q->whereHas('customer', function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            })
+            ->orWhere('plat_number', 'like', '%' . $search . '%') // Filtrar por número de placa
+            ->orWhereHas('category', function($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%');
+            });
+        });
     }
+
+    $vehicles = $query->paginate(10); // Cambia el número de resultados por página si es necesario
+
+    return view('vehicles.index', compact('vehicles'));
+}
+
+
 
     public function create()
     {
+          // Obtener el último folio registrado
+          $lastFolio = Vehicle::max('registration_number');
+          $nextFolio = $lastFolio ? $lastFolio + 1 : 1;
+
         return view('vehicles.create', ['categories' => Category::get(['id','name']),
-        'customers' => Customer::get(['id','name'])]);
+        'customers' => Customer::get(['id','name']),
+        'nextFolio' => $nextFolio]);
     }
 
     public function getCosto($category_id) {
@@ -32,50 +55,44 @@ class VehicleController extends Controller
         return response()->json(['costo' => $category->costo]);
     }
     public function store(StoreVehicleRequest $request)
-    {
-      try {
+{
+    try {
         // Verificar si ya existe un vehículo con la misma placa en la tabla Vehicle
         $existingVehicle = Vehicle::where('plat_number', $request->plat_number)->first();
 
-        // Si existe un vehículo con la misma placa, actualiza sus datos en Vehicle
         if ($existingVehicle) {
-            // Incrementa el valor de 'Visitas' en 1
-            if($existingVehicle->Visitas === 10)
-            {
-                $existingVehicle->Visitas = 1;
-            }
-            else
-            {
-            $existingVehicle->Visitas++;
-            }
+            $latestVehicleId = $existingVehicle->id;
 
+            // Verificar si ya existe un registro en VehicleIn asociado a ese vehículo
+            $existingVehicleIn = VehicleIn::where('vehicle_id', $latestVehicleId)->first();
 
-            // Actualiza los datos del vehículo             y excluye 'vehicle_id' y 'status'
-            $existingVehicle->update($request->except('registration_number', 'vehicle_id', 'status'));
+            // Si ya existe un registro en VehicleIn, retorna error
+            if ($existingVehicleIn) {
+                return redirect()->route('vehicles.create')->with('error', 'Ya existe un vehiculo registrado, por favor dale salida para poder registrar la entrada!!');
+            } else {
+                // Incrementa las visitas solo si no existe un registro en VehicleIn
+                $existingVehicle->Visitas = ($existingVehicle->Visitas === 10) ? 1 : $existingVehicle->Visitas + 1;
+                // Actualiza los datos del vehículo excluyendo los campos no necesarios
+                $existingVehicle->update($request->except( 'vehicle_id', 'status'));
+
+                // Crear un nuevo registro en VehicleIn
+                VehicleIn::create(['vehicle_id' => $latestVehicleId] + $request->all());
+            }
         } else {
-            // Si no existe, crea un nuevo vehículo con 'Visitas' establecido en 1
+            // Si no existe el vehículo, crea un nuevo cliente y un nuevo vehículo
             $customer = Customer::updateOrCreate(['id' => $request->customer_id], $request->except('customer_id'));
-            $existingVehicle = Vehicle::create($request->except('vehicle_id', 'status') + ['status' => 0, 'customer_id' => $customer->id, 'Visitas' => 1]);
+            $newVehicle = Vehicle::create($request->except('vehicle_id', 'status') + ['status' => 0, 'customer_id' => $customer->id, 'Visitas' => 1]);
 
-        }
-
-        $latestVehicleId = $existingVehicle->id;
-
-        // Verificar si ya existe un registro en VehicleIn asociado a ese vehículo
-        $existingVehicleIn = VehicleIn::where('vehicle_id', $latestVehicleId)->first();
-
-        // Si no existe un registro en VehicleIn asociado a ese vehículo, crea uno nuevo
-        if (!$existingVehicleIn) {
-        VehicleIn::create(['vehicle_id' => $latestVehicleId] + $request->all());
-
+            // Crear un nuevo registro en VehicleIn para el nuevo vehículo
+            VehicleIn::create(['vehicle_id' => $newVehicle->id] + $request->all());
         }
 
         return redirect()->route('vehicles.index')->with('success', $request->vehicle_id ? 'Vehicle Updated Successfully!!' : 'Vehicle Created Successfully!!');
 
-      } catch (\Throwable $th) {
-        return redirect()->route('vehicles.create')->with('error', 'Vehicle Cannot be Create please check the inputs!!');
-      }
+    } catch (\Throwable $th) {
+        return redirect()->route('vehicles.create')->with('error', 'Por favor revisa que los campos estén llenos!!');
     }
+}
 
     public function show(Vehicle $vehicle)
     {

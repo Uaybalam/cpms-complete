@@ -45,7 +45,7 @@ class NuevaCajaController extends Controller
     }
     public function abrirModal()
     {
-        
+
         $registros = NuevaCaja::all(); // Obtén todos los registros de la tabla
 
         return view('caja.welcome', ['registros' => $registros]);
@@ -59,17 +59,17 @@ class NuevaCajaController extends Controller
             'nombre' => 'required|string',
             'cantidad_inicial' => 'required|numeric',
         ]);
-    
+
         try {
             // Verificar si ya existe algún dato en la tabla NuevaCaja
             if (NuevaCaja::count() > 0) {
                 // Si ya existen registros, redirigir con mensaje de error
                 return redirect()->back()->with('error', 'Ya existe una caja abierta. No se pueden agregar más registros.');
             }
-    
+
             // Crear una nueva caja
             NuevaCaja::create($datos);
-    
+
             // Crear un registro en Corte
             Corte::create([
                 'Cajero' => 'Fondo',
@@ -77,7 +77,7 @@ class NuevaCajaController extends Controller
                 'cantidad_inicial' => $datos['cantidad_inicial'],
                 'Retiro' => 0
             ]);
-    
+
             // Redirigir con mensaje de éxito
             return redirect()->back()->with('success', 'Datos guardados correctamente.');
         } catch (\Exception $e) {
@@ -85,11 +85,11 @@ class NuevaCajaController extends Controller
             return redirect()->back()->with('error', 'Ocurrió un error al guardar los datos.');
         }
     }
-    
+
 
     public function abrirparcial()
     {
-        
+
         $registros = Corte::all();
         $suma = Corte::sum('Total');
         $cantidad = NuevaCaja::first();
@@ -172,6 +172,18 @@ class NuevaCajaController extends Controller
                     ]);
                 }
             }
+            else if($vehiculo->Visitas === 5){
+                $condonacion = 'Obsequio';
+                foreach ($datos as $datoOrigen) {
+                    Corte::create([
+                        'Cajero' => $datoOrigen->nombre,
+                        'Placa' => $inputPlaca,
+                        'Total' => $condonacion,
+                        'cantidad_inicial' => $datoOrigen->cantidad_inicial,
+                        'Retiro' => 0
+                    ]);
+                }
+            }
             else{
                 foreach ($datos as $datoOrigen) {
                     Corte::create([
@@ -227,6 +239,7 @@ class NuevaCajaController extends Controller
                 'Total' => $registro->Total,
                 'cantidad_inicial' => $registro->cantidad_inicial,
                 'Retiro' => $registro->Retiro,
+                'created_at' => $registro->created_at,
             ]);
         }
 
@@ -382,14 +395,34 @@ class NuevaCajaController extends Controller
         $fechaSalida = Carbon::now();
         $diferenciaHoras = $fechaEntrada->diffInHours($fechaSalida);
 
-        // Obteniendo la tarifa adecuada según las horas
-        $tarifa = precios::where('horas', '>=', $diferenciaHoras)
-                        ->orderBy('horas', 'asc')
-                        ->first();
+        if ($diferenciaHoras == 0) {
+            $tarifa = precios::where('horas', '>', 0)
+                            ->orderBy('horas', 'asc')
+                            ->first();
+        } else {
+            if ($categoria->id === 11) {
+                if ($diferenciaHoras == 24) {
+                    // Para taxista y 24 horas, usar >=
+                    $tarifa = precios::where('horas', '>=', $diferenciaHoras)
+                                    ->orderBy('horas', 'asc')
+                                    ->first();
+                } else {
+                    // Para taxista y diferente de 24 horas, usar <=
+                    $tarifa = precios::where('horas', '<=', $diferenciaHoras)
+                                    ->orderBy('horas', 'desc')
+                                    ->first();
+                }
+            } else {
+                // Para otras categorías, usar >=
+                $tarifa = precios::where('horas', '>=', $diferenciaHoras)
+                                ->orderBy('horas', 'asc')
+                                ->first();
+            }
 
-        // Si no se encontró una tarifa con horas mayores, usamos la última tarifa disponible
-        if (!$tarifa) {
-            $tarifa = precios::orderBy('horas', 'desc')->first();
+            // Si no se encontró una tarifa con horas mayores, usamos la última tarifa disponible
+            if (!$tarifa) {
+                $tarifa = precios::orderBy('horas', 'desc')->first();
+            }
         }
 
         // Asegurándose de que la categoría existe en la tarifa

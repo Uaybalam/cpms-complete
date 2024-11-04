@@ -82,11 +82,26 @@ class PensionesController extends Controller
         ]);
     }
 
-    public function pensionados()
+    public function pensionados(Request $request)
     {
-        $pensionados = Pensionado::all();
+        $query = Pensionado::query();
+
+        // Aplicar filtro de búsqueda si existe
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where('nombre', 'like', '%' . $search . '%')
+                  ->orWhereHas('autos', function($q) use ($search) {
+                      $q->where('placa', 'like', '%' . $search . '%')
+                        ->orWhere('placa2', 'like', '%' . $search . '%');
+                  });
+        }
+
+        $pensionados = $query->with('autos')->paginate(10);
+
         return view('Pensionados.pensionados', compact('pensionados'));
     }
+
+
 
     public function store(Request $request)
     {

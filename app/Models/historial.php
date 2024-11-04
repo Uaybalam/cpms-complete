@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class historial extends Model
 {
     use HasFactory;
-    protected $fillable = ['Cajero', 'Total','cantidad_inicial','Retiro','Corte_parcial'];
+    protected $fillable = ['Cajero', 'Total','cantidad_inicial','Retiro', 'created_at', 'updated_at'];
 }
