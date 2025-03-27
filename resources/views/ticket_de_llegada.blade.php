@@ -79,7 +79,7 @@
 <body>
     <div class="ticket">
         <div class="ticket-header">
-        <h1><b>EASYPARK</b></h1>
+        <h1><b>ONEPARK</b></h1>
             <h1><b>Ticket de Estacionamiento</b></h1>
         </div>
         <div class="section">
@@ -142,9 +142,10 @@
          <div class="section">
             <div class="section-title"><b>Ubicacion</b></div>
             <div class="section-content">
-                <p>EASY PARK GDL</p>
-                <p>Av. Solidaridad Iberoamericana No 7968</p>
-                <p>Telefonos: 3334579196 / 3337430001</p>
+                <p>ONEPARK</p>
+                <p>Av. Solidaridad Iberoamericana No 7822</p>
+                <p>Telefonos: 332301154 / 3323011541</p>
+                <p>Celulares: 3335989730 / 3323928579</p>
             </div>
         </div>
         <div class="section">
@@ -152,7 +153,7 @@
             <div class="section-content">
                 <p style="text-align: justify;">El estacionamiento o pension se obliga a prestar el servicio en los terminos en materia haciendonos responsables por robo totaL.
                 Favor de revisar en su ticket que la fecha estimada de arribo, sea la misma que usted dio, ya que de esto depende que su vehiculo este lavado a su regreso.
-                RFC de quien expide comprobante: MAMJ861217S70
+                RFC de quien expide comprobante: RUAM850614UG4
                 <b>NO NOS HACEMOS RESPONSABLES POR ROBOS PARCIALES NI DA&Ntilde;OS PARCIALES O TOTALES A SU VEHICULO.</b>
                 <br>
                 <br>

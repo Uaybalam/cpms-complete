@@ -151,14 +151,14 @@ class PensionesController extends Controller
 
             $datos = NuevaCaja::all();
             $total = $request->input('Total');
-            foreach ($datos as $datoOrigen) {
-                Corte::create([
-                'Cajero' => $datoOrigen->nombre,
-                'Total' => $total,
-                'cantidad_inicial' => $datoOrigen->cantidad_inicial,
-                'Retiro' => 0
-                ]);
-            }
+            // foreach ($datos as $datoOrigen) {
+            //     Corte::create([
+            //     'Cajero' => $datoOrigen->nombre,
+            //     'Total' => $total,
+            //     'cantidad_inicial' => $datoOrigen->cantidad_inicial,
+            //     'Retiro' => 0
+            //     ]);
+            // }
 
         return redirect()->route('pensionados.pensionados')->with('success', 'Auto actualizado correctamente');
         }

@@ -40,7 +40,8 @@ class NuevaCajaController extends Controller
 
     public function historial()
     {
-        $registros = Factura::all();
+        $folio = '241107149142';
+        $registros = Factura::where('folio', $folio)->get();
         return view('caja.historial_venta', ['registros' => $registros]);
     }
     public function abrirModal()
@@ -142,6 +143,7 @@ class NuevaCajaController extends Controller
                     'Cajero' => $datoOrigen->nombre,
                     'Placa' => $inputPlaca,
                     'Total' => $total,
+                    'Estatus' => $subtotal,
                     'cantidad_inicial' => $datoOrigen->cantidad_inicial,
                     'Retiro' => 0
                 ]);
@@ -152,7 +154,8 @@ class NuevaCajaController extends Controller
                 Corte::create([
                     'Cajero' => $datoOrigen->nombre,
                     'Placa' => $inputPlaca,
-                    'Total' => $subtotal,
+                    'Total' => $total,
+                    'Estatus' => $subtotal,
                     'cantidad_inicial' => $datoOrigen->cantidad_inicial,
                     'Retiro' => 0
                 ]);
@@ -166,7 +169,8 @@ class NuevaCajaController extends Controller
                     Corte::create([
                         'Cajero' => $datoOrigen->nombre,
                         'Placa' => $inputPlaca,
-                        'Total' => $condonacion,
+                        'Total' => $total,
+                        'Estatus' => $condonacion,
                         'cantidad_inicial' => $datoOrigen->cantidad_inicial,
                         'Retiro' => 0
                     ]);
@@ -178,7 +182,8 @@ class NuevaCajaController extends Controller
                     Corte::create([
                         'Cajero' => $datoOrigen->nombre,
                         'Placa' => $inputPlaca,
-                        'Total' => $condonacion,
+                        'Total' => $total,
+                        'Estatus' => $condonacion,
                         'cantidad_inicial' => $datoOrigen->cantidad_inicial,
                         'Retiro' => 0
                     ]);
@@ -190,6 +195,7 @@ class NuevaCajaController extends Controller
                         'Cajero' => $datoOrigen->nombre,
                         'Placa' => $inputPlaca,
                         'Total' => $total,
+                        'Estatus' => '',
                         'cantidad_inicial' => $datoOrigen->cantidad_inicial,
                         'Retiro' => 0
                     ]);
@@ -210,6 +216,7 @@ class NuevaCajaController extends Controller
             'Cajero' => $retiro,
             'Placa' => 'NA',
             'Total' => 0,
+            'Estatus' => '' ,
             'cantidad_inicial' => 0,
             'Retiro'=>$cantidad->cantidad_inicial,
         ]);
@@ -228,6 +235,7 @@ class NuevaCajaController extends Controller
         Corte::create([
             'Cajero' => $retiro,
             'Total' => 0,
+            'Estatus' => '',
             'cantidad_inicial' => $cantidad->cantidad_inicial,
             'Retiro'=>$suma,
         ]);
@@ -236,7 +244,9 @@ class NuevaCajaController extends Controller
         foreach ($primera as $registro) {
             historial::create([
                 'Cajero' => $registro->Cajero,
+                'Placa' => $registro->Placa,
                 'Total' => $registro->Total,
+                'Estatus' => $registro->Estatus,
                 'cantidad_inicial' => $registro->cantidad_inicial,
                 'Retiro' => $registro->Retiro,
                 'created_at' => $registro->created_at,

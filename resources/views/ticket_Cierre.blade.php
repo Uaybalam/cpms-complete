@@ -71,7 +71,7 @@
 <body>
     <div class="container">
         <div class="header">
-          <h1><b>EASY PARK</b></h1> 
+          <h1><b>ONEPARK</b></h1> 
             <h2>Cierre de Ventas</h2>
         </div>
         <div class="divider">
@@ -111,14 +111,16 @@
                 <tr>
                     <th>Placa</th>
                     <th>Total</th>
+                    <th>Estatus</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach ($detalles as $detalle)
-                    @if ($detalle['Total'] > 0) <!-- Condición para omitir los totales que estén en 0 -->
+                    @if ($detalle['Total']) <!-- Condición para omitir los totales que estén en 0 -->
                     <tr>
                         <td>{{ $detalle['Placa'] }}</td>
                         <td>{{ $detalle['Total'] }}</td>
+                        <td>{{ $detalle['Estatus'] }}</td>
                     </tr>
                     @endif
                 @endforeach

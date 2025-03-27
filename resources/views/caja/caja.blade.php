@@ -264,7 +264,15 @@
                     var totalAPagar = data.totalAPagar;
                     var subtotal = data.vehiculo.packing_charge;
 
-
+                    if(data.vehiculo.Visitas === 5)
+                    {
+                        alert("Debes de entregar un Obsequio al Cliente")
+                    }
+                     else if(data.vehiculo.Visitas === 10)
+                     {
+                        alert("Esta es su visita numero 10, su estadia sera gratis")
+                     }
+                     
                     var detallesHTML = `
                         <tr>
                             <td>1</td>

@@ -70,7 +70,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>EASY PARK - Historico de Cierre de Ventas</h1>
+        <h1>OnePark - Historico de Cierre de Ventas</h1>
         @php
         $sumaTotal = 0; // Variable para acumular el total
         $cajero = 'Desconocido';
@@ -110,6 +110,7 @@
                 <th>ID</th>
                 <th>Placa</th>
                 <th>Total</th>
+                <th>Estatus</th>
                 <th>Fecha de Cierre</th>
             </tr>
         </thead>
@@ -119,6 +120,7 @@
                     <td>{{ $cierre->id }}</td>
                     <td>{{ $cierre->Placa }}</td>
                     <td>{{ $cierre->Total }}</td>
+                    <td>{{ $cierre->Estatus }}</td>
                     <td>{{ $cierre->created_at->format('Y-m-d H:i') }}</td>
                 </tr>
                 @php
@@ -137,6 +139,7 @@
             </tr>
         </tfoot>
     </table>
+
 
     </div>
 </body>

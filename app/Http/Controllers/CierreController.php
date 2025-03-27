@@ -10,7 +10,7 @@ class CierreController extends Controller
 {
     public function index(Request $request)
 {
-    $query = historial::orderBy('created_at', 'desc');
+    $query = historial::orderBy('created_at', 'asc');
 
     // Filtrar por fecha si se proporciona
     if ($request->filled('fecha')) {

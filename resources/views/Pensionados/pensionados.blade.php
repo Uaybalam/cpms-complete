@@ -123,8 +123,8 @@
                     <div class="form-group">
                         <label for="montoCobro">Monto a Cobrar:</label>
                         <select class="form-control" name="montoCobro" id="montoCobro">
-                            <option value="1300">1300</option>
-                            <option value="1350">1350</option>
+                            <option value="1450">1450</option>
+                            <option value="1500">1500</option>
                         </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Cobrar</button>

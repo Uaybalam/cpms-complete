@@ -41,7 +41,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label for="category_id">Categoría</label>
-                <select name="category_id" id="category_id" class="form-control" onchange="getCosto()">
+                <select name="category_id" id="category_id" class="form-control" onchange="getCosto()" required>
                     <option value="">Seleccionar</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->id }}"
@@ -51,7 +51,7 @@
                 </select>
                 <input type="hidden" name="vehicle_id" value="{{ $vehicle->id ?? '' }}">
             </div>
-            <input type="hidden" name="packing_charge" id="packing_charge" value="{{ $vehicle->costo ?? '' }}">
+            <input type="hidden" name="packing_charge" id="packing_charge" value="{{ $vehicle->costo ?? '' }}" required>
             <input type="hidden" name="visitas" id="visitas">
             <input type="hidden" name="vigencia" id="vigencia">
         </div>
@@ -62,7 +62,7 @@
             <div class="form-group">
 
                 <label for="exampleInputEmail3">Modelo del Vehiculo</label>
-                <input type="text" name="model" class="form-control" id="model" placeholder="Vehicle model">
+                <input type="text" name="model" class="form-control" id="model" placeholder="Vehicle model" required>
             </div>
         </div>
         <div class="col-md-3">
@@ -70,14 +70,14 @@
                 <label for="plat_number">Numero de Placa del Vehiculo</label>
                 <input id="plat_number" type="text" name="plat_number"
                     value="{{ isset($plate_number) ? $plate_number : '' }}" class="form-control"
-                    placeholder="Vehicle Plat Number" onkeyup="buscarPlaca()" readonly>
+                    placeholder="Vehicle Plat Number" onkeyup="buscarPlaca()" readonly required>
                 <a onclick="ActivarInput()" class="btn btn-primary btn-lg active" role="button">Ingresar Manual</a>
             </div>
         </div>
         <div class="col-md-3">
             <div class="form-group">
                 <label for="exampleInputEmail3">Color</label>
-                <input name="color" class="form-control" id="Color" placeholder="Color">
+                <input name="color" class="form-control" id="Color" placeholder="Color" required>
             </div>
         </div>
     </div>
@@ -230,7 +230,7 @@
                 _token: '{{ csrf_token() }}'
             },
             success: function(response) {
-                if (response.success) {
+                if (response.success === true) {
                     // Manejar la respuesta del controlador y abrir el PDF
                     window.open(response.pdf_url, '_blank'); // Asumiendo que se devuelve la URL del PDF
                 } else {
@@ -241,7 +241,7 @@
             error: function(xhr, status, error) {
                 // Manejar cualquier error que ocurra durante la solicitud AJAX
                 console.error(error);
-                alert("Hubo un error al generar el PDF. Inténtalo de nuevo.");
+                alert("Hubo un error al generar el PDF. Inténtalo de nuevo.", error);
             }
         });
     }

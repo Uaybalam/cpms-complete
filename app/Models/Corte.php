@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class Corte extends Model
 {
     use HasFactory;
-    protected $fillable = ['Cajero', 'Placa' , 'Total','cantidad_inicial','Retiro','Corte_parcial'];
+    protected $fillable = ['Cajero', 'Placa' , 'Total', 'Estatus' ,'cantidad_inicial','Retiro','Corte_parcial'];
 }

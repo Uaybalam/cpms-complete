@@ -35,8 +35,7 @@
                     <th>Cajero</th>
                     <th>Placa</th>
                     <th>Total</th>
-                    <th>Cantidad Inicial</th>
-                    <th>Retiro</th>
+                    <th>Estatus</th>
                     <th>Fecha de Cierre</th>
                 </tr>
             </thead>
@@ -47,8 +46,8 @@
                         <td>{{ $cierre->Cajero }}</td>
                         <td>{{ $cierre->Placa }}</td>
                         <td>{{ $cierre->Total }}</td>
-                        <td>{{ $cierre->cantidad_inicial }}</td>
-                        <td>{{ $cierre->Retiro }}</td>
+                        <td>{{ $cierre->Estatus }}</td>
+
                         <td>{{ $cierre->created_at->format('Y-m-d H:i') }}</td>
                     </tr>
                 @empty
