@@ -1,4 +1,4 @@
-<form action="{{ route('vehicles.store') }}" method="POST" class="forms-sample" class="forms-sample" method="POST">
+<form id="vehicleForm" action="{{ route('vehicles.store') }}" method="POST" class="forms-sample" class="forms-sample" method="POST">
     @csrf
     <div class="row">
         <div class="col-md-4">
@@ -81,10 +81,35 @@
             </div>
         </div>
     </div>
-    <button type="submit" onclick="generarPDF()" class="btn btn-primary mr-2">Crear</button>
+    <button type="submit" id="click"  class="btn btn-primary mr-2">Crear</button>
     <button class="btn btn-light">Cancelar</button>
 </form>
 <script>
+
+let puedeHacerClic = true;
+
+// Controlador para el formulario
+document.getElementById("vehicleForm").addEventListener("submit", function(e) {
+    if (!puedeHacerClic) {
+        e.preventDefault(); // Detiene el envío si hay clics rápidos
+        return;
+    }
+
+    const boton = document.getElementById("click");
+    boton.disabled = true;
+    boton.innerHTML = "Procesando...";
+    puedeHacerClic = false;
+
+    // Generar PDF antes de enviar el formulario (si es necesario)
+    generarPDF();
+
+    // Re-habilitar después de 3 segundos (incluso si falla el envío)
+    setTimeout(() => {
+        puedeHacerClic = true;
+        boton.disabled = false;
+        boton.innerHTML = "Crear";
+    }, 5000);
+});
     function buscarPlaca() {
         var platNumber = document.getElementById('plat_number').value;
 

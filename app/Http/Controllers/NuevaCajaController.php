@@ -40,7 +40,7 @@ class NuevaCajaController extends Controller
 
     public function historial()
     {
-        $folio = '241107149142';
+       
         $registros = Factura::where('folio', $folio)->get();
         return view('caja.historial_venta', ['registros' => $registros]);
     }
